@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>Virtual Textbook</title>
+</head>
+
+<body>
+<div name="iframe" id="iframe" width="800" height="600" z-index="2" style="visibility:visible" src="http://www.vt.edu"/>
+<div align = "center" z-index="1">
+<applet code = 'controller.VirtualTextbookApplet' 
+    archive = 'VirtualTextbook.jar', 
+    width = 1000, 
+    height = 600 />
+</div>
+
+
+</body>
+<script type="javascript/text">
+	document.getElementById('iframe')style.visibility='visible';
+</script>
+</html>

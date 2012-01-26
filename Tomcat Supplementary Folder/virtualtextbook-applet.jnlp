@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="" href="">
+    <information>
+        <title>Virtual Textbook</title>
+        <vendor>Virginia Tech</vendor>
+    </information>
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.6+"
+              href="http://java.sun.com/products/autodl/j2se" />
+        <jar href="VirtualTextbook.jar" main="true" />
+
+    </resources>
+    <applet-desc 
+         name="Virtual Textbook Applet"
+         main-class="components.DynamicTreeApplet"
+         width="1000"
+         height="600">
+     </applet-desc>
+     <update check="background"/>
+</jnlp>     
