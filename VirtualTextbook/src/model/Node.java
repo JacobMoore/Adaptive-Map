@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -21,13 +22,13 @@ import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.Translucent;
-import fr.inria.zvtm.glyphs.VRectangle;
+import fr.inria.zvtm.glyphs.VRoundRect;
 import fr.inria.zvtm.glyphs.VText;
 
 /**
  * Represents a block of information with both a full and short description
  * drawn within a rectangle
- * 
+ *
  * @author james
  */
 public class Node {
@@ -35,7 +36,7 @@ public class Node {
 	/**
 	 * Represents an (x,y) coordinate location in the grid surrounding a
 	 * selected node.
-	 * 
+	 *
 	 * @author John Nein
 	 * @version Nov 9, 2011
 	 */
@@ -50,7 +51,7 @@ public class Node {
 
 		/**
 		 * Returns the x coordinate location.
-		 * 
+		 *
 		 * @return the x
 		 */
 		public int getX() {
@@ -59,7 +60,7 @@ public class Node {
 
 		/**
 		 * Returns the y coordinate location.
-		 * 
+		 *
 		 * @return the y
 		 */
 		public int getY() {
@@ -68,7 +69,7 @@ public class Node {
 
 		/**
 		 * Sets the x coordinate location.
-		 * 
+		 *
 		 * @param x
 		 *            the x to set
 		 */
@@ -82,7 +83,7 @@ public class Node {
 
 		/**
 		 * Sets the y coordinate location.
-		 * 
+		 *
 		 * @param y
 		 *            the y to set
 		 */
@@ -130,7 +131,7 @@ public class Node {
 
 	/**
 	 * Finds the depth of one node from another based on the links between them.
-	 * 
+	 *
 	 * @param fromNode
 	 *            first node that you are trying to find the depth from
 	 * @param toNode
@@ -197,7 +198,7 @@ public class Node {
 	/**
 	 * Returns the nodes that are 2 levels out from the given node, and where
 	 * they go in the "grid" that surrounds the given node.
-	 * 
+	 *
 	 * @param selectedNode
 	 *            the selected node that the grid is based around
 	 * @return a map of nodes and their grid locations based on the given node
@@ -253,7 +254,7 @@ public class Node {
 	private NodeText nodeDescription;
 
 	// Node graphics variables
-	private VRectangle nodeRectangle;
+	private VRoundRect nodeRectangle;
 	// Node information variables
 	private NodeText nodeTitle;
 
@@ -263,9 +264,10 @@ public class Node {
 
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
 		// Important to create this before assigning title/description
-		nodeRectangle = new VRectangle(generateNextXPosition(),
+		nodeRectangle = new VRoundRect(generateNextXPosition(),
 				generateNextYPosition(), 0, 0, 0, Configuration.NODE_BG_COLOR,
-				chapterTypes.get(nodeChapter).getChapterColor());
+				chapterTypes.get(nodeChapter).getChapterColor(), 5, 5);
+		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
 
 		setNodeTitle(nodeTitle);
 		setNodeDescription(nodeDescription);
@@ -276,7 +278,7 @@ public class Node {
 	}
 	/**
 	 * Add this node to the given virtual space
-	 * 
+	 *
 	 * @param vs
 	 *            the VirtualSpace to add the node to
 	 */
@@ -323,7 +325,7 @@ public class Node {
 
 	/**
 	 * Gets the rectangle for the node. Used for centering on a glyph
-	 * 
+	 *
 	 * @return the glyph
 	 */
 	public Glyph getGlyph() {
@@ -416,7 +418,7 @@ public class Node {
 
 	/**
 	 * Move the node by x,y relative to current location
-	 * 
+	 *
 	 * @param x
 	 *            horizontal offset
 	 * @param y
@@ -429,7 +431,7 @@ public class Node {
 
 	/**
 	 * Moves this Node to the given location.
-	 * 
+	 *
 	 * @param x
 	 *            the x coordinates to move this node to
 	 * @param y
@@ -447,7 +449,7 @@ public class Node {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param gridLocation
 	 * @param centerPoint
 	 */
@@ -473,7 +475,7 @@ public class Node {
 	 * Aligns the full and short descriptions with the rectangle so both
 	 * descriptions are within the bounds of the rectangle. Needed because the
 	 * text and rectangle are not drawn in the same way
-	 * 
+	 *
 	 * @param width
 	 *            the width to adjust by
 	 * @param height
@@ -588,7 +590,7 @@ public class Node {
 	/**
 	 * Sets the translucency of this node to the given alpha. This will animate
 	 * the transition between the current translucency and the new one.
-	 * 
+	 *
 	 * @param alpha
 	 *            the alpha of the translucency for the node
 	 */
@@ -620,7 +622,7 @@ public class Node {
 
 	/**
 	 * Sets the node to show specific information.
-	 * 
+	 *
 	 * @param viewType
 	 *            the type of information view for this node to display
 	 */
