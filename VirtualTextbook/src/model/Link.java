@@ -1,5 +1,7 @@
 package model;
 
+import fr.inria.zvtm.glyphs.VText;
+import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.glyphs.VSegment;
 
 /**
- * 
+ *
  * @author John Nein
  * @version Oct 24, 2011
  */
@@ -34,10 +36,11 @@ public class Link extends VSegment {
 	private Node fromNode, toNode;
 	private final String linkType;
 	private VirtualSpace virtualSpace;
+	private VText linkText;
 
 	/**
 	 * A new link object that links two nodes together.
-	 * 
+	 *
 	 * @param fromNode
 	 *            the node that is being linked from
 	 * @param toNode
@@ -71,12 +74,18 @@ public class Link extends VSegment {
 			throw new UnsupportedOperationException(
 					"Cannot link nodes on different VirtualSpaces");
 		}
+
+		Point linkCenter = getLinkCenter();
+		linkText = new VText(linkCenter.x, linkCenter.y, 0,
+		    Color.black, linkType);
 		virtualSpace.addGlyph(this);
-	}
+		virtualSpace.addGlyph(linkText);
+		linkText.setVisible(false);
+		}
 
 	/**
 	 * Returns true if the node given is attached to this link.
-	 * 
+	 *
 	 * @param nodeToCheck
 	 *            the node to be tested
 	 * @return true if the node given is attached to this link.
@@ -111,10 +120,31 @@ public class Link extends VSegment {
 		return linkType;
 	}
 
+	public void highlight() {
+        //highlighted = true;
+	    setColor(Color.yellow);
+	    linkText.setVisible(true);
+	    VirtualSpaceManager.INSTANCE.repaintNow();
+    }
+
+    public void unhighlight() {
+        //highlighted = false;
+        setColor(Color.black);
+        linkText.setVisible(false);
+        VirtualSpaceManager.INSTANCE.repaintNow();
+    }
+
+    private Point getLinkCenter() {
+        int centerX = (fromNode.getCenterPoint().x + toNode.getCenterPoint().x) / 2;
+        int centerY = (fromNode.getCenterPoint().y + toNode.getCenterPoint().y) / 2;
+        return new Point(centerX, centerY);
+    }
+
 	public static class LinkProperties {
 		private LinkLineType linkLineType;
 		private Color linkColor;
 		private String description;
+		private boolean highlighted;
 
 		public LinkProperties(LinkLineType linkLineType, Color linkColor,
 				String description) {
@@ -149,5 +179,6 @@ public class Link extends VSegment {
 		public String getDescription() {
 			return description;
 		}
+
 	}
 }

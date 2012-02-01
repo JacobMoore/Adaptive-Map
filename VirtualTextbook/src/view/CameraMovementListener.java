@@ -18,7 +18,7 @@ import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 
 /**
- * 
+ *
  * @author John Nein
  * @version Sep 28, 2011
  */
@@ -53,6 +53,7 @@ public class CameraMovementListener implements ViewEventHandler {
 						node.showView(ViewType.FULL_DESCRIPTION);
 					}
 					highlightedNode = node;
+					node.highlightLinks();
 					break;
 				}
 			}
@@ -69,6 +70,7 @@ public class CameraMovementListener implements ViewEventHandler {
 						node.showView(ViewType.TITLE_ONLY);
 					}
 					highlightedNode = null;
+					node.unhighlightLinks();
 					break;
 				}
 			}
@@ -179,7 +181,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	/**
 	 * Returns true if actions towards the glyph given should be ignored, false
 	 * otherwise.
-	 * 
+	 *
 	 * @param glyph
 	 *            the glyph to be tested
 	 * @return true if actions towards the glyph given should be ignored, false

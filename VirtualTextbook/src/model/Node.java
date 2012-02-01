@@ -554,6 +554,23 @@ public class Node {
 			}
 		}
 	}
+	/**
+	 * Highlight all links connected to this node
+	 */
+	public void highlightLinks() {
+        for (Link link : getNodeLinks()) {
+            link.highlight();
+        }
+    }
+
+	/**
+	 * Unhlighlight all links connected to this node
+	 */
+    public void unhighlightLinks() {
+        for (Link link: getNodeLinks()) {
+            link.unhighlight();
+        }
+    }
 
 	/**
 	 * @param nodeChapter
