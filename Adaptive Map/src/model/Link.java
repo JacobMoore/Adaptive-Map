@@ -50,9 +50,13 @@ public class Link extends VSegment {
 	 */
 	public Link(Node fromNode, Node toNode, String linkType) {
 		// Create link glyph
-		super(fromNode.getCenterPoint().x, fromNode.getCenterPoint().y,
+	    //constructor for custom color
+		/*super(fromNode.getCenterPoint().x, fromNode.getCenterPoint().y,
 				LINK_Z_INDEX, linkTypes.get(linkType).getLinkColor(), toNode
-						.getCenterPoint().x, toNode.getCenterPoint().y);
+						.getCenterPoint().x, toNode.getCenterPoint().y);*/
+	    super(fromNode.getCenterPoint().x, fromNode.getCenterPoint().y,
+            LINK_Z_INDEX, Color.lightGray, toNode
+                    .getCenterPoint().x, toNode.getCenterPoint().y);
 		switch (linkTypes.get(linkType).getLinkLineType()) {
 			case BOLD :
 				setStrokeWidth(BOLD_WIDTH);
@@ -123,15 +127,14 @@ public class Link extends VSegment {
 	}
 
 	public void highlight() {
-        //highlighted = true;
-	    setColor(Color.yellow);
-	    linkText.setVisible(true);
+	    setColor(Color.black);
+	    if (isVisible())
+	        linkText.setVisible(true);
 	    VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     public void unhighlight() {
-        //highlighted = false;
-        setColor(Color.black);
+        setColor(Color.lightGray);
         linkText.setVisible(false);
         VirtualSpaceManager.INSTANCE.repaintNow();
     }
