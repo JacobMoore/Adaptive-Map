@@ -103,6 +103,8 @@ public class Link extends VSegment {
 		Point toCenterPoint = toNode.getCenterPoint();
 		setEndPoints(fromCenterPoint.x, fromCenterPoint.y, toCenterPoint.x,
 				toCenterPoint.y);
+		Point linkCenter = getLinkCenter();
+		linkText.moveTo(linkCenter.x, linkCenter.y);
 	}
 
 	public Node getFromNode() {
