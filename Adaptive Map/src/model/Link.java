@@ -32,6 +32,7 @@ public class Link extends VSegment {
 
 	private static final int BOLD_WIDTH = 5;
 	private static final int LINK_Z_INDEX = -1;
+	private static final int LETTER_SIZE = 10;
 
 	private Node fromNode, toNode;
 	private final String linkType;
@@ -57,6 +58,8 @@ public class Link extends VSegment {
 	    super(fromNode.getCenterPoint().x, fromNode.getCenterPoint().y,
             LINK_Z_INDEX, Color.lightGray, toNode
                     .getCenterPoint().x, toNode.getCenterPoint().y);
+	    //switch for custom line types
+	    /**
 		switch (linkTypes.get(linkType).getLinkLineType()) {
 			case BOLD :
 				setStrokeWidth(BOLD_WIDTH);
@@ -67,7 +70,7 @@ public class Link extends VSegment {
 			case STANDARD :
 			default :
 				break;
-		}
+		}*/
 
 		this.fromNode = fromNode;
 		this.toNode = toNode;
@@ -81,11 +84,12 @@ public class Link extends VSegment {
 
 		Point linkCenter = getLinkCenter();
 		linkText = new VText(linkCenter.x, linkCenter.y, 0,
-		    Color.black, linkType);
+		    Color.red, linkType);
 		virtualSpace.addGlyph(this);
 		virtualSpace.addGlyph(linkText);
 		linkText.setVisible(false);
-		}
+	}
+
 
 	/**
 	 * Returns true if the node given is attached to this link.
@@ -142,6 +146,9 @@ public class Link extends VSegment {
     private Point getLinkCenter() {
         int centerX = (fromNode.getCenterPoint().x + toNode.getCenterPoint().x) / 2;
         int centerY = (fromNode.getCenterPoint().y + toNode.getCenterPoint().y) / 2;
+        //move the text so that the it's center is on the center of the link
+        centerX -= LETTER_SIZE;
+        centerY -= (LETTER_SIZE /2);
         return new Point(centerX, centerY);
     }
 
