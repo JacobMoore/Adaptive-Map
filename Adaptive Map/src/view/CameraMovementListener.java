@@ -27,6 +27,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	// Wheel speed factor
 	static final float WSF = 5f;
 
+	private AppCanvas canvas;
 	private VirtualSpaceManager vSpaceManager = VirtualSpaceManager.INSTANCE;
 	private Node highlightedNode;
 	private Node selectedNode;
@@ -36,9 +37,14 @@ public class CameraMovementListener implements ViewEventHandler {
 	private int yLocation;
 
 	/**
+	 * Creates a new CameraMovementListener.
+	 * @param canvas
+	 *        A reference to the AppCanvas attached to this listener.
 	 * @param nodeList
+	 *        A reference to the node list of the attached AppCanvas.
 	 */
-	public CameraMovementListener(List<Node> nodeList) {
+	public CameraMovementListener(AppCanvas canvas, List<Node> nodeList) {
+	    this.canvas = canvas;
 		this.nodeList = nodeList;
 	}
 
@@ -218,6 +224,7 @@ public class CameraMovementListener implements ViewEventHandler {
 			activeCamera.altitudeOffset((float) (altitudeFactor * WSF));
 			VirtualSpaceManager.INSTANCE.repaintNow();
 		}
+		canvas.updateZoomLevel( activeCamera.altitude );
 	}
 
 	public void Ktype(ViewPanel pnl, char c, int i, int i1, KeyEvent ke) {
