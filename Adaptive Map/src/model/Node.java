@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Font;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -501,12 +500,12 @@ public class Node {
 				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING
 						* 2);
 				nodeTitle.moveTo(nodeRectangle.vx - titleWidth / 2
-						+ NODE_PADDING / 2, nodeRectangle.vy
-						+ nodeRectangle.getHeight() - titleHeight / nodeTitle.rowsOfText
-						- NODE_PADDING / 2);
+						+ NODE_PADDING, nodeRectangle.vy
+						+ nodeRectangle.getHeight() - titleHeight
+						- NODE_PADDING);
 				nodeDescription.moveTo(nodeRectangle.vx - descriptionWidth / 2
-						+ NODE_PADDING / 2, nodeTitle.vy - titleHeight
-						- NODE_PADDING / 2);
+						+ NODE_PADDING, nodeTitle.vy - titleHeight
+						- NODE_PADDING);
 				break;
 			case TITLE_ONLY :
 				nodeAdjustedWidth = titleWidth + NODE_PADDING;
@@ -517,13 +516,17 @@ public class Node {
 				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING
 						* 2);
 				nodeTitle.moveTo(nodeRectangle.vx - titleWidth / 2
-						+ NODE_PADDING / 2, nodeRectangle.vy
-						+ nodeRectangle.getHeight()- titleHeight / nodeTitle.rowsOfText
-						- NODE_PADDING / 2);
+						+ NODE_PADDING, nodeRectangle.vy
+						+ nodeRectangle.getHeight() - titleHeight
+						- NODE_PADDING);
 				refreshLinks();
 				break;
 			default :
 				break;
+		}
+		// TODO hack for getting two line titles to work
+		if (nodeTitle.getText().split(" ").length > VText.WORDSPERROW) {
+			nodeTitle.move(0, 20);
 		}
 	}
 

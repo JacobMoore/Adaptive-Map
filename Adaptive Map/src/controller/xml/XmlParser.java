@@ -25,6 +25,8 @@ import org.w3c.dom.NodeList;
 
 import controller.Configuration;
 
+import model.NodeMap;
+
 enum Tag {
 	// Node XML tags
 	TEXTBOOK("textbook"),
@@ -89,7 +91,7 @@ enum TagAttribute {
 }
 
 /**
- * 
+ *
  * @author John Nein
  * @version Oct 18, 2011
  */
@@ -196,13 +198,14 @@ public class XmlParser {
 		return linkProperties;
 	}
 
-	public static List<Node> parseNodeInformation() {
+	public static NodeMap parseNodeInformation() {
 		NodeList nodeList = getListOfAll(Tag.NODE);
 		if (nodeList == null) {
 			System.err.println("Could not import node list");
-			return new ArrayList<Node>();
+			return new NodeMap();
 		}
-		List<Node> parsedNodeList = new ArrayList<Node>(nodeList.getLength());
+		//List<Node> parsedNodeList = new ArrayList<Node>(nodeList.getLength());
+		NodeMap parsedNodeMap = new NodeMap();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
 			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter;
@@ -233,9 +236,9 @@ public class XmlParser {
 			}
 			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter);
 			newNode.setNodeContentUrl(nodeContentUrl);
-			parsedNodeList.add(newNode);
+			parsedNodeMap.addNode(nodeChapter, newNode);
 		}
-		return parsedNodeList;
+		return parsedNodeMap;
 	}
 
 	public static List<Link> parseNodeLinks(List<Node> nodesToLink) {

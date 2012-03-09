@@ -1,5 +1,6 @@
 package view;
 
+import model.NodeMap;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import fr.inria.zvtm.widgets.TranslucentButton;
@@ -119,16 +120,18 @@ public class AppCanvas extends JPanel {
 			Node.addChapterType(chapterProperty.getKey(), chapterProperty
 					.getValue());
 		}
-		nodeList.addAll(XmlParser.parseNodeInformation());
+		NodeMap nodeMap = XmlParser.parseNodeInformation();
+		nodeList.addAll(nodeMap.getNodes());
 		for (Node nodeToAdd : nodeList) {
-			nodeToAdd.addToVirtualSpace(detailedSpace);
-		}
+            nodeToAdd.addToVirtualSpace(detailedSpace);
+        }
 		// IMPORTANT: parse node properties before linking the nodes
 		for (Entry<String, LinkProperties> linkProperty : XmlParser
 				.parseLinkProperties().entrySet()) {
 			Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
 		}
 		XmlParser.parseNodeLinks(nodeList);
+
 	}
 	/**
 	 * Navigates a browser window to the given url.

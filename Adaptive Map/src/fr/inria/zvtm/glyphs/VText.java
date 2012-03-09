@@ -10,7 +10,7 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- *
+ * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -63,9 +63,9 @@ public class VText extends Glyph {
 
     /* Begin edited code */
     /**
-     * Letters per line
+     * Words per line
      */
-    public static final int LETTERSPERROW = 15;
+    public static final int WORDSPERROW = 6;
     /**
      * Width of the longest line
      */
@@ -74,12 +74,9 @@ public class VText extends Glyph {
      * Height of the lines
      */
     public long textContainerHeight;
-    /**
-     * Number of rows of text
-     */
-    public int rowsOfText;
-    /* End edited code */
 
+    /* End edited code */
+    
     /**returns default font used by glyphs*/
     public static Font getMainFont() {
         return mainFont;
@@ -449,40 +446,30 @@ public class VText extends Glyph {
         String[] words = text.split(" ");
         textContainerWidth = 0;
         FontMetrics fm = g.getFontMetrics();
-        if (text.length() > LETTERSPERROW) {
+        if (words.length > WORDSPERROW) {
             int fontHeight = fm.getHeight();
             int curWordPosition = 0, rows = 0, highestCharCount = 0;
             String lineToWrite;
             while (curWordPosition < words.length) {
-                int nextWordPosition = curWordPosition;
-                int stringLength = 0;
-                while ( stringLength < LETTERSPERROW && nextWordPosition < words.length )
-                {
-                    stringLength += words[nextWordPosition].length();
-                    nextWordPosition++;
-                }
-                if ( nextWordPosition < words.length) {
-                    lineToWrite = buildString(words, curWordPosition, nextWordPosition);
+                if (curWordPosition + WORDSPERROW < words.length) {
+                    lineToWrite = buildString(words, curWordPosition, curWordPosition + WORDSPERROW);
                     g.drawString(lineToWrite, 0f, rows * fontHeight);
                 } else {
                     lineToWrite = buildString(words, curWordPosition, words.length);
                     g.drawString(lineToWrite, 0f, rows * fontHeight);
                 }
-                // Determine max text width
                 if (lineToWrite.length() > highestCharCount) {
                     textContainerWidth = (long)fm.getStringBounds(lineToWrite, g).getWidth();
                     highestCharCount = lineToWrite.length();
                 }
-                curWordPosition = nextWordPosition;
+                curWordPosition += WORDSPERROW;
                 rows++;
             }
             textContainerHeight = fm.getHeight() * rows;
-            rowsOfText = rows;
         } else {
             textContainerWidth = (long)fm.getStringBounds(text, g).getWidth();
             textContainerHeight = (long)fm.getStringBounds(text, g).getHeight();
             g.drawString(text, 0.0f, 0.0f);
-            rowsOfText = 1;
         }
     }
 
