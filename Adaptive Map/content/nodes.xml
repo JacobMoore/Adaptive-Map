@@ -122,6 +122,15 @@
 	<!-- Nodes -->
 	
 	<node>
+		<title>Axel Friction</title>
+		<description>The force that opposes motion that results from two solid surfaces in contact with one another.</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="APP">Wheels</link>
+		<link type="APP">Trust Bearings</link>
+	</node>
+	
+	<node>
 		<title>Beam Bending Moment</title>
 		<description>Dummy Description</description>
 		<chapter>Internal Forces</chapter>
@@ -223,10 +232,22 @@
 	</node>
 	
 	<node>
-		<title>Compression</title>
+		<title>Center of Mass</title>
 		<description>Dummy Description</description>
-		<chapter>Forces</chapter>
+		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
+		<link type="MTH">Calculating First Moments Through Composite Parts</link>
+		<link type="CON">Equivalent Point Load</link>
+	</node>
+	
+	<node>
+		<title>Centroid</title>
+		<description>Dummy Description</description>
+		<chapter>Moment Intergrals</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="MTH">Calculating First Moments Through Composite Parts</link>
+		<link type="CON">Equivalent Point Load</link>
+		<link type="APP">Theorems of Pappus</link>
 	</node>
 	
 	<node>
@@ -275,6 +296,22 @@
 	</node>
 	
 	<node>
+		<title>Disk Brakes and Clutches</title>
+		<description>Dummy Description</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+	</node>
+	
+	<node>
+		<title>Disk Friction</title>
+		<description>The force that opposes motion that results from two solid surfaces in contact with one another.</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="APP">Brakes and Clutches</link>
+		<link type="APP">Trust Bearings</link>
+	</node>
+	
+	<node>
 		<title>Distributed Force</title>
 		<description>Dummy Description</description>
 		<chapter>Forces</chapter>
@@ -300,10 +337,13 @@
 		<description>The force that opposes motion that results from two solid surfaces in contact with one another.</description>
 		<chapter>Friction</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="SUB">Static Friction</link>
-		<link type="SUB">Kinetic Friction</link>
 		<link type="CON">Mechanical Efficiency</link>
 		<link type="APP">Free Body Diagram</link>
+		<link type="APP">Belts</link>
+		<link type="CON">Impending Motion</link>
+		<link type="APP">Wedges</link>
+		<link type="SUB">Disk Friction</link>
+		<link type="SUB">Axel Friction</link>
 	</node>
 	
 	<node>
@@ -333,7 +373,7 @@
 		<link type="APP">Multi-Component Assemblies</link>
 		<link type="APP">Method of Sections</link>
 		<link type="APP">Method of Joints</link>
-		<link type="APP">Tipping</link>
+		<link type="APP">Sliding vs. Tipping</link>
 		<link type="APP">Impending Motion</link>
 		<link type="APP">Cable Under Its Own Weight</link>
 		<link type="APP">Transverse Point Loading</link>
@@ -358,20 +398,28 @@
 	</node>
 	
 	<node>
-		<title>First Area Moment (Centroid)</title>
+		<title>Equivalent Force/Couple System</title>
 		<description>Dummy Description</description>
-		<chapter>Moment Intergrals</chapter>
+		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="MTH">Calculating First Moments Through Composite Parts</link>
+		<link type="CON">Wrench</link>
+		<link type="CON">Statically Equivalent</link>
 	</node>
 	
 	<node>
-		<title>First Mass Moment (Center of Gravity)</title>
+		<title>First Area Moment</title>
 		<description>Dummy Description</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="MTH">Calculating First Moments Through Composite Parts</link>
-		<link type="CON">Equivalent Point Load</link>
+		<link type="DRV">Centroid</link>
+	</node>
+	
+	<node>
+		<title>First Mass Moment</title>
+		<description>Dummy Description</description>
+		<chapter>Moment Intergrals</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="DRV">Center of Mass</link>
 	</node>
 	
 	<node>
@@ -445,6 +493,7 @@
 		<description>The point at which an object is about to move because the forces exerted on the object are on the verge of overcoming the static friction forces.</description>
 		<chapter>Friction</chapter>
 		<page>http://www.vt.edu/</page>
+		<link type="APP">Sliding vs. Tipping</link>
 	</node>
 	
 	<node>
@@ -456,6 +505,8 @@
 		<link type="CON">Internal Axial and Torque Forces</link>
 		<link type="CON">Beam Bending Moment</link>
 		<link type="CON">Tension in Flexible Cables</link>
+		<link type="APP">Method of Sections</link>
+		<link type="APP">Analysis of Frames and Machines</link>
 	</node>
 	
 	<node>
@@ -482,14 +533,6 @@
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Energy Equations</link>
-	</node>
-	
-	<node>
-		<title>Kinetic Friction</title>
-		<description>Dry friction between two surfaces that are sliding relative to one another.</description>
-		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Wedges</link>
 	</node>
 	
 	<node>
@@ -544,6 +587,7 @@
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="DRV">Moment of a Force About an Axis</link>
+		<link type="APP">Resolution of a Force into a Force and a Couple</link>
 	</node>
 	
 	<node>
@@ -551,8 +595,8 @@
 		<description>Dummy Description</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="APP">First Area Moment (Centroid)</link>
-		<link type="APP">First Mass Moment (Center of Gravity)</link>
+		<link type="APP">First Area Moment</link>
+		<link type="APP">First Mass Moment</link>
 		<link type="APP">Second Rectangular Area Moment</link>
 		<link type="APP">Second Polar Area Moment</link>
 		<link type="APP">Second Rectangular Mass Moment (Moment of Inertia)</link>
@@ -608,6 +652,14 @@
 	</node>
 	
 	<node>
+		<title>Parallel Axis Theorem</title>
+		<description>Dummy Description</description>
+		<chapter>Moment Intergrals</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="APP">Calculating Second Moments Through Composite Parts</link>
+	</node>
+	
+	<node>
 		<title>Plane Trusses</title>
 		<description>Truss structures that can be approximated as 2-D structures.</description>
 		<chapter>Multi-Component Assemblies</chapter>
@@ -621,8 +673,7 @@
 		<description>Dummy Description</description>
 		<chapter>Forces</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="SUB">Tension</link>
-		<link type="SUB">Compression</link>
+		<link type="SUB">Tension vs. Compression</link>
 		<link type="SUB">Spring Force</link>
 		<link type="CON">Equivalent Point Load</link>
 		<link type="CON">Cables with Point Loading</link>
@@ -660,6 +711,14 @@
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="APP">Equivalent Force/Couple System</link>
+	</node>
+	
+	<node>
+		<title>Rolling Resistance</title>
+		<description>Dummy Description</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+		<link type="APP">Wheels</link>
 	</node>
 	
 	<node>
@@ -710,6 +769,13 @@
 	</node>
 	
 	<node>
+		<title>Sliding vs. Tipping</title>
+		<description>When an object on a surface is rotated and falls over onto the surface due to the forces exerted on the object.</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+	</node>
+	
+	<node>
 		<title>Solving Systems of Equations Using Matricies</title>
 		<description>The process of using matrix equations to solve large systems of scalar equations.</description>
 		<chapter>Vector and Matrix Math</chapter>
@@ -743,19 +809,16 @@
 	</node>
 	
 	<node>
-		<title>Static Friction</title>
-		<description>Dry friction between two surfaces that are not sliding relative to one another.</description>
-		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Belts</link>
-		<link type="APP">Tipping</link>
-		<link type="APP">Impending Motion</link>
-	</node>
-	
-	<node>
 		<title>Statically Determinate</title>
 		<description>Dummy Description</description>
 		<chapter>Constraints / DOF</chapter>
+		<page>http://www.vt.edu/</page>
+	</node>
+	
+	<node>
+		<title>Statically Equivalent</title>
+		<description>Dummy Description</description>
+		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
@@ -764,13 +827,12 @@
 		<description>Dummy Description</description>
 		<chapter>Forces</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="SUB">Tension</link>
-		<link type="SUB">Compression</link>
+		<link type="SUB">Tension vs. Compression</link>
 		<link type="SUB">Hydrostatic Pressure</link>
 	</node>
 	
 	<node>
-		<title>Tension</title>
+		<title>Tension vs. Compression</title>
 		<description>Dummy Description</description>
 		<chapter>Forces</chapter>
 		<page>http://www.vt.edu/</page>
@@ -787,6 +849,7 @@
 		<link type="CON">Cables with Distributed Horizontal Loading</link>
 		<link type="CON">Cables Under Their Own Weight</link>
 		<link type="APP">Free Body Diagram</link>
+		<link type="APP">Belts</link>
 	</node>
 	
 	<node>
@@ -794,13 +857,11 @@
 		<description>Dummy Description</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="APP">Second Polar Area Moment</link>
-		<link type="APP">Second Polar Mass Moment (Polar Moment of Inertia)</link>
 	</node>
 	
 	<node>
-		<title>Tipping</title>
-		<description>When an object on a surface is rotated and falls over onto the surface due to the forces exerted on the object.</description>
+		<title>Thrust Bearnings</title>
+		<description>Dummy Description</description>
 		<chapter>Friction</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
@@ -878,6 +939,20 @@
 		<chapter>Friction</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="SUB">Screws</link>
+	</node>
+	
+	<node>
+		<title>Wheels</title>
+		<description>Dummy Description</description>
+		<chapter>Friction</chapter>
+		<page>http://www.vt.edu/</page>
+	</node>
+	
+	<node>
+		<title>Wrench</title>
+		<description>Dummy Description</description>
+		<chapter>Moments</chapter>
+		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
