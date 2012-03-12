@@ -63,15 +63,40 @@ public class NodeMap
         return ret;
     }
 
-    private void generateChapterCoords()
+    /**
+     * Create a graphviz graph to determine the coordinates of the chapters.
+     */
+    private void generateGraphFromChapters()
     {
-        //find which chapters are linked, and treat them as nodes
+        GraphViz gv = new GraphViz();
+        gv.addln(gv.start_graph());
+        //for each link in each node in each chapter, check if it links to
+        //another chapter
+        for (String chapter: nodeMap.keySet())
+        {
+            ArrayList<Node> nodes = nodeMap.get(chapter);
+            for (Node node: nodes)
+            {
+                for (Link link: node.getNodeLinks())
+                {
+                    String linkChapter = link.getToNode().getNodeChapter();
+                    if (!linkChapter.equals(chapter))
+                    {
+                        gv.addln(chapter + " -> " + linkChapter);
+                    }
+                }
+            }
+        }
+        gv.addln(gv.end_graph());
+
+        File out = new File(FILENAME);
+        gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
     }
     /**
      * Given a list of nodes, creates a graphviz graph based on their links.
      * @param nodes the list of nodes to create the graph for
      */
-    private void CreateGraphViz(ArrayList<Node> nodes)
+    private void CreateGraphFromNodes(ArrayList<Node> nodes)
     {
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
@@ -93,7 +118,6 @@ public class NodeMap
         }
 
         gv.addln(gv.end_graph());
-        System.out.println(gv.getDotSource());
 
         File out = new File(FILENAME);
         gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
