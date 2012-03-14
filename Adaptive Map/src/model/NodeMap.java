@@ -68,6 +68,7 @@ public class NodeMap
      */
     private void generateGraphFromChapters()
     {
+        ArrayList<String> chapters = new ArrayList<String>();
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
         //for each link in each node in each chapter, check if it links to
@@ -80,9 +81,11 @@ public class NodeMap
                 for (Link link: node.getNodeLinks())
                 {
                     String linkChapter = link.getToNode().getNodeChapter();
-                    if (!linkChapter.equals(chapter))
+                    if (!linkChapter.equals(chapter) &&
+                        !chapters.contains(chapter))
                     {
                         gv.addln(chapter + " -> " + linkChapter);
+                        chapters.add(chapter);
                     }
                 }
             }
@@ -131,7 +134,6 @@ public class NodeMap
         try
         {
             Map<String, Point> map = GraphViz.parseText(FILENAME, 100, 200);
-            System.out.println(map.size());
             for(Map.Entry<String, Point> entry: map.entrySet())
             {
                 for(Node node: nodes)
@@ -148,5 +150,22 @@ public class NodeMap
           e.printStackTrace();
         }
     }
-
+    /**
+     * Get a map of chapter to coordinates.
+     */
+    public Map<String, Point> getChapterCoords()
+    {
+        generateGraphFromChapters();
+        try
+        {
+            //currently passing an arbitrary scale into parseText
+            return GraphViz.parseText(FILENAME, 200, 200);
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("There's no Graph to read");
+            e.printStackTrace();
+            return new HashMap<String, Point>();
+        }
+    }
 }
