@@ -66,14 +66,14 @@ public class NodeMap
     /**
      * Create a graphviz graph to determine the coordinates of the chapters.
      */
-    private void generateGraphFromChapters()
+    private void generateGraphFromChapters(ArrayList<String> chapters)
     {
-        ArrayList<String> chapters = new ArrayList<String>();
+        ArrayList<String> usedChapters = new ArrayList<String>();
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
         //for each link in each node in each chapter, check if it links to
         //another chapter
-        for (String chapter: nodeMap.keySet())
+        for (String chapter: chapters)
         {
             ArrayList<Node> nodes = nodeMap.get(chapter);
             for (Node node: nodes)
@@ -82,10 +82,12 @@ public class NodeMap
                 {
                     String linkChapter = link.getToNode().getNodeChapter();
                     if (!linkChapter.equals(chapter) &&
-                        !chapters.contains(chapter))
+                        !usedChapters.contains(chapter))
                     {
-                        gv.addln(chapter + " -> " + linkChapter);
-                        chapters.add(chapter);
+                        int labelFrom = chapters.indexOf(chapter) + 10;
+                        int labelTo = chapters.indexOf(linkChapter) + 10;
+                        gv.addln(labelFrom + " -> " + labelTo);
+                        usedChapters.add(chapter);
                     }
                 }
             }
@@ -99,7 +101,7 @@ public class NodeMap
      * Given a list of nodes, creates a graphviz graph based on their links.
      * @param nodes the list of nodes to create the graph for
      */
-    private void CreateGraphFromNodes(ArrayList<Node> nodes)
+    private void createGraphFromNodes(ArrayList<Node> nodes)
     {
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
@@ -114,8 +116,11 @@ public class NodeMap
                 if(fromNode.equals(node) &&
                     nodes.contains(toNode))
                 {
-                    gv.addln(fromNode.getNodeTitle() + " -> " +
-                        toNode.getNodeTitle() + ";");
+                    //use labels that are index + 10, so they will be the same length
+                    int labelFrom = nodes.indexOf(fromNode) + 10;
+                    int labelTo = nodes.indexOf(toNode) + 10;
+                    gv.addln(labelFrom + " -> " +
+                        labelTo + ";");
                 }
             }
         }
@@ -129,20 +134,16 @@ public class NodeMap
      * Read the graphviz output and set the nodes to the correct coordinates
      * @param nodes the list of nodes to set
      */
-    private void readGraphViz(ArrayList<Node> nodes)
+    public void setNodeCoords(ArrayList<Node> nodes)
     {
+        createGraphFromNodes(nodes);
         try
         {
-            Map<String, Point> map = GraphViz.parseText(FILENAME, 100, 200);
-            for(Map.Entry<String, Point> entry: map.entrySet())
+            Map<Integer, Point> map = GraphViz.parseText(FILENAME, 100, 200);
+            for(Map.Entry<Integer, Point> entry: map.entrySet())
             {
-                for(Node node: nodes)
-                {
-                    if(node.getNodeTitle().equals(entry.getKey()))
-                    {
-                        node.moveTo(entry.getValue().x, entry.getValue().y);
-                    }
-                }
+                nodes.get(entry.getKey() - 10).moveTo(entry.getValue().x,
+                    entry.getValue().y);
             }
         }
         catch (FileNotFoundException e)
@@ -151,21 +152,29 @@ public class NodeMap
         }
     }
     /**
-     * Get a map of chapter to coordinates.
+     * Get a map of chapters to coordinates.
      */
     public Map<String, Point> getChapterCoords()
     {
-        generateGraphFromChapters();
+        Map<String, Point> ret = new HashMap<String, Point>();
+        ArrayList<String> chapters = new ArrayList<String>(nodeMap.keySet());
+        generateGraphFromChapters(chapters);
         try
         {
             //currently passing an arbitrary scale into parseText
-            return GraphViz.parseText(FILENAME, 200, 200);
+            Map<Integer, Point> coords = GraphViz.parseText(FILENAME, 200, 200);
+            for (Integer key: coords.keySet())
+            {
+                int index = key - 10;
+                String chapter = chapters.get(index);
+                ret.put(chapter, coords.get(key));
+            }
         }
         catch (FileNotFoundException e)
         {
             System.out.println("There's no Graph to read");
             e.printStackTrace();
-            return new HashMap<String, Point>();
         }
+        return ret;
     }
 }

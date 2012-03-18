@@ -296,14 +296,14 @@ public class GraphViz
     * @param width the width of the desired graph
     * @param height the height of the desired graph
     */
-   public static Map<String, Point> parseText(String fileName, int width, int height)
+   public static Map<Integer, Point> parseText(String fileName, int width, int height)
    throws FileNotFoundException
    {
        double scale, graphWidth, graphHeight;
        double xratio = 1;
        double yratio = 1;
        File file = new File(fileName);
-       Map<String, Point> coords = new HashMap<String, Point>();
+       Map<Integer, Point> coords = new HashMap<Integer, Point>();
        Scanner lineScanner = new Scanner(file);
        //read commands in line by line, parsing and executing them.
        try
@@ -324,7 +324,7 @@ public class GraphViz
                else if(lineLabel.equals("node"))
                {
                    System.out.println("true");
-                   String id = st.nextToken();
+                   Integer id = Integer.valueOf(st.nextToken());
                    int x = (int) (Double.valueOf(st.nextToken()) * xratio);
                    int y = (int) (Double.valueOf(st.nextToken()) * yratio);
                    Point p = new Point(x, y);
