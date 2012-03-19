@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Map.Entry;
 import java.util.List;
 import controller.GraphViz;
 import java.awt.Point;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 public class NodeMap
 {
 
-    private final String FILENAME = "C:out.plain";
+    private final String FILENAME = "out.plain";
     private HashMap<String, ArrayList<Node>> nodeMap;
     /**
      * Create a new NodeMap
@@ -61,6 +62,24 @@ public class NodeMap
             }
         }
         return ret;
+    }
+
+    public ArrayList<String> getChapters()
+    {
+        return new ArrayList<String>(nodeMap.keySet());
+    }
+
+    /**
+     * Get a list of nodes that share the same chapter.
+     * @param chapter the chapter to get the list of nodes from
+     * @return a list of nodes from the specified chapter
+     */
+    public ArrayList<Node> getChapterNodes(String chapter)
+    {
+        if (nodeMap.containsKey(chapter))
+            return nodeMap.get(chapter);
+        else
+            return new ArrayList<Node>();
     }
 
     /**
@@ -103,11 +122,14 @@ public class NodeMap
      */
     private void createGraphFromNodes(ArrayList<Node> nodes)
     {
+
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
         //add a link in the graphviz graph for each link within this chapter
         for(Node node: nodes)
         {
+            int labelFrom = nodes.indexOf(node) + 10;
+            gv.addln(labelFrom + ";");
             List<Link> links = node.getNodeLinks();
             for(Link link: links)
             {
@@ -117,30 +139,41 @@ public class NodeMap
                     nodes.contains(toNode))
                 {
                     //use labels that are index + 10, so they will be the same length
-                    int labelFrom = nodes.indexOf(fromNode) + 10;
                     int labelTo = nodes.indexOf(toNode) + 10;
                     gv.addln(labelFrom + " -> " +
                         labelTo + ";");
+
                 }
             }
         }
 
         gv.addln(gv.end_graph());
-
         File out = new File(FILENAME);
         gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
     }
     /**
      * Read the graphviz output and set the nodes to the correct coordinates
      * @param nodes the list of nodes to set
+     * @param centerNode the node to center the list on
      */
-    public void setNodeCoords(ArrayList<Node> nodes)
+    public void setNodeCoords(ArrayList<Node> nodes, Node centerNode)
     {
         createGraphFromNodes(nodes);
         try
         {
-            Map<Integer, Point> map = GraphViz.parseText(FILENAME, 100, 200);
-            for(Map.Entry<Integer, Point> entry: map.entrySet())
+            Map<Integer, Point> map = GraphViz.parseText(FILENAME, 1000, 1000);
+            Map<Integer, Point> coords = new HashMap<Integer, Point>();
+            //center the points on the center node
+            int centerIndex = nodes.indexOf(centerNode) + 10;
+            int xDifference = centerNode.getCenterPoint().x - map.get(centerIndex).x;
+            int yDifference = centerNode.getCenterPoint().y - map.get(centerIndex).y;
+            for (Entry<Integer, Point> entry: map.entrySet())
+            {
+                Point point = new Point(entry.getValue().x + xDifference,
+                    entry.getValue().y + yDifference);
+                coords.put(entry.getKey(), point);
+            }
+            for(Map.Entry<Integer, Point> entry: coords.entrySet())
             {
                 nodes.get(entry.getKey() - 10).moveTo(entry.getValue().x,
                     entry.getValue().y);
@@ -151,6 +184,8 @@ public class NodeMap
           e.printStackTrace();
         }
     }
+
+
     /**
      * Get a map of chapters to coordinates.
      */

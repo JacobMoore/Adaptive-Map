@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import model.Node;
 import model.Node.GridLocation;
 import model.Node.ViewType;
+import model.NodeMap;
 import fr.inria.zvtm.engine.Camera;
 import fr.inria.zvtm.engine.View;
 import fr.inria.zvtm.engine.ViewEventHandler;
@@ -32,6 +34,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	private Node highlightedNode;
 	private Node selectedNode;
 	private List<Node> nodeList;
+	private NodeMap nodeMap;
 	private boolean dragging = false;
 	private int xLocation;
 	private int yLocation;
@@ -43,9 +46,11 @@ public class CameraMovementListener implements ViewEventHandler {
 	 * @param nodeList
 	 *        A reference to the node list of the attached AppCanvas.
 	 */
-	public CameraMovementListener(AppCanvas canvas, List<Node> nodeList) {
+	public CameraMovementListener(AppCanvas canvas, List<Node> nodeList,
+	    NodeMap nodeMap) {
 	    this.canvas = canvas;
 		this.nodeList = nodeList;
+		this.nodeMap = nodeMap;
 	}
 
 	public void enterGlyph(Glyph glyph) {
@@ -109,15 +114,22 @@ public class CameraMovementListener implements ViewEventHandler {
 			// Move nodes to their location in the grid
 			Map<Node, GridLocation> nodeGrid = Node
 					.getGridLocations(selectedNode);
+
+			ArrayList<Node> chapterNodes = nodeMap.getChapterNodes(
+			    selectedNode.getNodeChapter());
+
+			nodeMap.setNodeCoords(chapterNodes, selectedNode);
+			/**
 			for (Entry<Node, GridLocation> nodeLocation : nodeGrid.entrySet()) {
 				nodeLocation.getKey().moveToGridLocation(
 						nodeLocation.getValue(), selectedNode.getCenterPoint());
-			}
+			}*/
 
 			// Hide nodes that are not linked to the selected node and show
 			// nodes that are
 			for (final Node node : nodeList) {
-				if (!nodeGrid.containsKey(node) && node != selectedNode) {
+				if (/*!nodeGrid.containsKey(node) && */node != selectedNode &&
+				    !chapterNodes.contains(node)) {
 					node.showView(ViewType.HIDDEN);
 				} else if (!node.equals(selectedNode)) {
 					node.showView(ViewType.TITLE_ONLY);

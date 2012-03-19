@@ -323,7 +323,6 @@ public class GraphViz
                }
                else if(lineLabel.equals("node"))
                {
-                   System.out.println("true");
                    Integer id = Integer.valueOf(st.nextToken());
                    int x = (int) (Double.valueOf(st.nextToken()) * xratio);
                    int y = (int) (Double.valueOf(st.nextToken()) * yratio);

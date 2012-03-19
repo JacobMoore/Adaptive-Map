@@ -59,6 +59,7 @@ public class AppCanvas extends JPanel {
 
 	private final VirtualSpaceManager vSpaceManager;
 	private List<Node> nodeList;
+	private NodeMap nodeMap;
 	private VirtualSpace detailedSpace;
 	private Camera detailedCamera;
 	public static AppletContext appletContext;
@@ -69,6 +70,7 @@ public class AppCanvas extends JPanel {
 
 	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame) {
 		nodeList = new ArrayList<Node>();
+		nodeMap = new NodeMap();
 		this.vSpaceManager = vSpaceManager;
 		createView(appFrame, nodeList);
 		populateCanvas();
@@ -95,7 +97,9 @@ public class AppCanvas extends JPanel {
 		View activeView = vSpaceManager.addFrameView(cameras,
 				Configuration.APPLICATION_TITLE, View.STD_VIEW, 800, 600,
 				false, false);
-		activeView.setEventHandler(new CameraMovementListener(this, nodeList));
+		//the nodeMap must be populated before creating the Camera Listener
+		populateNodeMap();
+		activeView.setEventHandler(new CameraMovementListener(this, nodeList, nodeMap));
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
 		activeView.getPanel().setSize(new Dimension(800, 600));
 		// Set the camera location and altitude
@@ -114,13 +118,6 @@ public class AppCanvas extends JPanel {
 	 * them to the virtual space.
 	 */
 	private void populateCanvas() {
-		// IMPORTANT: parse chapter properties before parsing node information
-		for (Entry<String, ChapterProperties> chapterProperty : XmlParser
-				.parseChapterProperties().entrySet()) {
-			Node.addChapterType(chapterProperty.getKey(), chapterProperty
-					.getValue());
-		}
-		NodeMap nodeMap = XmlParser.parseNodeInformation();
 		nodeList.addAll(nodeMap.getNodes());
 		for (Node nodeToAdd : nodeList) {
             nodeToAdd.addToVirtualSpace(detailedSpace);
@@ -132,6 +129,17 @@ public class AppCanvas extends JPanel {
 		}
 		XmlParser.parseNodeLinks(nodeList);
 
+	}
+
+	private void populateNodeMap()
+	{
+	    // IMPORTANT: parse chapter properties before parsing node information
+        for (Entry<String, ChapterProperties> chapterProperty : XmlParser
+                .parseChapterProperties().entrySet()) {
+            Node.addChapterType(chapterProperty.getKey(), chapterProperty
+                    .getValue());
+        }
+        nodeMap = XmlParser.parseNodeInformation();
 	}
 	/**
 	 * Navigates a browser window to the given url.
