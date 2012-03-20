@@ -276,6 +276,16 @@ public class Node {
 		showView(ViewType.TITLE_ONLY);
 		bindTextToRectangle();
 	}
+
+	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
+	    int titleFontSize, int descriptionFontSize)
+	{
+	    this(nodeTitle, nodeDescription, nodeChapter);
+	    this.nodeTitle.setSpecialFont(  VText.getMainFont().
+	        deriveFont(titleFontSize * 1.0f) );
+	    this.nodeDescription.setSpecialFont(  VText.getMainFont().
+	        deriveFont(descriptionFontSize * 1.0f) );
+	}
 	/**
 	 * Add this node to the given virtual space
 	 *

@@ -1,5 +1,8 @@
 package view;
 
+import model.Node.ViewType;
+import java.awt.Font;
+import fr.inria.zvtm.glyphs.VText;
 import model.NodeMap;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
@@ -51,28 +54,28 @@ public class AppCanvas extends JPanel {
 
 	private static final long serialVersionUID = 7885546829753042319L;
 
-	// Variables for the minimum Camera height at different view levels.
-	private static final int HEIGHT_PADDING = 50;
-	private static final int NODE_HEIGHT = 1;
-	private static final int CHAPTER_HEIGHT = 100;
-	private static final int OVERVIEW_HEIGHT = 300;
-
 	private final VirtualSpaceManager vSpaceManager;
 	private List<Node> nodeList;
+	private List<Node> chapterList;
 	private NodeMap nodeMap;
 	private VirtualSpace detailedSpace;
 	private Camera detailedCamera;
 	public static AppletContext appletContext;
+
+	// Tools panel variables.
 	private JRadioButton lowViewRadioButton, medViewRadioButton, highViewRadioButton;
 	private JButton legendButton;
 	private JTextField searchBar;
 	private JTextArea legendTextArea;
 
 	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame) {
-		nodeList = new ArrayList<Node>();
-		nodeMap = new NodeMap();
+        nodeList = new ArrayList<Node>();
+        nodeMap = new NodeMap();
+		chapterList = new ArrayList<Node>();
+        VText.setMainFont( VText.getMainFont().deriveFont( Configuration.NODE_FONT_SIZE ) );
 		this.vSpaceManager = vSpaceManager;
 		createView(appFrame, nodeList);
+        addTools(appFrame);
 		populateCanvas();
 	}
 
@@ -97,9 +100,9 @@ public class AppCanvas extends JPanel {
 		View activeView = vSpaceManager.addFrameView(cameras,
 				Configuration.APPLICATION_TITLE, View.STD_VIEW, 800, 600,
 				false, false);
-		//the nodeMap must be populated before creating the Camera Listener
-		populateNodeMap();
-		activeView.setEventHandler(new CameraMovementListener(this, nodeList, nodeMap));
+	    //the nodeMap must be populated before creating the Camera Listener
+        populateNodeMap();
+		activeView.setEventHandler(new CameraMovementListener(this, nodeList));
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
 		activeView.getPanel().setSize(new Dimension(800, 600));
 		// Set the camera location and altitude
@@ -107,8 +110,6 @@ public class AppCanvas extends JPanel {
 
 		// Add view to the frame given
 		appFrame.add(activeView.getPanel());
-
-		addTools(appFrame);
 	}
 	/**
 	 * Populates the canvas by calling parsing functions in the XML parser. The
@@ -118,29 +119,38 @@ public class AppCanvas extends JPanel {
 	 * them to the virtual space.
 	 */
 	private void populateCanvas() {
-		nodeList.addAll(nodeMap.getNodes());
-		for (Node nodeToAdd : nodeList) {
+        nodeList.addAll(nodeMap.getNodes());
+        for (Node nodeToAdd : nodeList) {
             nodeToAdd.addToVirtualSpace(detailedSpace);
         }
-		// IMPORTANT: parse node properties before linking the nodes
-		for (Entry<String, LinkProperties> linkProperty : XmlParser
-				.parseLinkProperties().entrySet()) {
-			Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
-		}
-		XmlParser.parseNodeLinks(nodeList);
+        // IMPORTANT: parse node properties before linking the nodes
+        for (Entry<String, LinkProperties> linkProperty : XmlParser
+                .parseLinkProperties().entrySet()) {
+            Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
+        }
+        XmlParser.parseNodeLinks(nodeList);
 
 	}
 
-	private void populateNodeMap()
-	{
-	    // IMPORTANT: parse chapter properties before parsing node information
+    private void populateNodeMap()
+    {
+        // IMPORTANT: parse chapter properties before parsing node information
         for (Entry<String, ChapterProperties> chapterProperty : XmlParser
                 .parseChapterProperties().entrySet()) {
             Node.addChapterType(chapterProperty.getKey(), chapterProperty
                     .getValue());
+
+            // Add the chapter to the chapter list, and the vs.
+            Node newChapter = new Node(chapterProperty.getKey(), chapterProperty
+                    .getValue().getDescription(), chapterProperty.getKey(),
+                    Configuration.CHAPTER_TITLE_FONT_SIZE,
+                    Configuration.CHAPTER_DESCRIPTION_FONT_SIZE);
+            newChapter.showView( ViewType.HIDDEN );
+            newChapter.addToVirtualSpace( detailedSpace );
+            chapterList.add( newChapter );
         }
         nodeMap = XmlParser.parseNodeInformation();
-	}
+    }
 	/**
 	 * Navigates a browser window to the given url.
 	 *
@@ -303,19 +313,19 @@ public class AppCanvas extends JPanel {
             selectLowButton();
             //Change to low view.
             Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-            activeCamera.setAltitude( NODE_HEIGHT, true );
+            activeCamera.setAltitude( Configuration.ZOOM_NODE_HEIGHT, true );
         }
         else if ( buttonIndex == 1 && e.getStateChange() == 1 ) {
             selectMedButton();
             //Change to med view.
             Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-            activeCamera.setAltitude( CHAPTER_HEIGHT, true );
+            activeCamera.setAltitude( Configuration.ZOOM_CHAPTER_HEIGHT, true );
         }
         else if ( buttonIndex == 2 && e.getStateChange() == 1 ) {
             selectHighButton();
             //Change to high view.
             Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-            activeCamera.setAltitude( OVERVIEW_HEIGHT, true );
+            activeCamera.setAltitude( Configuration.ZOOM_OVERVIEW_HEIGHT, true );
         }
     }
     private void selectLowButton()
@@ -326,6 +336,7 @@ public class AppCanvas extends JPanel {
         medViewRadioButton.setEnabled( true );
         highViewRadioButton.setSelected( false );
         highViewRadioButton.setEnabled( true );
+        setNodeVisibilities(false);
     }
     private void selectMedButton()
     {
@@ -335,6 +346,7 @@ public class AppCanvas extends JPanel {
         medViewRadioButton.setEnabled( false );
         highViewRadioButton.setSelected( false );
         highViewRadioButton.setEnabled( true );
+        setNodeVisibilities(false);
     }
     private void selectHighButton()
     {
@@ -344,6 +356,7 @@ public class AppCanvas extends JPanel {
         medViewRadioButton.setEnabled( true );
         highViewRadioButton.setSelected( true );
         highViewRadioButton.setEnabled( false );
+        setNodeVisibilities(true);
     }
     /**
      * Sets the view level buttons to correspond with the current zoom level.
@@ -352,16 +365,29 @@ public class AppCanvas extends JPanel {
      */
     public void updateZoomLevel( float altitude )
     {
-        if ( altitude >= NODE_HEIGHT && altitude < NODE_HEIGHT + HEIGHT_PADDING &&
-            !lowViewRadioButton.isSelected() ) {
+        if ( altitude >= Configuration.ZOOM_NODE_HEIGHT && altitude < Configuration.ZOOM_NODE_HEIGHT
+            + Configuration.ZOOM_HEIGHT_PADDING && !lowViewRadioButton.isSelected() ) {
             selectLowButton();
         }
-        else if ( altitude >= CHAPTER_HEIGHT && altitude < CHAPTER_HEIGHT +
-            HEIGHT_PADDING && !medViewRadioButton.isSelected() ) {
+        else if ( altitude >= Configuration.ZOOM_CHAPTER_HEIGHT && altitude < Configuration.ZOOM_CHAPTER_HEIGHT
+            + Configuration.ZOOM_HEIGHT_PADDING && !medViewRadioButton.isSelected() ) {
             selectMedButton();
         }
-        else if ( altitude >= OVERVIEW_HEIGHT && !highViewRadioButton.isSelected() ) {
+        else if ( altitude >= Configuration.ZOOM_OVERVIEW_HEIGHT &&
+            !highViewRadioButton.isSelected() ) {
             selectHighButton();
+        }
+    }
+
+    public void setNodeVisibilities( boolean isMovingToChapterOverview )
+    {
+        ViewType newView = isMovingToChapterOverview ? ViewType.HIDDEN : ViewType.TITLE_ONLY;
+        for (Node n : nodeList) {
+            n.showView( newView );
+        }
+        newView = isMovingToChapterOverview ? ViewType.FULL_DESCRIPTION : ViewType.HIDDEN;
+        for (Node c : chapterList) {
+            c.showView( newView );
         }
     }
 }
