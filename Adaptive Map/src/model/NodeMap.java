@@ -155,14 +155,15 @@ public class NodeMap
      * Read the graphviz output and set the nodes to the correct coordinates
      * @param nodes the list of nodes to set
      * @param centerNode the node to center the list on
+     * @return the new node coordinates
      */
-    public void setNodeCoords(ArrayList<Node> nodes, Node centerNode)
+    public Map<Integer, Point> setNodeCoords(ArrayList<Node> nodes, Node centerNode)
     {
+        Map<Integer, Point> coords = new HashMap<Integer, Point>();
         createGraphFromNodes(nodes);
         try
         {
             Map<Integer, Point> map = GraphViz.parseText(FILENAME, 1000, 1000);
-            Map<Integer, Point> coords = new HashMap<Integer, Point>();
             //center the points on the center node
             int centerIndex = nodes.indexOf(centerNode) + 10;
             int xDifference = centerNode.getCenterPoint().x - map.get(centerIndex).x;
@@ -171,11 +172,11 @@ public class NodeMap
             {
                 Point point = new Point(entry.getValue().x + xDifference,
                     entry.getValue().y + yDifference);
-                coords.put(entry.getKey(), point);
+                coords.put(entry.getKey() - 10, point);
             }
             for(Map.Entry<Integer, Point> entry: coords.entrySet())
             {
-                nodes.get(entry.getKey() - 10).moveTo(entry.getValue().x,
+                nodes.get(entry.getKey()).moveTo(entry.getValue().x,
                     entry.getValue().y);
             }
         }
@@ -183,6 +184,7 @@ public class NodeMap
         {
           e.printStackTrace();
         }
+        return coords;
     }
 
 

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -111,14 +112,16 @@ public class CameraMovementListener implements ViewEventHandler {
 			// Show the full description of the newly selected node
 			selectedNode.showView(ViewType.FULL_DESCRIPTION);
 
-			// Move nodes to their location in the grid
-			Map<Node, GridLocation> nodeGrid = Node
-					.getGridLocations(selectedNode);
-
 			ArrayList<Node> chapterNodes = nodeMap.getChapterNodes(
 			    selectedNode.getNodeChapter());
 
-			nodeMap.setNodeCoords(chapterNodes, selectedNode);
+			Map<Integer, Point> nodeCoords = nodeMap.setNodeCoords(
+			    chapterNodes, selectedNode);
+
+			List<Node> firstLevelNodes = Node.getFirstLevelNodes(selectedNode);
+
+			Node.setGridLocations(selectedNode, nodeCoords.values());
+
 			/**
 			for (Entry<Node, GridLocation> nodeLocation : nodeGrid.entrySet()) {
 				nodeLocation.getKey().moveToGridLocation(
@@ -128,8 +131,8 @@ public class CameraMovementListener implements ViewEventHandler {
 			// Hide nodes that are not linked to the selected node and show
 			// nodes that are
 			for (final Node node : nodeList) {
-				if (/*!nodeGrid.containsKey(node) && */node != selectedNode &&
-				    !chapterNodes.contains(node)) {
+				if (!chapterNodes.contains(node) && !firstLevelNodes.contains(
+				    node)) {
 					node.showView(ViewType.HIDDEN);
 				} else if (!node.equals(selectedNode)) {
 					node.showView(ViewType.TITLE_ONLY);
