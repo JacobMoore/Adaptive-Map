@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collection;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -195,6 +196,22 @@ public class Node {
 				* (xLocation / ((Configuration.GRID_COLUMN_WIDTH + Configuration.GRID_BUFFER_SPACE) * 10));
 	}
 
+	public static List<Node> getFirstLevelNodes(Node selectedNode) {
+        // Find all of the nodes that will go in the grid
+        List<Node> nodesToShow = new ArrayList<Node>();
+        // Get the nodes one level out
+        List<Link> selectedNodeLinks = selectedNode.getNodeLinks();
+        for (Link firstNodeLink : selectedNodeLinks) {
+            Node firstLevelNode = firstNodeLink.getFromNode() == selectedNode
+                    ? firstNodeLink.getToNode()
+                    : firstNodeLink.getFromNode();
+            if (!firstLevelNode.getNodeChapter().equals(
+                selectedNode.getNodeChapter()))
+                nodesToShow.add(firstLevelNode);
+        }
+        return nodesToShow;
+	}
+
 	/**
 	 * Returns the nodes that are 2 levels out from the given node, and where
 	 * they go in the "grid" that surrounds the given node.
@@ -203,47 +220,75 @@ public class Node {
 	 *            the selected node that the grid is based around
 	 * @return a map of nodes and their grid locations based on the given node
 	 */
-	public static Map<Node, GridLocation> getGridLocations(Node selectedNode) {
-		// Find all of the nodes that will go in the grid
-		List<Node> nodesToShow = new ArrayList<Node>();
+	public static void setGridLocations(Node selectedNode,
+	    Collection<Point> nodeCoords) {
+		List<Node> firstLevelNodes = new ArrayList<Node>();
 		// Get the nodes one level out
-		List<Link> selectedNodeLinks = selectedNode.getNodeLinks();
-		for (Link firstNodeLink : selectedNodeLinks) {
-			Node firstLevelNode = firstNodeLink.getFromNode() == selectedNode
-					? firstNodeLink.getToNode()
-					: firstNodeLink.getFromNode();
-			nodesToShow.add(firstLevelNode);
-			// Get the nodes two levels out
-			List<Link> secondLevelLinks = firstLevelNode.getNodeLinks();
-			for (Link secondLevelLink : secondLevelLinks) {
-				Node secondLevelNode = firstLevelNode == firstNodeLink
-						.getFromNode()
-						? secondLevelLink.getToNode()
-						: secondLevelLink.getFromNode();
-				nodesToShow.add(secondLevelNode);
-			}
+		firstLevelNodes = getFirstLevelNodes(selectedNode);
+		Point selectedCenter = selectedNode.getCenterPoint();
+		Point chapterMax = new Point();
+		Point chapterMin = new Point(selectedCenter);
+		//find the bounds of the arranged chapter
+		for (Point point: nodeCoords)
+		{
+		    if (point.x > chapterMax.x)
+		        chapterMax.x = point.x;
+		    if (point.y > chapterMax.y)
+		        chapterMax.y = point.y;
+		    if (point.x < chapterMin.x)
+		        chapterMin.x = point.x;
+		    if (point.y < chapterMin.y)
+		        chapterMin.y = point.y;
 		}
-
-		// Find where the nodes will go in the grid
-		Map<Node, GridLocation> gridLocations = new HashMap<Node, GridLocation>();
-		// Give the middle 1 to account for the center node
-		int[] rowCount = {0, 0, 1, 0, 0};
-		for (Node node : nodesToShow) {
-			if (node.equals(selectedNode) || gridLocations.containsKey(node)) {
-				continue;
-			}
-			int y = findDepthBetween(selectedNode, node);
-			// Add 2 to since depth can be from -2 to +2, and the array is
-			// indexed from 0 - 4
-			if (y + 2 >= 0 && y + 2 < rowCount.length) {
-				// Only add nodes that found a depth within the bounds of the
-				// grid
-				GridLocation gridLocation = new GridLocation(rowCount[y + 2]++,
-						y);
-				gridLocations.put(node, gridLocation);
-			}
-		}
-		return gridLocations;
+		int topX, bottomX, currX;
+		boolean selectedNodeOnRight = selectedCenter.x >
+		chapterMin.x + (chapterMax.x - chapterMin.x) / 2;
+		int interval_x = (Configuration.GRID_COLUMN_WIDTH
+        + Configuration.GRID_BUFFER_SPACE) / 2;
+        int interval_y = (Configuration.GRID_ROW_HEIGHT
+        + Configuration.GRID_BUFFER_SPACE) / 2;
+        int depth = 0;
+        //place Nodes in a gridlike manner around the chapter bounds.
+        if (selectedNodeOnRight)
+        {
+            topX = bottomX = chapterMax.x;
+            for (Node node: firstLevelNodes)
+            {
+                depth = findDepthBetween(selectedNode, node);
+                if (depth > 0)
+                {
+                    topX += interval_x;
+                    currX = topX;
+                }
+                else
+                {
+                    bottomX += interval_x;
+                    currX = bottomX;
+                }
+                node.moveTo(currX, selectedCenter.y +
+                    interval_y * depth);
+            }
+        }
+        else
+        {
+            topX = bottomX = chapterMin.x;
+            for (Node node: firstLevelNodes)
+            {
+                depth = findDepthBetween(selectedNode, node);
+                if (depth > 0)
+                {
+                    topX -= interval_x;
+                    currX = topX;
+                }
+                else
+                {
+                    bottomX -= interval_x;
+                    currX = bottomX;
+                }
+                node.moveTo(currX, selectedCenter.y +
+                    interval_y * depth);
+            }
+        }
 	}
 
 	public static void link(Node node1, Node node2, String linkType) {
