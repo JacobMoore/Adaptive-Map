@@ -13,6 +13,7 @@ package fr.inria.zvtm.glyphs;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.Shape;
@@ -337,7 +338,15 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
             else {
                 if (filled) {
                     g.setColor(this.color);
+                    
+                    
+                            
+                    GradientPaint gp = new GradientPaint(dx+pc[i].cx-pc[i].cw, dy+pc[i].cy-pc[i].ch, this.color, dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * .55f),  dy+pc[i].cy-pc[i].ch + (2*pc[i].ch * .70f), Color.WHITE);
+                	g.setPaint(gp);
+                	
                     g.fillRoundRect(dx+pc[i].cx-pc[i].cw,dy+pc[i].cy-pc[i].ch,2*pc[i].cw,2*pc[i].ch,pc[i].aw,pc[i].ah);
+
+
                 }
                 if (paintBorder){
                     g.setColor(borderColor);

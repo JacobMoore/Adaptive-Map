@@ -97,6 +97,18 @@ enum TagAttribute {
  */
 public class XmlParser {
 
+	private static Color c1 = new Color(45, 180, 255);
+	private static Color c2 = new Color(232, 164, 74);
+	private static Color c3 = new Color(255, 215, 65);
+	private static Color c4 = new Color(255, 120, 55);
+	private static Color c5 = new Color(232, 67, 59);
+	private static Color c6 = new Color(84, 153, 181);
+	private static Color c7 = new Color(60, 181, 181);
+	private static Color c8 = new Color(93, 52, 181);
+	private static Color c9 = new Color(188, 92, 181);
+	private static Color c10 = new Color(90, 232, 152);
+	private static Color c11 = new Color(76, 181, 36);
+	private static Color c12 = new Color(255, 181, 62);
 	public static Map<String, ChapterProperties> parseChapterProperties() {
 		NodeList nodeList = getListOfAll(Tag.CHAPTER_TYPE);
 		Map<String, ChapterProperties> chapterProperties = new HashMap<String, ChapterProperties>();
@@ -126,9 +138,64 @@ public class XmlParser {
 						break;
 					case COLOR :
 						try {
-							Field field = Color.class.getField(nodeChild
-									.getTextContent());
-							chapterColor = (Color) field.get(null);
+							//Field field = Color.class.getField(nodeChild
+//							.getTextContent());
+					String color = (String) nodeChild
+							.getTextContent();
+					//chapterColor = (Color) field.get(null);
+					
+//					System.out.println(color);
+					if (color.equalsIgnoreCase("pink"))
+					{
+						chapterColor = c1;
+					}
+					else if (color.equalsIgnoreCase("tan"))
+					{
+						chapterColor = c2;
+					}
+					else if (color.equalsIgnoreCase("yellow"))
+					{
+						chapterColor = c3;
+					}
+					else if (color.equalsIgnoreCase("orange"))
+					{
+						chapterColor = c4;
+					}
+					else if (color.equalsIgnoreCase("red"))
+					{
+						chapterColor = c5;
+					}
+					else if (color.equalsIgnoreCase("lightBlue"))
+					{
+						chapterColor = c6;
+					}
+					
+					else if (color.equalsIgnoreCase("teal"))
+					{
+						chapterColor = c7;
+					}
+					else if (color.equalsIgnoreCase("darkBlue"))
+					{
+						chapterColor = c8;
+					}
+					else if (color.equalsIgnoreCase("purple"))
+					{
+						chapterColor = c9;
+					}
+					
+					else if (color.equalsIgnoreCase("seafoam"))
+					{
+						chapterColor = c10;
+					}
+					else if (color.equalsIgnoreCase("green"))
+					{
+						chapterColor = c11;
+					}
+					
+					else if (color.equalsIgnoreCase("gold"))
+					{
+						chapterColor = c12;
+					}
 						} catch (Exception e) {
 							throw new IllegalArgumentException(String.format(
 									"Invalid color specified (%s)", nodeChild

@@ -13,12 +13,12 @@ import java.security.PrivilegedAction;
 public class Configuration {
 
 	public static final Color NODE_BG_COLOR = Color.WHITE;
-	public static final Color NODE_TITLE_COLOR = Color.BLUE;
+	public static final Color NODE_TITLE_COLOR = Color.BLACK;
 	public static final Color NODE_DESCRIPTION_COLOR = Color.BLACK;
 	public static final Color APPLICATION_BG_COLOR = Color.WHITE;
 	public static final String APPLICATION_TITLE = "Virtual Textbook";
 
-	public static final int NODE_FONT_SIZE = 18;
+	public static final int NODE_FONT_SIZE = 14;
 	public static final int CHAPTER_TITLE_FONT_SIZE = 70;
 	public static final int CHAPTER_DESCRIPTION_FONT_SIZE = 55;
 
@@ -40,7 +40,7 @@ public class Configuration {
 				 String currentDirPath = (new File(".")).getAbsolutePath();
 				 currentDirPath = currentDirPath.substring(0, currentDirPath
 				 .length() - 1);
-				 return String.format("%scontent/nodes.xml", currentDirPath);
+				 return String.format("%scontent/nodes2.xml", currentDirPath);
 				//return "http://localhost:8080/content/nodes.xml";
 			}
 		});

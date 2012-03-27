@@ -3,6 +3,7 @@ package model;
 import java.util.Collection;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -23,6 +24,7 @@ import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.Translucent;
+import fr.inria.zvtm.glyphs.VRectangle;
 import fr.inria.zvtm.glyphs.VRoundRect;
 import fr.inria.zvtm.glyphs.VText;
 
@@ -110,7 +112,7 @@ public class Node {
 
 	}
 	public enum ViewType {
-		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY;
+		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY, ONLY_RECTANGLE;
 	}
 
 	private static Map<String, ChapterProperties> chapterTypes;
@@ -304,24 +306,38 @@ public class Node {
 	private NodeText nodeTitle;
 
 	private ViewType nodeView;
+	private int nodeX;
+	private int nodeY;
 
 	protected VirtualSpace virtualSpace;
 
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
 		// Important to create this before assigning title/description
-		nodeRectangle = new VRoundRect(generateNextXPosition(),
-				generateNextYPosition(), 0, 0, 0, Configuration.NODE_BG_COLOR,
-				chapterTypes.get(nodeChapter).getChapterColor(), 5, 5);
+		nodeX = generateNextXPosition();
+		nodeY = generateNextYPosition();
+		nodeRectangle = new VRoundRect(nodeX,
+				nodeY, 0, 0, 0, chapterTypes.get(nodeChapter).getChapterColor(),
+				Color.BLACK, 1f, 7, 7);
 		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
 
 		setNodeTitle(nodeTitle);
+		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, 12));
 		setNodeDescription(nodeDescription);
+		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, 12));
 		setNodeChapter(nodeChapter);
 
 		showView(ViewType.TITLE_ONLY);
 		bindTextToRectangle();
 	}
 
+	public int getX()
+	{
+		return nodeX;
+	}
+	public int getY()
+	{
+		return nodeY;
+	}
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
 	    int titleFontSize, int descriptionFontSize)
 	{
@@ -416,6 +432,11 @@ public class Node {
 	 */
 	public String getNodeChapter() {
 		return nodeChapter;
+	}
+	
+	public String getNodeDescription()
+	{
+		return nodeDescription.toString();
 	}
 	/**
 	 * @return the nodeContentLocation
@@ -715,6 +736,13 @@ public class Node {
 			case HIDDEN :
 				setNodeTranslucency(0);
 				break;
+			case ONLY_RECTANGLE :
+                if (getNodeTranslucency() == 0) {
+                    setNodeTranslucency(1);
+                }
+                nodeRectangle.setVisible(true);
+                nodeTitle.setVisible(false);
+                nodeDescription.setVisible(false);
 			default :
 		}
 	}

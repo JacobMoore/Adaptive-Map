@@ -6,7 +6,11 @@ import fr.inria.zvtm.glyphs.VText;
 import model.NodeMap;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import fr.inria.zvtm.widgets.TranslucentButton;
+import fr.inria.zvtm.widgets.TranslucentJList;
 import javax.swing.JButton;
 import java.util.Map;
 import javax.swing.JTextArea;
@@ -23,8 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import java.applet.AppletContext;
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +50,19 @@ import fr.inria.zvtm.engine.Location;
 import fr.inria.zvtm.engine.View;
 import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
+import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 /**
  *
- * @author John Nein, Michel Pascale
- * @version Feb 14, 2011
+ * @author John Nein, Michel Pascale, Lauren Gibboney
+ * @version Mar 27, 2011
  */
 public class AppCanvas extends JPanel {
 
@@ -61,6 +75,7 @@ public class AppCanvas extends JPanel {
 	private VirtualSpace detailedSpace;
 	private Camera detailedCamera;
 	public static AppletContext appletContext;
+	private View activeView;
 
 	// Tools panel variables.
 	private JRadioButton lowViewRadioButton, medViewRadioButton, highViewRadioButton;
@@ -68,6 +83,12 @@ public class AppCanvas extends JPanel {
 	private JTextField searchBar;
 	private JTextArea legendTextArea;
 
+	// Search Variables
+	private DefaultListModel listModel;
+	private JList list;
+	private Node selected;
+	private ArrayList<Node> nodes;
+	private boolean initial = true;
 	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();
@@ -90,6 +111,7 @@ public class AppCanvas extends JPanel {
 	 *            this method will populate this list
 	 */
 	private void createView(Container appFrame, List<Node> nodeList) {
+		//appFrame.add(AppCanvas.this);
 		detailedSpace = vSpaceManager
 				.addVirtualSpace(Configuration.APPLICATION_TITLE);
 
@@ -97,16 +119,16 @@ public class AppCanvas extends JPanel {
 		Vector<Camera> cameras = new Vector<Camera>();
 		cameras.add(detailedCamera);
 
-		View activeView = vSpaceManager.addFrameView(cameras,
-				Configuration.APPLICATION_TITLE, View.STD_VIEW, 800, 600,
+		/*View*/ activeView = vSpaceManager.addFrameView(cameras,
+				Configuration.APPLICATION_TITLE, View.STD_VIEW, 1200, 1200,
 				false, false);
 	    //the nodeMap must be populated before creating the Camera Listener
         populateNodeMap();
-		activeView.setEventHandler(new CameraMovementListener(this, nodeList));
+		activeView.setEventHandler(new CameraMovementListener(this, nodeList, nodeMap));
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
-		activeView.getPanel().setSize(new Dimension(800, 600));
+		activeView.getPanel().setSize(new Dimension(1200, 1200));
 		// Set the camera location and altitude
-		activeView.getActiveCamera().setLocation(new Location(500, -300, 100));
+		activeView.getActiveCamera().setLocation(new Location(500, -300, 300));
 
 		// Add view to the frame given
 		appFrame.add(activeView.getPanel());
@@ -121,6 +143,7 @@ public class AppCanvas extends JPanel {
 	private void populateCanvas() {
         nodeList.addAll(nodeMap.getNodes());
         for (Node nodeToAdd : nodeList) {
+            nodeToAdd.showView( ViewType.ONLY_RECTANGLE );
             nodeToAdd.addToVirtualSpace(detailedSpace);
         }
         // IMPORTANT: parse node properties before linking the nodes
@@ -132,6 +155,20 @@ public class AppCanvas extends JPanel {
 
 	}
 
+	public ArrayList<Node> searchForNode(String searchString)
+	{
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		String str = searchString.toLowerCase();
+		for (Node n: nodeList)
+		{
+			if (n.getNodeTitle().toLowerCase().contains(str) || n.getNodeDescription().toLowerCase().contains(str) ||
+					n.getNodeChapter().toLowerCase().contains(str))
+			{
+				nodes.add(n);
+			}
+		}
+		return nodes;
+	}
     private void populateNodeMap()
     {
         // IMPORTANT: parse chapter properties before parsing node information
@@ -145,7 +182,7 @@ public class AppCanvas extends JPanel {
                     .getValue().getDescription(), chapterProperty.getKey(),
                     Configuration.CHAPTER_TITLE_FONT_SIZE,
                     Configuration.CHAPTER_DESCRIPTION_FONT_SIZE);
-            newChapter.showView( ViewType.HIDDEN );
+            newChapter.showView( ViewType.TITLE_ONLY );
             newChapter.addToVirtualSpace( detailedSpace );
             chapterList.add( newChapter );
         }
@@ -202,13 +239,12 @@ public class AppCanvas extends JPanel {
             public void componentShown( ComponentEvent e ) {
                 setToolSizes();
             } } );
-
         searchBar = new TranslucentTextField("Search...");
         searchBar.setForeground(Color.WHITE);
         searchBar.setBackground(Color.DARK_GRAY);
         searchBar.setToolTipText( "Enter your search terms, and press ENTER to search." );
         searchBar.addKeyListener( new SearchBarListener() );
-        toolsPane.add(searchBar, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
+        toolsPane.add(searchBar, (Integer)(JLayeredPane.DRAG_LAYER + 50));
 
         lowViewRadioButton = new TranslucentRadioButton("Section", false);
         lowViewRadioButton.addItemListener( new ItemListener() {
@@ -218,8 +254,7 @@ public class AppCanvas extends JPanel {
         });
         toolsPane.add(lowViewRadioButton, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
 
-        medViewRadioButton = new TranslucentRadioButton("Chapter", true);
-        medViewRadioButton.setEnabled( false );
+        medViewRadioButton = new TranslucentRadioButton("Chapter", false);
         medViewRadioButton.addItemListener( new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 viewRadioItemStateChanged(e, 1);
@@ -227,7 +262,8 @@ public class AppCanvas extends JPanel {
         });
         toolsPane.add(medViewRadioButton, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
 
-        highViewRadioButton = new TranslucentRadioButton("Overview", false);
+        highViewRadioButton = new TranslucentRadioButton("Overview", true);
+        highViewRadioButton.setEnabled( false );
         highViewRadioButton.addItemListener( new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 viewRadioItemStateChanged(e, 2);
@@ -288,21 +324,87 @@ public class AppCanvas extends JPanel {
     private class SearchBarListener implements KeyListener
     {
         @Override
-        public void keyPressed( KeyEvent e ) {
-            if ( e.getKeyCode() == KeyEvent.VK_ENTER ) {
-                //TODO: Handle searching.
-                System.out.println( "Pressed ENTER in search bar." );
+        public void keyPressed( KeyEvent arg0 )
+        {
+            // clear the search bar when typing starts
+            if ( initial )
+            {
+                searchBar.setText( "" );
+                initial = false;
+            }
+
+            // Perform search when enter is pressed
+            if ( arg0.getKeyCode() == KeyEvent.VK_ENTER
+                && searchBar.getText().length() > 0 )
+            {
+                nodes = searchForNode( searchBar.getText() );
+                if ( nodes.size() == 1 )
+                {
+                    // shift camera focus to node
+                    detailedCamera.move(
+                        nodes.get( 0 ).getX() - 500,
+                        nodes.get( 0 ).getY() + 300 );
+                }
+                else if ( nodes.size() > 1 )
+                {
+                    // display list of possibilities
+                    listModel = new DefaultListModel();
+
+                    for ( int i = 0; i < nodes.size(); i++ )
+                    {
+                        listModel.addElement( nodes.get( i ).getNodeTitle() );
+
+                    }
+                    list = new JList( listModel );
+                    list.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+                    list.setSelectedIndex( 0 );
+                    list.addListSelectionListener( new Listen() );
+                    list.setVisibleRowCount( 5 );
+
+                    JScrollPane scrollPane = new JScrollPane( list );
+                    JOptionPane.showMessageDialog(
+                        null,
+                        scrollPane,
+                        "Search",
+                        JOptionPane.INFORMATION_MESSAGE );
+                }
             }
         }
+
+
         @Override
-        public void keyReleased( KeyEvent e ) {
+        public void keyReleased( KeyEvent arg0 )
+        {
             // Empty for this listener.
         }
+
+
         @Override
-        public void keyTyped( KeyEvent e ) {
+        public void keyTyped( KeyEvent arg0 )
+        {
             // Empty for this listener.
         }
     }
+   private class Listen implements ListSelectionListener
+   {
+
+	@Override
+	  public void valueChanged(ListSelectionEvent e)
+	  {
+        if (e.getValueIsAdjusting() == false)
+        {
+        	//get selected Node
+            if (list.getSelectedIndex() != -1)
+            {
+            	selected = nodes.get(list.getSelectedIndex());
+            	//java.awt.Desktop.getDesktop().browse(selected.getNodeContentUrl());
+            }
+
+
+        }
+	  }
+
+   }
     /**
      *  Handles when the view radio buttons are selected, disabling the selected
      *  button, clearing the others, and moving to the appropriate view.
@@ -381,7 +483,7 @@ public class AppCanvas extends JPanel {
 
     public void setNodeVisibilities( boolean isMovingToChapterOverview )
     {
-        ViewType newView = isMovingToChapterOverview ? ViewType.HIDDEN : ViewType.TITLE_ONLY;
+        ViewType newView = isMovingToChapterOverview ? ViewType.ONLY_RECTANGLE : ViewType.TITLE_ONLY;
         for (Node n : nodeList) {
             n.showView( newView );
         }
