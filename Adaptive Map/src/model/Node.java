@@ -293,8 +293,20 @@ public class Node {
         }
 	}
 
+	private static Link isLinked(Node node1, Node node2) {
+	    for ( Link link : node1.getNodeLinks() ) {
+	        if ( link.contains( node2 ) )
+	            return link;
+	    }
+	    return null;
+	}
+
 	public static void link(Node node1, Node node2, String linkType) {
-		nodeLinks.add(new Link(node1, node2, linkType));
+	    Link link = isLinked(node1, node2);
+	    if ( link != null )
+	        link.setWeight( link.getWeight() + 1 );
+	    else
+	        nodeLinks.add( new Link(node1, node2, linkType) );
 	}
 	private String nodeChapter;
 	private String nodeContentUrl;
@@ -317,7 +329,7 @@ public class Node {
 		nodeY = generateNextYPosition();
 		nodeRectangle = new VRoundRect(nodeX,
 				nodeY, 0, 0, 0, chapterTypes.get(nodeChapter).getChapterColor(),
-				Color.BLACK, 1f, 7, 7);
+				Color.BLACK, 1f, 15, 15);
 		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
 
 		setNodeTitle(nodeTitle);
@@ -433,7 +445,7 @@ public class Node {
 	public String getNodeChapter() {
 		return nodeChapter;
 	}
-	
+
 	public String getNodeDescription()
 	{
 		return nodeDescription.toString();

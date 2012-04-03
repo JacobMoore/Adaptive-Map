@@ -209,7 +209,7 @@ public class NodeMap
         try
         {
             //currently passing an arbitrary scale into parseText
-            Map<Integer, Point> coords = GraphViz.parseText(FILENAME, 200, 200);
+            Map<Integer, Point> coords = GraphViz.parseText(FILENAME, 2800, 2800);
             for (Integer key: coords.keySet())
             {
                 int index = key - 10;

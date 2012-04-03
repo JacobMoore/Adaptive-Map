@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Stroke;
 import fr.inria.zvtm.glyphs.VText;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.Color;
@@ -38,6 +39,7 @@ public class Link extends VSegment {
 	private final String linkType;
 	private VirtualSpace virtualSpace;
 	private VText linkText;
+	private int linkWeight;
 
 	/**
 	 * A new link object that links two nodes together.
@@ -88,6 +90,7 @@ public class Link extends VSegment {
 		virtualSpace.addGlyph(this);
 		virtualSpace.addGlyph(linkText);
 		linkText.setVisible(false);
+		linkWeight = 1;
 	}
 
 
@@ -152,6 +155,15 @@ public class Link extends VSegment {
         return new Point(centerX, centerY);
     }
 
+    public int getWeight() {
+        return linkWeight;
+    }
+
+    public void setWeight(int newWeight) {
+        linkWeight = newWeight;
+        this.stroke = new java.awt.BasicStroke( linkWeight );
+    }
+
 	public static class LinkProperties {
 		private LinkLineType linkLineType;
 		private Color linkColor;
@@ -191,6 +203,5 @@ public class Link extends VSegment {
 		public String getDescription() {
 			return description;
 		}
-
 	}
 }

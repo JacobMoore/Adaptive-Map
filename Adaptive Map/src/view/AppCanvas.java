@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Point;
 import model.Node.ViewType;
 import java.awt.Font;
 import fr.inria.zvtm.glyphs.VText;
@@ -62,7 +63,7 @@ import javax.swing.ListSelectionModel;
 /**
  *
  * @author John Nein, Michel Pascale, Lauren Gibboney
- * @version Mar 27, 2011
+ * @version Apr 03, 2011
  */
 public class AppCanvas extends JPanel {
 
@@ -72,9 +73,10 @@ public class AppCanvas extends JPanel {
 	private List<Node> nodeList;
 	private List<Node> chapterList;
 	private NodeMap nodeMap;
+	private Map<String, Point> chapterMap;
 	private VirtualSpace detailedSpace;
 	private Camera detailedCamera;
-	private AppletContext appletContext;
+	public AppletContext appletContext;
 	private View activeView;
 
 	// Tools panel variables.
@@ -89,7 +91,7 @@ public class AppCanvas extends JPanel {
 	private Node selected;
 	private ArrayList<Node> nodes;
 	private boolean initial = true;
-	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame,
+	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame
 	    AppletContext context) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();
@@ -141,6 +143,7 @@ public class AppCanvas extends JPanel {
 	 * virtual space; the parsing is then continued to parse the properties for
 	 * each link type, then parses the actual links between the nodes and adds
 	 * them to the virtual space.
+	 * @precondition populateNodeMap has been called.
 	 */
 	private void populateCanvas() {
         nodeList.addAll(nodeMap.getNodes());
@@ -155,6 +158,50 @@ public class AppCanvas extends JPanel {
         }
         XmlParser.parseNodeLinks(nodeList);
 
+        // Set the chapter node positions.
+        chapterMap = nodeMap.getChapterCoords();
+        for ( Node n : chapterList ) {
+            Point coord = chapterMap.get( n.getNodeTitle() );
+            n.moveTo( coord.x, coord.y );
+        }
+        parseChapterLinks();
+	}
+
+	/**
+	 * Goes through all nodes and sets up the links between chapters.
+	 */
+	private void parseChapterLinks() {
+	    for ( String chapter : nodeMap.getChapters() ) {
+	        Node currentChapter = getChapterNode( chapter );
+	        if ( currentChapter == null )
+	            continue;
+	        // For all nodes in current chapter
+	        for ( Node node : nodeMap.getChapterNodes( chapter ) ) {
+	            // For all linked nodes
+	            for ( Node i : node.getLinkedNodes() ) {
+	                // Check not linked to current chapter
+	                if ( !i.getNodeChapter().equals( chapter ) ) {
+	                    Node linkedChapter = getChapterNode(i.getNodeChapter());
+	                    if ( linkedChapter == null )
+	                        continue;
+	                    Node.link( currentChapter, linkedChapter, Link.LinkLineType.STANDARD.name() );
+	                }
+	            }
+	        }
+	    }
+	}
+
+	/**
+	 * Returns the node of the specified chapter in the chapterList, or null
+	 * if it was not found.
+	 */
+	private Node getChapterNode( String chapterName) {
+	    for ( Node node : chapterList ) {
+	        if ( node.getNodeTitle().equals( chapterName ) )
+	            return node;
+	    }
+        System.err.println( "Chapter not found in chapterList." );
+	    return null;
 	}
 
 	public ArrayList<Node> searchForNode(String searchString)
