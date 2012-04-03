@@ -35,6 +35,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	private Node highlightedNode;
 	private Node selectedNode;
 	private List<Node> nodeList;
+	private List<Point> startingNodeCoords;
 	private NodeMap nodeMap;
 	private boolean dragging = false;
 	private int xLocation;
@@ -52,6 +53,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	    this.canvas = canvas;
 		this.nodeList = nodeList;
 		this.nodeMap = nodeMap;
+		startingNodeCoords = nodeMap.getNodeCoords();
 	}
 
 	public void enterGlyph(Glyph glyph) {
@@ -96,13 +98,14 @@ public class CameraMovementListener implements ViewEventHandler {
 			if (highlightedNode.equals(selectedNode)) {
 				// If the node clicked on is the selected node, navigate to its
 				// content url and return
-				AppCanvas.navigateTo(selectedNode.getNodeContentUrl());
+				canvas.navigateTo(selectedNode.getNodeContentUrl());
 				return;
 			} else if (selectedNode != null) {
 				// If the node clicked on isn't the selected node, then show
 				// just the title of the currently selected node
 				selectedNode.showView(ViewType.TITLE_ONLY);
 			}
+
 			selectedNode = highlightedNode;
 			highlightedNode = null;
 			// Center the camera on the newly selected node
@@ -213,15 +216,20 @@ public class CameraMovementListener implements ViewEventHandler {
 				|| glyph.getTranslucencyValue() == (float) 0;
 	}
 
-	public void click2(ViewPanel pnl, int mod, int jpx, int jpy,
+	public void click3(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
-		// Show all nodes
+		int count = 0;
+	    // Show all nodes and move them back to their starting positions
 		for (Node node : nodeList) {
 			node.showView(ViewType.TITLE_ONLY);
+			int nodeX = startingNodeCoords.get(count).x;
+			int nodeY = startingNodeCoords.get(count).y;
+			node.moveTo(nodeX, nodeY);
+			count++;
 		}
 	}
 
-	public void click3(ViewPanel pnl, int mod, int jpx, int jpy,
+	public void click2(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
 	}
 

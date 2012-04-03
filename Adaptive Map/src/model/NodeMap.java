@@ -64,6 +64,16 @@ public class NodeMap
         return ret;
     }
 
+    public ArrayList<Point> getNodeCoords()
+    {
+        ArrayList<Point> points = new ArrayList<Point>();
+        for (Node node: getNodes())
+        {
+            points.add(node.getCenterPoint());
+        }
+        return points;
+    }
+
     public ArrayList<String> getChapters()
     {
         return new ArrayList<String>(nodeMap.keySet());

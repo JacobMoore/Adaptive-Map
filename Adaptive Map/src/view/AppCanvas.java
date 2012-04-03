@@ -74,7 +74,7 @@ public class AppCanvas extends JPanel {
 	private NodeMap nodeMap;
 	private VirtualSpace detailedSpace;
 	private Camera detailedCamera;
-	public static AppletContext appletContext;
+	private AppletContext appletContext;
 	private View activeView;
 
 	// Tools panel variables.
@@ -89,7 +89,8 @@ public class AppCanvas extends JPanel {
 	private Node selected;
 	private ArrayList<Node> nodes;
 	private boolean initial = true;
-	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame) {
+	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame,
+	    AppletContext context) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();
 		chapterList = new ArrayList<Node>();
@@ -97,6 +98,7 @@ public class AppCanvas extends JPanel {
 		this.vSpaceManager = vSpaceManager;
 		createView(appFrame, nodeList);
         addTools(appFrame);
+        appletContext = context;
 		populateCanvas();
 	}
 
@@ -194,7 +196,7 @@ public class AppCanvas extends JPanel {
 	 * @param url
 	 *            the url to navigate to
 	 */
-	public static void navigateTo(String url) {
+	public void navigateTo(String url) {
 		try {
 			if (appletContext != null) {
 				// Application started in an applet

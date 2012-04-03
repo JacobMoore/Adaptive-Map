@@ -6,7 +6,7 @@ import view.AppCanvas;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 
 /**
- * 
+ *
  * @author John Nein
  * @version Sep 28, 2011
  */
@@ -18,7 +18,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new AppCanvas(vSpaceManager, getDevelopmentFrame());
+		new AppCanvas(vSpaceManager, getDevelopmentFrame(), null);
 	}
 
 	public static JFrame getDevelopmentFrame() {

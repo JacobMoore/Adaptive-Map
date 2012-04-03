@@ -7,7 +7,7 @@ import view.AppCanvas;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 
 /**
- * 
+ *
  * @author John Nein
  * @version Nov 15, 2011
  */
@@ -24,8 +24,8 @@ public class VirtualTextbookApplet extends JApplet {
 					// Line below is for ZVTM support for applets
 					getRootPane().putClientProperty(
 							"defeatSystemEventQueueCheck", Boolean.TRUE);
-					AppCanvas.appletContext = getAppletContext();
-					new AppCanvas(vSpaceManager, VirtualTextbookApplet.this);
+					new AppCanvas(vSpaceManager, VirtualTextbookApplet.this,
+					    getAppletContext());
 				}
 			});
 		} catch (Exception e) {
