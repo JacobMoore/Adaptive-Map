@@ -2,13 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Tomcat Supplementary Folder/VirtualTextbook.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/jcip-annotations-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/timingframework-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/xercesImpl-2.8.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/xml-apis-1.3.03.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Josh/Documents/Spring 2012/Adaptive Map/Extracted Jar/xmlParserAPIs-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/timingframework-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xercesImpl-2.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xml-apis-1.3.03.jar"/>
+	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

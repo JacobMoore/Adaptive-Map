@@ -32,6 +32,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class AppCanvas extends JPanel {
 	private Node selected;
 	private ArrayList<Node> nodes;
 	private boolean initial = true;
-	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame
+	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame,
 	    AppletContext context) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();
@@ -244,10 +245,18 @@ public class AppCanvas extends JPanel {
 	 *            the url to navigate to
 	 */
 	public void navigateTo(String url) {
+
+		URL relativeURL = null;
+		try {
+			relativeURL = new URL (appletContext.getApplet("Adaptive Map").getCodeBase(),
+					url);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			if (appletContext != null) {
 				// Application started in an applet
-				appletContext.showDocument(new URL(url), "_blank");
+				appletContext.showDocument(relativeURL, "_blank");
 			} else {
 				// Standalone application
 				java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
