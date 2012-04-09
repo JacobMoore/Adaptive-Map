@@ -476,18 +476,29 @@ public class AppCanvas extends JPanel {
             activeCamera.setAltitude( Configuration.ZOOM_NODE_HEIGHT, true );
         }
         else if ( buttonIndex == 1 && e.getStateChange() == 1 ) {
-            selectMedButton();
-            //Change to med view.
-            Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-            activeCamera.setAltitude( Configuration.ZOOM_CHAPTER_HEIGHT, true );
+            switchToMidLevelView();
         }
         else if ( buttonIndex == 2 && e.getStateChange() == 1 ) {
-            selectHighButton();
-            //Change to high view.
-            Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-            activeCamera.setAltitude( Configuration.ZOOM_OVERVIEW_HEIGHT, true );
+            switchToHighLevelView();
         }
     }
+
+    public void switchToHighLevelView()
+    {
+        selectHighButton();
+        //Change to high view.
+        Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
+        activeCamera.setAltitude( Configuration.ZOOM_OVERVIEW_HEIGHT, true );
+    }
+
+    public void switchToMidLevelView()
+    {
+        selectMedButton();
+        //Change to med view.
+        Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
+        activeCamera.setAltitude( Configuration.ZOOM_CHAPTER_HEIGHT, true );
+    }
+
     private void selectLowButton()
     {
         lowViewRadioButton.setSelected( true );
@@ -541,7 +552,7 @@ public class AppCanvas extends JPanel {
 
     public void setNodeVisibilities( boolean isMovingToChapterOverview )
     {
-        ViewType newView = isMovingToChapterOverview ? ViewType.ONLY_RECTANGLE : ViewType.TITLE_ONLY;
+        ViewType newView = isMovingToChapterOverview ? ViewType.HIDDEN : ViewType.TITLE_ONLY;
         for (Node n : nodeList) {
             n.showView( newView );
         }

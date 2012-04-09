@@ -218,6 +218,7 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void click3(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
+	    /**
 		int count = 0;
 	    // Show all nodes and move them back to their starting positions
 		for (Node node : nodeList) {
@@ -227,6 +228,8 @@ public class CameraMovementListener implements ViewEventHandler {
 			node.moveTo(nodeX, nodeY);
 			count++;
 		}
+		*/
+	    canvas.switchToHighLevelView();
 	}
 
 	public void click2(ViewPanel pnl, int mod, int jpx, int jpy,
