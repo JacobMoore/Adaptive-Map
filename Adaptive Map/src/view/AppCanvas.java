@@ -91,7 +91,7 @@ public class AppCanvas extends JPanel {
 	private Node selected;
 	private ArrayList<Node> nodes;
 	private boolean initial = true;
-	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame
+	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame,
 	    AppletContext context) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();

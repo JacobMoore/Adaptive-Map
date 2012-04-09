@@ -95,7 +95,7 @@ public class NodeMap
     /**
      * Create a graphviz graph to determine the coordinates of the chapters.
      */
-    private void generateGraphFromChapters(ArrayList<String> chapters)
+    private byte[] generateGraphFromChapters(ArrayList<String> chapters)
     {
         ArrayList<String> usedChapters = new ArrayList<String>();
         GraphViz gv = new GraphViz();
@@ -122,15 +122,15 @@ public class NodeMap
             }
         }
         gv.addln(gv.end_graph());
-
-        File out = new File(FILENAME);
-        gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
+        return gv.getGraph( gv.getDotSource(), "plain" );
+        //File out = new File(FILENAME);
+        //gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
     }
     /**
      * Given a list of nodes, creates a graphviz graph based on their links.
      * @param nodes the list of nodes to create the graph for
      */
-    private void createGraphFromNodes(ArrayList<Node> nodes)
+    private byte[] generateGraphFromNodes(ArrayList<Node> nodes)
     {
 
         GraphViz gv = new GraphViz();
@@ -158,8 +158,9 @@ public class NodeMap
         }
 
         gv.addln(gv.end_graph());
-        File out = new File(FILENAME);
-        gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
+        return gv.getGraph( gv.getDotSource(), "plain" );
+        //File out = new File(FILENAME);
+        //gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
     }
     /**
      * Read the graphviz output and set the nodes to the correct coordinates
@@ -170,29 +171,23 @@ public class NodeMap
     public Map<Integer, Point> setNodeCoords(ArrayList<Node> nodes, Node centerNode)
     {
         Map<Integer, Point> coords = new HashMap<Integer, Point>();
-        createGraphFromNodes(nodes);
-        try
+        byte[] graph = generateGraphFromNodes(nodes);
+
+        Map<Integer, Point> map = GraphViz.parseText(graph, 1000, 1000);
+        //center the points on the center node
+        int centerIndex = nodes.indexOf(centerNode) + 10;
+        int xDifference = centerNode.getCenterPoint().x - map.get(centerIndex).x;
+        int yDifference = centerNode.getCenterPoint().y - map.get(centerIndex).y;
+        for (Entry<Integer, Point> entry: map.entrySet())
         {
-            Map<Integer, Point> map = GraphViz.parseText(FILENAME, 1000, 1000);
-            //center the points on the center node
-            int centerIndex = nodes.indexOf(centerNode) + 10;
-            int xDifference = centerNode.getCenterPoint().x - map.get(centerIndex).x;
-            int yDifference = centerNode.getCenterPoint().y - map.get(centerIndex).y;
-            for (Entry<Integer, Point> entry: map.entrySet())
-            {
-                Point point = new Point(entry.getValue().x + xDifference,
-                    entry.getValue().y + yDifference);
-                coords.put(entry.getKey() - 10, point);
-            }
-            for(Map.Entry<Integer, Point> entry: coords.entrySet())
-            {
-                nodes.get(entry.getKey()).moveTo(entry.getValue().x,
-                    entry.getValue().y);
-            }
+            Point point = new Point(entry.getValue().x + xDifference,
+                entry.getValue().y + yDifference);
+            coords.put(entry.getKey() - 10, point);
         }
-        catch (FileNotFoundException e)
+        for(Map.Entry<Integer, Point> entry: coords.entrySet())
         {
-          e.printStackTrace();
+            nodes.get(entry.getKey()).moveTo(entry.getValue().x,
+                entry.getValue().y);
         }
         return coords;
     }
@@ -205,22 +200,13 @@ public class NodeMap
     {
         Map<String, Point> ret = new HashMap<String, Point>();
         ArrayList<String> chapters = new ArrayList<String>(nodeMap.keySet());
-        generateGraphFromChapters(chapters);
-        try
+        byte[] graph = generateGraphFromChapters(chapters);
+        Map<Integer, Point> coords = GraphViz.parseText(graph, 2800, 2800);
+        for (Integer key: coords.keySet())
         {
-            //currently passing an arbitrary scale into parseText
-            Map<Integer, Point> coords = GraphViz.parseText(FILENAME, 2800, 2800);
-            for (Integer key: coords.keySet())
-            {
-                int index = key - 10;
-                String chapter = chapters.get(index);
-                ret.put(chapter, coords.get(key));
-            }
-        }
-        catch (FileNotFoundException e)
-        {
-            System.out.println("There's no Graph to read");
-            e.printStackTrace();
+            int index = key - 10;
+            String chapter = chapters.get(index);
+            ret.put(chapter, coords.get(key));
         }
         return ret;
     }

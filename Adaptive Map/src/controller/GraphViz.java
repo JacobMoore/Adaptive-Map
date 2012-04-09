@@ -338,5 +338,44 @@ public class GraphViz
        return coords;
    }
 
+   /**
+    * Parses a GraphViz graph to find the coordinates of the nodes
+    * @param graph the graph being parsed
+    * @param width the width of the desired graph
+    * @param height the height of the desired graph
+    */
+   public static Map<Integer, Point> parseText(byte[] graph, int width, int height)
+   {
+       double scale, graphWidth, graphHeight;
+       double xratio = 1;
+       double yratio = 1;
+       Map<Integer, Point> coords = new HashMap<Integer, Point>();
+       String graphText = new String(graph);
+       StringTokenizer lineTokenizer = new StringTokenizer(graphText, "\n");
+       while(lineTokenizer.hasMoreTokens())
+       {
+           String line = lineTokenizer.nextToken();
+           StringTokenizer st = new StringTokenizer(line, " ");
+           String lineLabel = st.nextToken();
+           if(lineLabel.equals("graph"))
+           {
+               scale = Integer.valueOf(st.nextToken());
+               graphWidth = Double.valueOf(st.nextToken());
+               graphHeight = Double.valueOf(st.nextToken());
+               xratio = (width / graphWidth) * scale;
+               yratio = (height / graphHeight) * scale;
+           }
+           else if(lineLabel.equals("node"))
+           {
+               Integer id = Integer.valueOf(st.nextToken());
+               int x = (int) (Double.valueOf(st.nextToken()) * xratio);
+               int y = (int) (Double.valueOf(st.nextToken()) * yratio);
+               Point p = new Point(x, y);
+               coords.put(id, p);
+           }
+       }
+       return coords;
+   }
+
 } // end of class GraphViz
 
