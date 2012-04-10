@@ -507,7 +507,7 @@ public class AppCanvas extends JPanel {
         medViewRadioButton.setEnabled( true );
         highViewRadioButton.setSelected( false );
         highViewRadioButton.setEnabled( true );
-        setNodeVisibilities(false);
+        //setNodeVisibilities(false);
     }
     private void selectMedButton()
     {
