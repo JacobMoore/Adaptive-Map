@@ -218,20 +218,7 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void click3(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
-		int count = 0;
-	    //move nodes back to their starting positions
-		for (Node node : nodeList) {
-			int nodeX = startingNodeCoords.get(count).x;
-			int nodeY = startingNodeCoords.get(count).y;
-			node.moveTo(nodeX, nodeY);
-			count++;
-		}
 	    canvas.switchToHighLevelView();
-	    selectedNode = null;
-	    if (highlightedNode != null) {
-	        highlightedNode.unhighlightLinks();
-	        highlightedNode = null;
-	    }
 	}
 
 	public void click2(ViewPanel pnl, int mod, int jpx, int jpy,
@@ -278,5 +265,26 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void viewClosing(View view) {
 	}
+
+	public void moveNodesToOriginalPositions()
+	{
+	    int count = 0;
+        //move nodes back to their starting positions
+        for (Node node : nodeList) {
+            int nodeX = startingNodeCoords.get(count).x;
+            int nodeY = startingNodeCoords.get(count).y;
+            node.moveTo(nodeX, nodeY);
+            count++;
+        }
+	}
+
+	public void deselectNodes()
+    {
+        selectedNode = null;
+        if (highlightedNode != null) {
+            highlightedNode.unhighlightLinks();
+            highlightedNode = null;
+        }
+    }
 
 }

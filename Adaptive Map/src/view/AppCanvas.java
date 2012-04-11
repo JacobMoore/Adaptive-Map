@@ -79,6 +79,7 @@ public class AppCanvas extends JPanel {
 	private Camera detailedCamera;
 	public AppletContext appletContext;
 	private View activeView;
+	private CameraMovementListener cameraListener;
 
 	// Tools panel variables.
 	private JRadioButton lowViewRadioButton, medViewRadioButton, highViewRadioButton;
@@ -103,6 +104,7 @@ public class AppCanvas extends JPanel {
         addTools(appFrame);
         appletContext = context;
 		populateCanvas();
+		hideSectionNodes();
 	}
 
 	/**
@@ -129,7 +131,8 @@ public class AppCanvas extends JPanel {
 				false, false);
 	    //the nodeMap must be populated before creating the Camera Listener
         populateNodeMap();
-		activeView.setEventHandler(new CameraMovementListener(this, nodeList, nodeMap));
+        cameraListener = new CameraMovementListener(this, nodeList, nodeMap);
+		activeView.setEventHandler(cameraListener);
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
 		activeView.getPanel().setSize(new Dimension(1200, 1200));
 		// Set the camera location and altitude
@@ -485,6 +488,8 @@ public class AppCanvas extends JPanel {
 
     public void switchToHighLevelView()
     {
+        cameraListener.deselectNodes();
+        cameraListener.moveNodesToOriginalPositions();
         selectHighButton();
         //Change to high view.
         Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
@@ -559,6 +564,16 @@ public class AppCanvas extends JPanel {
         newView = isMovingToChapterOverview ? ViewType.FULL_DESCRIPTION : ViewType.HIDDEN;
         for (Node c : chapterList) {
             c.showView( newView );
+        }
+    }
+
+    public void hideSectionNodes()
+    {
+        for (Node n : nodeList) {
+            n.showView( ViewType.HIDDEN );
+        }
+        for (Node n : nodeList) {
+            n.showView( ViewType.FULL_DESCRIPTION );
         }
     }
 }
