@@ -201,7 +201,7 @@ public class NodeMap
         Map<String, Point> ret = new HashMap<String, Point>();
         ArrayList<String> chapters = new ArrayList<String>(nodeMap.keySet());
         byte[] graph = generateGraphFromChapters(chapters);
-        Map<Integer, Point> coords = GraphViz.parseText(graph, 2800, 2800);
+        Map<Integer, Point> coords = GraphViz.parseText(graph, 5000, 5000);
         for (Integer key: coords.keySet())
         {
             int index = key - 10;

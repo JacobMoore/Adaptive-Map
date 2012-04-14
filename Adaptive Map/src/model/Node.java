@@ -323,6 +323,9 @@ public class Node {
 
 	protected VirtualSpace virtualSpace;
 
+	/**
+	 * Constructor
+	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
 		// Important to create this before assigning title/description
 		nodeX = generateNextXPosition();
@@ -350,6 +353,9 @@ public class Node {
 	{
 		return nodeY;
 	}
+	/**
+	 * Constructor
+	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
 	    int titleFontSize, int descriptionFontSize)
 	{
@@ -401,6 +407,9 @@ public class Node {
 		}
 	}
 
+	/**
+	 * @return Point at the center of the node
+	 */
 	public Point getCenterPoint() {
 		return new Point((int) (nodeRectangle.vx - getWidth() / 2),
 				(int) (nodeRectangle.vy - getHeight() / 2));
@@ -416,14 +425,14 @@ public class Node {
 	}
 
 	/**
-	 * @return
+	 * @return nodeRectangle.height
 	 */
 	public long getHeight() {
 		return nodeRectangle.getHeight();
 	}
 
 	/**
-	 * @return
+	 * @return List of linked nodes
 	 */
 	public List<Node> getLinkedNodes() {
 		List<Node> linkedNodes = new ArrayList<Node>();
@@ -446,6 +455,9 @@ public class Node {
 		return nodeChapter;
 	}
 
+	/**
+	 * @return nodeDescription in string format
+	 */
 	public String getNodeDescription()
 	{
 		return nodeDescription.toString();
@@ -457,6 +469,10 @@ public class Node {
 		return nodeContentUrl;
 	}
 
+	/**
+	 * Returns a list of the node's links.
+	 * @return A list of the node's links.
+	 */
 	public List<Link> getNodeLinks() {
 		List<Link> linkList = new LinkedList<Link>();
 		for (Link link : nodeLinks) {
@@ -468,7 +484,7 @@ public class Node {
 	}
 
 	/**
-	 * @return
+	 * @return nodeTitle in string format
 	 */
 	public String getNodeTitle() {
 		return nodeTitle.getText();
@@ -484,14 +500,14 @@ public class Node {
 	}
 
 	/**
-	 * @return
+	 * @return nodeView
 	 */
 	public ViewType getViewType() {
 		return nodeView;
 	}
 
 	/**
-	 * @return
+	 * @return nodeRectangle.width
 	 */
 	public long getWidth() {
 		return nodeRectangle.getWidth();
@@ -564,10 +580,6 @@ public class Node {
 	 * descriptions are within the bounds of the rectangle. Needed because the
 	 * text and rectangle are not drawn in the same way
 	 *
-	 * @param width
-	 *            the width to adjust by
-	 * @param height
-	 *            the height to adjust by
 	 */
 	public void realignNodeText() {
 		long titleWidth = nodeTitle.textContainerWidth;
@@ -676,6 +688,10 @@ public class Node {
 		this.nodeContentUrl = nodeContentUrl;
 	}
 
+	/**
+	 * @param nodeDescription
+	 *         the nodeDescription to set
+	 */
 	public void setNodeDescription(String nodeDescription) {
 		if (this.nodeDescription != null) {
 			virtualSpace.removeGlyph(this.nodeDescription);
@@ -684,6 +700,10 @@ public class Node {
 				0, Configuration.NODE_DESCRIPTION_COLOR, nodeDescription);
 	}
 
+	/**
+	 * @param nodeTitle
+	 *         the nodeTitle to set
+	 */
 	public void setNodeTitle(String nodeTitle) {
 		if (this.nodeTitle != null && virtualSpace != null) {
 			virtualSpace.removeGlyph(this.nodeTitle);
