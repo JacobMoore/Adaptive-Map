@@ -20,9 +20,8 @@ import java.util.HashMap;
  */
 public class NodeMap
 {
-    private final int CHAPTER_SCALE = 1;
+    private final double CHAPTER_SCALE = 2;
     private final double NODE_SCALE = 0.5;
-    private final String FILENAME = "out.plain";
     private HashMap<String, ArrayList<Node>> nodeMap;
     /**
      * Create a new NodeMap
