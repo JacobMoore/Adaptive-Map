@@ -1,5 +1,8 @@
 package model;
 
+import controller.Configuration;
+import HierarchialLayout.Graph;
+import HierarchialLayout.Edge;
 import java.util.Map.Entry;
 import java.util.List;
 import controller.GraphViz;
@@ -21,7 +24,8 @@ import java.util.HashMap;
  */
 public class NodeMap
 {
-
+    private final int CHAPTER_SCALE = 1;
+    private final double NODE_SCALE = 0.5;
     private final String FILENAME = "out.plain";
     private HashMap<String, ArrayList<Node>> nodeMap;
     /**
@@ -93,13 +97,12 @@ public class NodeMap
     }
 
     /**
-     * Create a graphviz graph to determine the coordinates of the chapters.
+     * Create an edge array to determine the coordinates of the chapters.
      */
-    private byte[] generateGraphFromChapters(ArrayList<String> chapters)
+    private Edge[] generateEdgeArrayFromChapters(ArrayList<String> chapters)
     {
         ArrayList<String> usedChapters = new ArrayList<String>();
-        GraphViz gv = new GraphViz();
-        gv.addln(gv.start_graph());
+        ArrayList<Edge> edges = new ArrayList<Edge>();
         //for each link in each node in each chapter, check if it links to
         //another chapter
         for (String chapter: chapters)
@@ -113,33 +116,28 @@ public class NodeMap
                     if (!linkChapter.equals(chapter) &&
                         !usedChapters.contains(chapter))
                     {
-                        int labelFrom = chapters.indexOf(chapter) + 10;
-                        int labelTo = chapters.indexOf(linkChapter) + 10;
-                        gv.addln(labelFrom + " -> " + labelTo);
+                        int indexFrom = chapters.indexOf(chapter);
+                        int indexTo = chapters.indexOf(linkChapter);
+                        edges.add(new Edge(indexFrom, indexTo));
                         usedChapters.add(chapter);
                     }
                 }
             }
         }
-        gv.addln(gv.end_graph());
-        return gv.getGraph( gv.getDotSource(), "plain" );
-        //File out = new File(FILENAME);
-        //gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
+        return edges.toArray(new Edge[0]);
     }
-    /**
-     * Given a list of nodes, creates a graphviz graph based on their links.
-     * @param nodes the list of nodes to create the graph for
-     */
-    private byte[] generateGraphFromNodes(ArrayList<Node> nodes)
-    {
 
-        GraphViz gv = new GraphViz();
-        gv.addln(gv.start_graph());
-        //add a link in the graphviz graph for each link within this chapter
+    /**
+     * Given a list of nodes, creates an array of edges graph based on their links.
+     * @param nodes the list of nodes to create the edge array for
+     */
+    private Edge[] generateEdgeArrayFromNodes(ArrayList<Node> nodes)
+    {
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        //add an edge for each link within this chapter
         for(Node node: nodes)
         {
-            int labelFrom = nodes.indexOf(node) + 10;
-            gv.addln(labelFrom + ";");
+            int indexFrom = nodes.indexOf(node);
             List<Link> links = node.getNodeLinks();
             for(Link link: links)
             {
@@ -148,50 +146,45 @@ public class NodeMap
                 if(fromNode.equals(node) &&
                     nodes.contains(toNode))
                 {
-                    //use labels that are index + 10, so they will be the same length
-                    int labelTo = nodes.indexOf(toNode) + 10;
-                    gv.addln(labelFrom + " -> " +
-                        labelTo + ";");
-
+                    int indexTo = nodes.indexOf(toNode);
+                    edges.add(new Edge(indexFrom, indexTo));
                 }
             }
         }
-
-        gv.addln(gv.end_graph());
-        return gv.getGraph( gv.getDotSource(), "plain" );
-        //File out = new File(FILENAME);
-        //gv.writeGraphToFile( gv.getGraph( gv.getDotSource(), "plain" ), out );
+        return edges.toArray(new Edge[0]);
     }
+
     /**
-     * Read the graphviz output and set the nodes to the correct coordinates
+     * Read an edge array and set the nodes to the correct coordinates
      * @param nodes the list of nodes to set
      * @param centerNode the node to center the list on
      * @return the new node coordinates
      */
     public Map<Integer, Point> setNodeCoords(ArrayList<Node> nodes, Node centerNode)
     {
-        Map<Integer, Point> coords = new HashMap<Integer, Point>();
-        byte[] graph = generateGraphFromNodes(nodes);
+        Map<Integer, Point> coordMap = new HashMap<Integer, Point>();
+        Edge[] edges = generateEdgeArrayFromNodes(nodes);
 
-        Map<Integer, Point> map = GraphViz.parseText(graph, 1000, 1000);
+        Graph graph = new Graph(nodes.size(), edges);
+        Point[] points = getCoords(graph, NODE_SCALE);
+
         //center the points on the center node
-        int centerIndex = nodes.indexOf(centerNode) + 10;
-        int xDifference = centerNode.getCenterPoint().x - map.get(centerIndex).x;
-        int yDifference = centerNode.getCenterPoint().y - map.get(centerIndex).y;
-        for (Entry<Integer, Point> entry: map.entrySet())
+        int centerIndex = nodes.indexOf(centerNode);
+        int xDifference = centerNode.getCenterPoint().x - points[centerIndex].x;
+        int yDifference = centerNode.getCenterPoint().y - points[centerIndex].y;
+        for (int i = 0; i < points.length; i++)
         {
-            Point point = new Point(entry.getValue().x + xDifference,
-                entry.getValue().y + yDifference);
-            coords.put(entry.getKey() - 10, point);
+            Point point = new Point(points[i].x + xDifference,
+                points[i].y + yDifference);
+            coordMap.put(i, point);
         }
-        for(Map.Entry<Integer, Point> entry: coords.entrySet())
+        for(Map.Entry<Integer, Point> entry: coordMap.entrySet())
         {
             nodes.get(entry.getKey()).moveTo(entry.getValue().x,
                 entry.getValue().y);
         }
-        return coords;
+        return coordMap;
     }
-
 
     /**
      * Get a map of chapters to coordinates.
@@ -200,14 +193,87 @@ public class NodeMap
     {
         Map<String, Point> ret = new HashMap<String, Point>();
         ArrayList<String> chapters = new ArrayList<String>(nodeMap.keySet());
-        byte[] graph = generateGraphFromChapters(chapters);
-        Map<Integer, Point> coords = GraphViz.parseText(graph, 2800, 2800);
-        for (Integer key: coords.keySet())
+        Edge[] edges = generateEdgeArrayFromChapters(chapters);
+        Graph graph = new Graph(chapters.size(), edges);
+        Point[] coords = getCoords(graph, CHAPTER_SCALE);
+
+        for (int i = 0; i < chapters.size(); i++)
         {
-            int index = key - 10;
-            String chapter = chapters.get(index);
-            ret.put(chapter, coords.get(key));
+            String chapter = chapters.get(i);
+            ret.put(chapter, coords[i]);
         }
         return ret;
     }
+
+    private  Point[] getCoords(Graph graphParam, double scale)
+    {
+        Graph graph = graphParam.getReducedGraph();
+        int[] verticalPos = graph.getVertexLayers();
+        int[] horizontalPos = graph.getHorizontalPosition(verticalPos);
+        //Graph only gives a vertical and horizontal ordering, the nodes
+        //must then be centered.
+        horizontalPos = centerHorizontalCoords(verticalPos, horizontalPos);
+        int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
+            + Configuration.GRID_BUFFER_SPACE) * scale);
+        int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
+            + Configuration.GRID_BUFFER_SPACE) * scale);
+        Point[] coords = new Point[verticalPos.length];
+        for (int i = 0; i < coords.length; i++)
+        {
+            //verticalPos is not 0 based, so 1 must be subtracted
+            coords[i] = new Point((horizontalPos[i]) * interval_x,
+                (verticalPos[i] - 1) * interval_y);
+        }
+        return coords;
+    }
+
+    private int[] centerHorizontalCoords(int[] verticalPos, int[] horizontalPos)
+    {
+        int[] centeredhorizontal = CenterTopLevelCoords(verticalPos, horizontalPos);
+        Map<Integer, Integer> nodesPerLevel = new HashMap<Integer, Integer>();
+        int maxCount = 0;
+        for(int i = 0; i < verticalPos.length; i++)
+        {
+            int currCount = 0;
+            if (nodesPerLevel.containsKey(verticalPos[i]))
+                currCount = nodesPerLevel.remove(verticalPos[i]);
+            nodesPerLevel.put(verticalPos[i], ++currCount);
+            if (currCount > maxCount)
+            {
+                maxCount = currCount;
+            }
+        }
+        int baseNodeCount = maxCount;
+        int horizontalShift;
+        for(int i = 0; i < horizontalPos.length; i++)
+        {
+            horizontalShift = ((baseNodeCount * 2 -
+                (nodesPerLevel.get(verticalPos[i]) * 2))) / 2;
+
+            centeredhorizontal[i] = centeredhorizontal[i] * 2 + horizontalShift;
+
+        }
+        return centeredhorizontal;
+    }
+
+    private int[] CenterTopLevelCoords(int[] verticalPos, int[] horizontalPos)
+    {
+        int[] fixedhorizontalPos = horizontalPos;
+        int vertMax = 0;
+        for(int i = 0; i < verticalPos.length; i++)
+        {
+            if(verticalPos[i] > vertMax)
+                vertMax = verticalPos[i];
+        }
+        int horizontalShift = 1;
+        for(int i = 0; i < horizontalPos.length; i++)
+        {
+            if(verticalPos[i] == vertMax)
+            {
+                fixedhorizontalPos[i] += horizontalShift++;
+            }
+        }
+        return fixedhorizontalPos;
+    }
+
 }
