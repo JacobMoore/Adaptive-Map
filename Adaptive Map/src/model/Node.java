@@ -257,7 +257,7 @@ public class Node {
             for (Node node: firstLevelNodes)
             {
                 depth = findDepthBetween(selectedNode, node);
-                if (depth > 0)
+                if (depth <= 0)
                 {
                     topX += interval_x;
                     currX = topX;
@@ -277,7 +277,7 @@ public class Node {
             for (Node node: firstLevelNodes)
             {
                 depth = findDepthBetween(selectedNode, node);
-                if (depth > 0)
+                if (depth <= 0)
                 {
                     topX -= interval_x;
                     currX = topX;

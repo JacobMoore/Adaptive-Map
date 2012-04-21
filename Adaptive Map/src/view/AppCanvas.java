@@ -158,7 +158,7 @@ public class AppCanvas extends JPanel {
         XmlParser.parseNodeLinks(nodeList);
 
         // Set the chapter node positions.
-        chapterMap = nodeMap.getChapterCoords();
+        chapterMap = NodeMap.getChapterCoords(nodeMap);
         for ( Node n : chapterList ) {
             Point coord = chapterMap.get( n.getNodeTitle() );
             n.moveTo( coord.x, coord.y );
@@ -608,18 +608,10 @@ public class AppCanvas extends JPanel {
         ArrayList<Node> chapterNodes = nodeMap.getChapterNodes(
             selectedNode.getNodeChapter());
 
-        Map<Integer, Point> nodeCoords = nodeMap.setNodeCoords(
-            chapterNodes, selectedNode);
-
         List<Node> firstLevelNodes = Node.getFirstLevelNodes(selectedNode);
 
-        Node.setGridLocations(selectedNode, nodeCoords.values());
-
-        /**
-        for (Entry<Node, GridLocation> nodeLocation : nodeGrid.entrySet()) {
-            nodeLocation.getKey().moveToGridLocation(
-                    nodeLocation.getValue(), selectedNode.getCenterPoint());
-        }*/
+        Map<Integer, Point> nodeCoords = NodeMap.setNodeCoords(
+            chapterNodes, selectedNode, firstLevelNodes);
 
         // Hide nodes that are not linked to the selected node and show
         // nodes that are
