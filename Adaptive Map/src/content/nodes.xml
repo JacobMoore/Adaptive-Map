@@ -13,21 +13,21 @@
 	<linktype>
 		<title>APP</title>
 		<description>Source concept is applied in the destination concept</description>
-		<linetype>DASHED</linetype>
+		<linetype>STANDARD</linetype>
 		<color>black</color>
 	</linktype>
 	
 	<linktype>
 		<title>CON</title>
 		<description>Source is a concept that is required in order to define destination</description>
-		<linetype>BOLD</linetype>
+		<linetype>STANDARD</linetype>
 		<color>black</color>
 	</linktype>
 	
 	<linktype>
 		<title>DRV</title>
 		<description>Destination concept is mathematically derived from the source concept</description>
-		<linetype>DASHED</linetype>
+		<linetype>STANDARD</linetype>
 		<color>black</color>
 	</linktype>
 	
@@ -50,73 +50,73 @@
 	<chaptertype>
 		<title>Vector and Matrix Math</title>
 		<description>Dummy Description</description>
-		<color>green</color>
+		<color>pink</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Forces</title>
 		<description>Dummy Description</description>
-		<color>blue</color>
+		<color>tan</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moments</title>
 		<description>Dummy Description</description>
-		<color>cyan</color>
+		<color>yellow</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Constraints / DOF</title>
 		<description>Dummy Description</description>
-		<color>yellow</color>
+		<color>orange</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Static Equilibrium</title>
 		<description>Dummy Description</description>
-		<color>magenta</color>
+		<color>red</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Multi-Component Assemblies</title>
 		<description>Dummy Description</description>
-		<color>red</color>
+		<color>lightBlue</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Friction</title>
 		<description>Dummy Description</description>
-		<color>blue</color>
+		<color>teal</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moment Intergrals</title>
 		<description>Dummy Description</description>
-		<color>cyan</color>
+		<color>darkBlue</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Flexible Cables</title>
 		<description>Dummy Description</description>
-		<color>yellow</color>
+		<color>purple</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Fluid Statics</title>
 		<description>Dummy Description</description>
-		<color>magenta</color>
+		<color>Seafoam</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Work / Energy</title>
 		<description>Dummy Description</description>
-		<color>red</color>
+		<color>green</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Internal Forces</title>
 		<description>Dummy Description</description>
-		<color>green</color>
+		<color>gold</color>
 	</chaptertype>
 
 	<!-- Nodes -->
@@ -244,7 +244,6 @@
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Joints</link>
 		<link type="CON">Bearings</link>
-		<link type="CON">Degrees of Freedom</link>
 	</node>
 	
 	<node>
@@ -272,6 +271,7 @@
 		<page>http://www.vt.edu/</page>
 		<link type="DRV">Statically Determinate</link>
 		<link type="CON">Equilibrium Stability</link>
+		<link type="CON">Constraints</link>
 	</node>
 	
 	<node>

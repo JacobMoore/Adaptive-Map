@@ -40,7 +40,7 @@ public class Configuration {
 				 String currentDirPath = (new File(".")).getAbsolutePath();
 				 currentDirPath = currentDirPath.substring(0, currentDirPath
 				 .length() - 1);
-				 return String.format("%scontent/nodes2.xml", currentDirPath);
+				 return String.format("%scontent/nodes.xml", currentDirPath);
 				//return "http://localhost:8080/content/nodes.xml";
 			}
 		});
