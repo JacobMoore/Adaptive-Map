@@ -122,8 +122,15 @@
 	<!-- Nodes -->
 	
 	<node>
+		<title>Analysis of Frames and Machines</title>
+		<description>This page describes the procedure for calculating the forces between bodies in frames and machines.</description>
+		<chapter>Multi-Component Assemblies</chapter>
+		<page>http://www.vt.edu/</page>
+	</node>
+	
+	<node>
 		<title>Beam Bending Moment</title>
-		<description>Dummy Description</description>
+		<description>This page describes the process for calculating the moment exerted on a beam by various loads.</description>
 		<chapter>Internal Forces</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="ALT">Shear and Moment Diagrams</link>
@@ -131,7 +138,7 @@
 	
 	<node>
 		<title>Beam Shearing Force</title>
-		<description>Dummy Description</description>
+		<description>This page describes the process for calculating the internal shear force in a beam under various loading conditions.</description>
 		<chapter>Internal Forces</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="ALT">Shear and Moment Diagrams</link>
@@ -139,7 +146,7 @@
 	
 	<node>
 		<title>Beams</title>
-		<description>Dummy Description</description>
+		<description>This page describes what a beam is and various assumptions that can be made when analyzing beams.</description>
 		<chapter>Internal Forces</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Beam Shearing Force</link>
@@ -147,108 +154,105 @@
 	</node>
 	
 	<node>
-		<title>Bearings</title>
-		<description>Dummy Description</description>
-		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Free Body Diagram</link>
-	</node>
-	
-	<node>
 		<title>Belts</title>
-		<description>Belts use friction to transmit motion from one shaft to another.</description>
+		<description>This page describes belts, which use friction to transmit motion from one shaft to another, and describes how to analyze belts.</description>
 		<chapter>Friction</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Bodies</title>
-		<description>Dummy Description</description>
+		<description>This page describes what a body is, the difference between particles and extended bodies, and the difference between rigid and deformable bodies.</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/bodies.html</page>
 		<link type="APP">Concurrent Forces</link>
 		<link type="CON">Newton's Second Law</link>
 		<link type="CON">Free Body Diagram</link>
 		<link type="CON">Princliple of Transmisability</link>
-	</node>
-	
-	<node>
-		<title>Body Force</title>
-		<description>Dummy Description</description>
-		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="SUB">Gravitational Force</link>
+		<link type="CON">Forces</link>
 	</node>
 	
 	<node>
 		<title>Bouyancy</title>
-		<description>Dummy Description</description>
+		<description>This page describes buoyancy forces, which is what keeps some objects afloat.</description>
 		<chapter>Fluid Statics</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Cables Under Their Own Weight</title>
-		<description>Dummy Description</description>
+		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by only their own weight.</description>
 		<chapter>Flexible Cables</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Cables with Distributed Horizontal Loading</title>
-		<description>Dummy Description</description>
+		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by a distributed horizontal load.</description>
 		<chapter>Flexible Cables</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Cables with Point Loading</title>
-		<description>Dummy Description</description>
+		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by one or more point forces.</description>
 		<chapter>Flexible Cables</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Calculating First Moments Through Composite Parts</title>
-		<description>Dummy Description</description>
+		<description>This page describes how to calculate the centroid or center of mass of an object by breaking the area or volume into simpler shapes.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Calculating Second Moments Through Composite Parts</title>
-		<description>Dummy Description</description>
+		<description>This page describes how to calculate the moments of inertia of an area or volume by breaking the area or volume into simpler shapes.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
-		<title>Compression</title>
-		<description>Dummy Description</description>
-		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
-	</node>
-	
-	<node>
 		<title>Concurrent Forces</title>
-		<description>Dummy Description</description>
+		<description>This page describes concurrent forces, which are forces that have lines of action that intersect at a single point.</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/concurrentforces.html</page>
 		<link type="APP">Moments</link>
 	</node>
 	
 	<node>
-		<title>Constraints</title>
-		<description>Dummy Description</description>
+		<title>Connections (Planar)</title>
+		<description>This page describes the different ways two bodies can be connected to one another in 2-D or planar systems.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="CON">Joints</link>
-		<link type="CON">Bearings</link>
+		<page>websites/constraints/connectionsandsupports_2D.html</page>
+		<link type="APP">Free Body Diagram</link>
+		<link type="CON">Plane Trusses</link>
+	</node>
+	
+	<node>
+		<title>Connections (3-D)</title>
+		<description>This page describes the different ways two bodies can be connected to one another in 3-D systems.</description>
+		<chapter>Constraints / DOF</chapter>
+		<page>websites/constraints/connectionsandsupports_3D.html</page>
+		<link type="APP">Free Body Diagram</link>
+		<link type="CON">Space Trusses</link>
+	</node>
+	
+	<node>
+		<title>Constraints</title>
+		<description>Ways in which bodies are prevented from moving or rotating.</description>
+		<chapter>Constraints / DOF</chapter>
+		<page>websites/constraints/constriants.html</page>
+		<link type="CON">Connections (Planar)</link>
+		<link type="CON">Connections (3-D)</link>
+		<link type="DRV">Static Determinacy</link>
 	</node>
 	
 	<node>
 		<title>Couples</title>
-		<description>Dummy Description</description>
+		<description>Two forces with equal and opposite magnitude but differing lines of action that exert a moment on a body.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Equivalent Force/Couple System</link>
@@ -259,38 +263,36 @@
 		<title>Cross Product</title>
 		<description>A process that can be performed on any two vectors that results in a third vector perpendicular to both of the original vectors.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/crossproduct.html</page>
 		<link type="CON">Triple Scalar Product</link>
 		<link type="APP">Moment of a Force About a Point</link>
 	</node>
 	
 	<node>
 		<title>Degrees of Freedom</title>
-		<description>Dummy Description</description>
+		<description>The degrees of freedom of a body is the number of independent ways a body can move.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="DRV">Statically Determinate</link>
+		<page>websites/constraints/degreesoffreedom.html</page>
 		<link type="CON">Equilibrium Stability</link>
-		<link type="CON">Constraints</link>
+		<link type="ALT">Constraints</link>
 	</node>
 	
 	<node>
 		<title>Distributed Force</title>
-		<description>Dummy Description</description>
+		<description>A force that is applied to a body over an area or over a volume.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="SUB">Surface Force</link>
-		<link type="SUB">Body Force</link>
-		<link type="CON">Cables with Distributed Horizontal Loading</link>
-		<link type="CON">Cables Under Their Own Weight</link>
+		<page>websites/forces/distributedforce.html</page>
 		<link type="CON">Equivalent Point Load</link>
+		<link type="SUB">Tension, Compression and Shear</link>
+		<link type="SUB">Hydrostatic Pressure</link>
+		<link type="SUB">Gravitation Force</link>
 	</node>
 	
 	<node>
 		<title>Dot Product</title>
 		<description>A process that can be performed on any two vectors that results in a scalar equal to the length of the first vector projected onto the second.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/dotproduct.html</page>
 		<link type="CON">Triple Scalar Product</link>
 		<link type="APP">Work of a Force</link>
 	</node>
@@ -308,14 +310,14 @@
 	
 	<node>
 		<title>Elastic Potential Energy</title>
-		<description>Dummy Description</description>
+		<description>Energy stored in the deformation (stretching or compressing) of a body.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Energy Equations</title>
-		<description>Dummy Description</description>
+		<description>The equations that describe the different types of energy in any given system.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Mechanical Efficiency</link>
@@ -324,15 +326,15 @@
 	
 	<node>
 		<title>Equations of Static Equilibrium</title>
-		<description>Dummy Description</description>
+		<description>The equations describing all the forces and moments acting on a body in equilibrium.</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/equationsofstaticequilibrium.html</page>
 		<link type="MTH">Solving Systems of Equations Using Matricies</link>
 		<link type="MTH">Free Body Diagram</link>
 		<link type="APP">Two Force Members</link>
-		<link type="APP">Multi-Component Assemblies</link>
 		<link type="APP">Method of Sections</link>
 		<link type="APP">Method of Joints</link>
+		<link type="APP">Analysis of Frames and Machines</link>
 		<link type="APP">Tipping</link>
 		<link type="APP">Impending Motion</link>
 		<link type="APP">Cable Under Its Own Weight</link>
@@ -344,30 +346,30 @@
 	
 	<node>
 		<title>Equilibrium Stability</title>
-		<description>Dummy Description</description>
+		<description>The resistance of an object in equilibrium to disturbances.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Equivalent Point Load</title>
-		<description>Dummy Description</description>
+		<description>A single point force that will have the same effect on a body as the original point or distributed forces.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/equivalentpointload.html</page>
 		<link type="APP">Gravitational Force</link>
 	</node>
 	
 	<node>
-		<title>First Area Moment (Centroid)</title>
-		<description>Dummy Description</description>
+		<title>First Area Moment and the Centroid</title>
+		<description>The centroid of an area is the center of the mass, or force, distributed over that area.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
 	</node>
 	
 	<node>
-		<title>First Mass Moment (Center of Gravity)</title>
-		<description>Dummy Description</description>
+		<title>First Mass Moment and the Center of Mass</title>
+		<description>The center of mass of an object is the center of the mass distributed over a volume.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
@@ -385,11 +387,10 @@
 	
 	<node>
 		<title>Forces</title>
-		<description>Dummy Description</description>
+		<description>A force is any influence that causes a body that has mass to accelerate.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/forces.html</page>
 		<link type="CON">Static Equilibrium</link>
-		<link type="CON">Concurrent Forces</link>
 		<link type="CON">Normal Forces</link>
 		<link type="CON">Work of a Force</link>
 		<link type="CON">Equivalent Force/Couple System</link>
@@ -400,17 +401,17 @@
 	
 	<node>
 		<title>Frames</title>
-		<description>Dummy Description</description>
+		<description>A frame is a connected multi-component assembly that is rigid and contains at least one member that is not a two force member.</description>
 		<chapter>Multi-Component Assemblies</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="MTH">Method of Sections</link>
+		<link type="MTH">Analysis of Frames and Machines</link>
 	</node>
 	
 	<node>
 		<title>Free Body Diagram</title>
-		<description>Dummy Description</description>
+		<description>A diagram showing a body of interest, disconnected from all other bodies with all forces acting on the body labeled.</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/freebodydiagram.html</page>
 		<link type="APP">Two Force Members</link>
 		<link type="APP">Joints</link>
 		<link type="APP">Bearings</link>
@@ -418,22 +419,24 @@
 	
 	<node>
 		<title>Gravitational Force</title>
-		<description>Dummy Description</description>
+		<description>The force that pulls any two objects with mass together.  On the earth's surface this force primarily pulls objects down towards the center of the earth.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/gravityforce.html</page>
 		<link type="APP">Free Body Diagram</link>
+		<link type="CON">Cables with Distributed Horizontal Loading</link>
+		<link type="CON">Cables Under Their Own Weight</link>
 	</node>
 	
 	<node>
 		<title>Gravitational Potential Energy</title>
-		<description>Dummy Description</description>
+		<description>The energy stored in a system by raising an object up, away from the center of the earth.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Hydrostatic Pressure</title>
-		<description>Dummy Description</description>
+		<description>The force exerted by a fluid in equilibrium on any body in contact with the fluid.</description>
 		<chapter>Fluid Statics</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="DRV">Bouyancy</link>
@@ -449,36 +452,28 @@
 	
 	<node>
 		<title>Internal Forces</title>
-		<description>Dummy Description</description>
+		<description>Forces between different sections of a single body.</description>
 		<chapter>Internal Forces</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Beam Shearing Force</link>
 		<link type="CON">Internal Axial and Torque Forces</link>
 		<link type="CON">Beam Bending Moment</link>
 		<link type="CON">Tension in Flexible Cables</link>
+		<link type="APP">Analysis of Frames and Machines</link>
+		<link type="APP">Method of Sections</link>
 	</node>
 	
 	<node>
 		<title>Inverse Matrix</title>
 		<description>Multiplying anything by the inverse of a matrix is equivalent to dividing by that matrix.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>http://mathworld.wolfram.com/MatrixInverse.html</page>
 		<link type="APP">Solving Systems of Equations Using Matricies</link>
 	</node>
 	
 	<node>
-		<title>Joints</title>
-		<description>Dummy Description</description>
-		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Free Body Diagram</link>
-		<link type="CON">Plane Trusses</link>
-		<link type="CON">Space Trusses</link>
-	</node>
-	
-	<node>
 		<title>Kinetic Energy</title>
-		<description>Dummy Description</description>
+		<description>Energy stored in the motion (translation or rotation) of a body.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Energy Equations</link>
@@ -494,23 +489,23 @@
 	
 	<node>
 		<title>Machines</title>
-		<description>Dummy Description</description>
+		<description>A connected multi-component assembly that is not rigid and contains at least one member that is not a two force member.</description>
 		<chapter>Multi-Component Assemblies</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="MTH">Method of Sections</link>
+		<link type="MTH">Analysis of Frames and Machines</link>
 	</node>
 	
 	<node>
 		<title>Matrix Multiplication</title>
 		<description>The process used to multiply two matrices.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/matrixmultiplication.html</page>
 		<link type="APP">Solving Systems of Equations Using Matricies</link>
 	</node>
 	
 	<node>
 		<title>Mechanical Efficiency</title>
-		<description>Dummy Description</description>
+		<description>The percentage of input work that results in useful output work.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
@@ -519,19 +514,19 @@
 		<title>Method of Joints</title>
 		<description>A method used to solve for internal forces in a truss structure that uses the equations of static equilibrium on the joints of the truss structure.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/multicomponentassemblies/methodofjoints.html</page>
 	</node>
 	
 	<node>
 		<title>Method of Sections</title>
 		<description>A method used to solve for internal forces in a truss structure that uses the equations of static equilibrium on designated sections of the truss structure.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/multicomponentassemblies/methodofsections.html</page>
 	</node>
 	
 	<node>
 		<title>Moment of a Force About an Axis</title>
-		<description>Dummy Description</description>
+		<description>Describes the process used to calculate the moment a force exerts around a particular axis.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Torsion</link>
@@ -540,7 +535,7 @@
 	
 	<node>
 		<title>Moment of a Force About a Point</title>
-		<description>Dummy Description</description>
+		<description>Describes the process used to calculate the moment a force exerts around a particular point in space.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="DRV">Moment of a Force About an Axis</link>
@@ -548,11 +543,11 @@
 	
 	<node>
 		<title>The Moment Intergral</title>
-		<description>Dummy Description</description>
+		<description>The general idea of mass or force distributed over space relative to particular point.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
-		<link type="APP">First Area Moment (Centroid)</link>
-		<link type="APP">First Mass Moment (Center of Gravity)</link>
+		<link type="APP">First Area Moment and Centroid</link>
+		<link type="APP">First Mass Moment and Center of Mass</link>
 		<link type="APP">Second Rectangular Area Moment</link>
 		<link type="APP">Second Polar Area Moment</link>
 		<link type="APP">Second Rectangular Mass Moment (Moment of Inertia)</link>
@@ -561,7 +556,7 @@
 	
 	<node>
 		<title>Moments</title>
-		<description>Dummy Description</description>
+		<description>Any influence with the tendency to twist or rotate a body.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="APP">Varignon's Theorem</link>
@@ -573,7 +568,7 @@
 	
 	<node>
 		<title>Multi-Component Assemblies</title>
-		<description>Dummy Description</description>
+		<description>A collection of connected bodies being analyzed together.</description>
 		<chapter>Multi-Component Assemblies</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="SUB">Machines</link>
@@ -583,26 +578,26 @@
 	
 	<node>
 		<title>Newton's Second Law</title>
-		<description>Dummy Description</description>
+		<description>A physical law that states force is equal to mass times acceleration (F=MA).</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/newtonssecondlaw.html</page>
 		<link type="APP">Static Equilibrum</link>
 	</node>
 	
 	<node>
 		<title>Newton's Third Law</title>
-		<description>Dummy Description</description>
+		<description>A physical law that states that for every action (force) there is an equal and opposite reaction.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/constraints/newtonsthirdlaw.html</page>
 		<link type="APP">Normal Force</link>
 		<link type="APP">Multi-Component Assemblies</link>
 	</node>
 	
 	<node>
 		<title>Normal Force</title>
-		<description>Dummy Description</description>
+		<description>The force between two solid bodies in contact that prevents objects from occupying the same space at the same time.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/constraints/normalforce.html</page>
 		<link type="APP">Free Body Diagram</link>
 		<link type="CON">Constraints</link>
 	</node>
@@ -611,27 +606,27 @@
 		<title>Plane Trusses</title>
 		<description>Truss structures that can be approximated as 2-D structures.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/multicomponentassemblies/planetruss.html</page>
 		<link type="MTH">Method of Joints</link>
 		<link type="MTH">Method of Sections</link>
 	</node>
 	
 	<node>
 		<title>Point Force</title>
-		<description>Dummy Description</description>
+		<description>Any force applied to a single point on a body.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="SUB">Tension</link>
-		<link type="SUB">Compression</link>
+		<page>websites/forces/pointforce.html</page>
+		<link type="CON">Tension, Compression and Shear</link>
 		<link type="SUB">Spring Force</link>
 		<link type="CON">Equivalent Point Load</link>
 		<link type="CON">Cables with Point Loading</link>
-		<link type="MTH">Principle of Transmissability</link>
+		<link type="MTH">Principle of Transmissibility</link>
+		<link type="CON">Concurrent Forces</link>
 	</node>
 	
 	<node>
 		<title>Potential Energy</title>
-		<description>Dummy Description</description>
+		<description>Energy that is stored in a way that it can be released at a later time.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Energy Equations</link>
@@ -641,22 +636,22 @@
 	
 	<node>
 		<title>Principle of Transmissibility</title>
-		<description>Dummy Description</description>
+		<description>A principle that states a force vector can be moved anywhere along its line of action and it will have the same effect on the body it is applied to.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/principleoftransmissablity.html</page>
 		<link type="APP">Moment of a Force About a Point</link>
 	</node>
 	
 	<node>
 		<title>Pulleys</title>
-		<description>Dummy Description</description>
+		<description>A type of simple machine that allows a cable to slide through it while changing the direction of the cable.</description>
 		<chapter>Flexible Cables</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
 	
 	<node>
 		<title>Resolution of a Force Into a Force and a Couple</title>
-		<description>Dummy Description</description>
+		<description>The process of changing the representation of a single point force into force with a different point of application and a couple.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="APP">Equivalent Force/Couple System</link>
@@ -671,7 +666,7 @@
 	
 	<node>
 		<title>Second Polar Area Moment</title>
-		<description>Dummy Description</description>
+		<description>The second polar area moment determines a body's resistance to torsion.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
@@ -687,7 +682,7 @@
 	
 	<node>
 		<title>Second Rectangular Area Moment</title>
-		<description>Dummy Description</description>
+		<description>The second rectangular area moment determines a body's resistance to bending.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Equivilant Point Load</link>
@@ -696,7 +691,7 @@
 	
 	<node>
 		<title>Second Rectangular Mass Moment (Moment of Intertia)</title>
-		<description>Dummy Description</description>
+		<description>The second rectangular mass moment determines a body's resistance to angular acceleration (similar to the concept of mass only for angular accelerations.)</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
@@ -704,7 +699,7 @@
 	
 	<node>
 		<title>Shear and Moment Diagrams</title>
-		<description>Dummy Description</description>
+		<description>Diagrams that show the internal shear forces and moments over the length of a beam.</description>
 		<chapter>Internal Forces</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
@@ -713,31 +708,31 @@
 		<title>Solving Systems of Equations Using Matricies</title>
 		<description>The process of using matrix equations to solve large systems of scalar equations.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/matrixequation.html</page>
 	</node>
 	
 	<node>
 		<title>Space Trusses</title>
 		<description>Truss structures that must be approximated as 3-D structures</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/multicomponentassemblies/spacetruss.html</page>
 		<link type="MTH">Method of Joints</link>
 		<link type="MTH">Method of Sections</link>
 	</node>
 	
 	<node>
 		<title>Spring Force</title>
-		<description>Dummy Description</description>
+		<description>A force exerted by a body that has been elastically deformed.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/springforce.html</page>
 		<link type="APP">Free Body Diagram</link>
 	</node>
 	
 	<node>
 		<title>Static Equilibrium</title>
-		<description>Dummy Description</description>
+		<description>When a body is not accelerating, and therefore is experiencing a net force of zero.</description>
 		<chapter>Static Equilibrium</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/staticequilibrium/staticequilibrium.html</page>
 		<link type="CON">Equations of Static Equilibrium</link>
 		<link type="APP">Two Force Members</link>
 	</node>
@@ -753,33 +748,23 @@
 	</node>
 	
 	<node>
-		<title>Statically Determinate</title>
-		<description>Dummy Description</description>
+		<title>Static Determinacy</title>
+		<description>A measure of whether or not all forces in a system can be solved for using the equations of static equilibrium.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/constraints/staticdeterminancy</page>
 	</node>
 	
 	<node>
-		<title>Surface Force</title>
-		<description>Dummy Description</description>
+		<title>Tension, Compression and Shear</title>
+		<description>A comparison of three types of loading that forces can exert on a body.</description>
 		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="SUB">Tension</link>
-		<link type="SUB">Compression</link>
-		<link type="SUB">Hydrostatic Pressure</link>
-	</node>
-	
-	<node>
-		<title>Tension</title>
-		<description>Dummy Description</description>
-		<chapter>Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/forces/tensioncompressionandshear.html</page>
 		<link type="CON">Tension in Flexible Cables</link>
 	</node>
 	
 	<node>
 		<title>Tension in Flexible Cables</title>
-		<description>Dummy Description</description>
+		<description>An examination of the mechanics of flexible cables, and the assumptions that can be made with flexible cables.</description>
 		<chapter>Flexible Cables</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Pulleys</link>
@@ -790,8 +775,8 @@
 	</node>
 	
 	<node>
-		<title>Theorums of Pappus</title>
-		<description>Dummy Description</description>
+		<title>Theorems of Pappus</title>
+		<description>A set of mathematical theorems that can help determine centroids by relating them to volumes and surfaces of revolution.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="APP">Second Polar Area Moment</link>
@@ -806,40 +791,35 @@
 	</node>
 	
 	<node>
-		<title>Transverse Point Loading</title>
-		<description>Dummy Description</description>
-		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
-	</node>
-	
-	<node>
 		<title>Triple Scalar Product</title>
 		<description>A process that can be performed on any three vectors that results in a scalar.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/triplescalarproduct.html</page>
 		<link type="APP">Moment About and Axis</link>
 	</node>
 	
 	<node>
 		<title>Trusses</title>
-		<description>Dummy Description</description>
-		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<description>Rigid multi-component assemblies that consist entirely of two force members.</description>
+		<chapter>Multi-Component Assemblies</chapter>
+		<page>websites/multicomponentassemblies/truss.html</page>
 		<link type="SUB">Plane Trusses</link>
 		<link type="SUB">Space Trusses</link>
 	</node>
 	
 	<node>
 		<title>Two Force Members</title>
-		<description>Dummy Description</description>
-		<chapter>Constraints / DOF</chapter>
-		<page>http://www.vt.edu/</page>
+		<description>Bodies in equilibrium that only experience two forces, ensuring that the two forces are equal and opposite.</description>
+		<chapter>Multi-Component Assemblies</chapter>
+		<page>www.vt.edu</page>
 		<link type="CON">Trusses</link>
+		<link type="CON">Frames</link>
+		<link type="CON">Machines</link>
 	</node>
 	
 	<node>
 		<title>Varignon's Theorem</title>
-		<description>Dummy Description</description>
+		<description>A theorem that states that the resultant of several concurrent forces will exert the same moment on a body as the combination of the moments exerted by all the original forces.</description>
 		<chapter>Moments</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="APP">Moment of a Force About a Point</link>
@@ -851,7 +831,7 @@
 		<title>Vector Addition</title>
 		<description>The process used to add two or more vectors.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/vectoraddition.html</page>
 		<link type="APP">Varignon's Theorem</link>
 	</node>
 	
@@ -859,7 +839,7 @@
 		<title>Vector Decomposition</title>
 		<description>Vector decomposition is the process of breaking down a single vector into two or components.</description>
 		<chapter>Vector and Matrix Math</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/vectormath/vectordecomposition.html</page>
 		<link type="APP">Vector Addition</link>
 		<link type="APP">Cross Product</link>
 		<link type="APP">Dot Product</link>
@@ -867,7 +847,7 @@
 	
 	<node>
 		<title>Virtual Work and Equilibrium</title>
-		<description>Dummy Description</description>
+		<description>A method for solving for forces on a system in equilibrium involving small imaginary displacements and changes in the energy of the system. </description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 	</node>
@@ -882,7 +862,7 @@
 	
 	<node>
 		<title>Work</title>
-		<description>Dummy Description</description>
+		<description>An influence that changes the energy in a system.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="SUB">Work of a Force</link>
@@ -892,7 +872,7 @@
 	
 	<node>
 		<title>Work of a Force</title>
-		<description>Dummy Description</description>
+		<description>Describes the work a force does acting on a body.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
@@ -900,7 +880,7 @@
 	
 	<node>
 		<title>Work of a Couple or Moment</title>
-		<description>Dummy Description</description>
+		<description>Describes the work a moment or couple does acting on a body.</description>
 		<chapter>Work / Energy</chapter>
 		<page>http://www.vt.edu/</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
