@@ -345,6 +345,10 @@ public class Node {
 		bindTextToRectangle();
 	}
 
+	public Color getNodeChapterColor() {
+	    return chapterTypes.get(nodeChapter).getChapterColor();
+	}
+
 	public int getX()
 	{
 		return nodeX;

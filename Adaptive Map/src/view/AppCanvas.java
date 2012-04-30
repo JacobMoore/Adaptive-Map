@@ -131,7 +131,7 @@ public class AppCanvas extends JPanel {
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
 		activeView.getPanel().setSize(new Dimension(1200, 1200));
 		// Set the camera location and altitude
-		activeView.getActiveCamera().setLocation(new Location(500, -300, 300));
+		activeView.getActiveCamera().setLocation(new Location(0, 0, 300));
 
 		// Add view to the frame given
 		appFrame.add(activeView.getPanel());
@@ -147,7 +147,6 @@ public class AppCanvas extends JPanel {
 	private void populateCanvas() {
         nodeList.addAll(nodeMap.getNodes());
         for (Node nodeToAdd : nodeList) {
-            nodeToAdd.showView( ViewType.ONLY_RECTANGLE );
             nodeToAdd.addToVirtualSpace(detailedSpace);
         }
         // IMPORTANT: parse node properties before linking the nodes
@@ -156,6 +155,11 @@ public class AppCanvas extends JPanel {
             Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
         }
         XmlParser.parseNodeLinks(nodeList);
+
+        // Hide all nodes, must be done after links are added to prevent ghost links.
+        for (Node node : nodeList) {
+            node.showView( ViewType.HIDDEN );
+        }
 
         // Set the chapter node positions.
         chapterMap = NodeMap.getChapterCoords(nodeMap);
@@ -167,7 +171,7 @@ public class AppCanvas extends JPanel {
 
         //Set the default selected node
         selectedNode = chapterList.get(0);
-        selectedNode.showView( ViewType.FULL_DESCRIPTION );
+        selectedNode.showView( ViewType.TITLE_ONLY );
 	}
 
 	/**
@@ -371,9 +375,9 @@ public class AppCanvas extends JPanel {
        int parentWidth = searchBar.getParent().getWidth();
        int parentHeight = searchBar.getParent().getHeight();
        searchBar.setBounds( parentWidth - 155, 25, 150, 25);
-       lowViewRadioButton.setBounds( parentWidth - 105, 50, 100, 25);
+       lowViewRadioButton.setBounds( parentWidth - 105, 100, 100, 25);
        medViewRadioButton.setBounds( parentWidth - 105, 75, 100, 25);
-       highViewRadioButton.setBounds( parentWidth - 105, 100, 100, 25);
+       highViewRadioButton.setBounds( parentWidth - 105, 50, 100, 25);
        legendTextArea.setBounds( parentWidth - 255, parentHeight - 230, 250, 225 );
        legendButton.setBounds( parentWidth - 105, 130, 100, 25 );
    }
@@ -496,7 +500,8 @@ public class AppCanvas extends JPanel {
 
         vSpaceManager.getActiveView().centerOnGlyph(
             selectedNode.getGlyph(),
-            vSpaceManager.getActiveCamera(), 1500);
+            vSpaceManager.getActiveCamera(), 1500, false);
+        activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
     }
 
     private void switchToMidLevelView()
@@ -511,6 +516,7 @@ public class AppCanvas extends JPanel {
         vSpaceManager.getActiveView().centerOnGlyph(
             selectedNode.getGlyph(),
             vSpaceManager.getActiveCamera(), 1000);
+        activeView.setBackgroundColor(selectedNode.getNodeChapterColor());
     }
 
     private void selectLowButton()
@@ -581,7 +587,7 @@ public class AppCanvas extends JPanel {
         for (Node n : nodeList) {
             n.showView( newView );
         }
-        newView = isMovingToChapterOverview ? ViewType.FULL_DESCRIPTION: ViewType.HIDDEN;
+        newView = isMovingToChapterOverview ? ViewType.TITLE_ONLY: ViewType.HIDDEN;
         for (Node c : chapterList) {
             c.showView( newView );
         }

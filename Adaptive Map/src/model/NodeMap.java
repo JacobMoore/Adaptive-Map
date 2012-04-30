@@ -263,7 +263,8 @@ public class NodeMap
         int[] centeredhorizontal = horizontalPos;
         Map<Integer, Integer> nodesPerLevel = getNodesPerLevel(verticalPos);
         int baseNodeCount = getMaxNodesPerLevel(nodesPerLevel);
-        int horizontalShift;
+        int vertMax = findMaxPos(verticalPos);
+        int horizontalShift = 0;
         for(int i = 0; i < horizontalPos.length; i++)
         {
             horizontalShift = ((baseNodeCount * 2 -
@@ -271,6 +272,20 @@ public class NodeMap
 
             centeredhorizontal[i] = centeredhorizontal[i] * 2 + horizontalShift;
 
+        }
+
+        // Center the nodes at horizontal position 0.
+        for(int i = 0; i < horizontalPos.length; i++)
+        {
+            if(verticalPos[i] == vertMax)
+            {
+                horizontalShift = centeredhorizontal[i];
+                break;
+            }
+        }
+        for(int i = 0; i < horizontalPos.length; i++)
+        {
+            centeredhorizontal[i] -= horizontalShift;
         }
         return centeredhorizontal;
     }
