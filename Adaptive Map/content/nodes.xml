@@ -49,73 +49,73 @@
 	
 	<chaptertype>
 		<title>Vector and Matrix Math</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to solve equations with vectors or matrices as variables.</description>
 		<color>pink</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Forces</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses what forces are and how they are classified.</description>
 		<color>tan</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moments</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses what moments are and how to calculate them.</description>
 		<color>yellow</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Constraints / DOF</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how objects are either allowed to move or are constrained by the other objects in contact with the first object.</description>
 		<color>orange</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Static Equilibrium</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses the concept of static equilibrium and the assumptions that can be made for objects in static equilibrium.</description>
 		<color>red</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Multi-Component Assemblies</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to analyze systems containing multiple bodies.</description>
 		<color>lightBlue</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Friction</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses what friction forces are and how to calculate them.</description>
 		<color>teal</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moment Intergrals</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how the geometry of parts affects how bodies react to forces and moments.</description>
 		<color>darkBlue</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Flexible Cables</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to analyze systems that contain flexible cables under various loading conditions.</description>
 		<color>purple</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Fluid Statics</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to analyze systems that contain liquids in static equilibrium.</description>
 		<color>Seafoam</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Work / Energy</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to analyze systems using formulas for energy and work.</description>
 		<color>green</color>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Internal Forces</title>
-		<description>Dummy Description</description>
+		<description>Chapter discusses how to analyze the forces acting inside of a body.</description>
 		<color>gold</color>
 	</chaptertype>
 
@@ -125,14 +125,24 @@
 		<title>Analysis of Frames and Machines</title>
 		<description>This page describes the procedure for calculating the forces between bodies in frames and machines.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
+	</node>
+	
+	<node>
+		<title>Axel Friction</title>
+		<description>The friction between a rotating shaft and the bearing that is holding it.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="APP">Journal Bearings</link>
+		<link type="APP">Thrust Bearings</link>
+		<link type="APP">Wheels</link>
 	</node>
 	
 	<node>
 		<title>Beam Bending Moment</title>
 		<description>This page describes the process for calculating the moment exerted on a beam by various loads.</description>
 		<chapter>Internal Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="ALT">Shear and Moment Diagrams</link>
 	</node>
 	
@@ -140,7 +150,7 @@
 		<title>Beam Shearing Force</title>
 		<description>This page describes the process for calculating the internal shear force in a beam under various loading conditions.</description>
 		<chapter>Internal Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="ALT">Shear and Moment Diagrams</link>
 	</node>
 	
@@ -148,7 +158,7 @@
 		<title>Beams</title>
 		<description>This page describes what a beam is and various assumptions that can be made when analyzing beams.</description>
 		<chapter>Internal Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Beam Shearing Force</link>
 		<link type="CON">Beam Bending Moment</link>
 	</node>
@@ -157,7 +167,7 @@
 		<title>Belts</title>
 		<description>This page describes belts, which use friction to transmit motion from one shaft to another, and describes how to analyze belts.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -176,42 +186,42 @@
 		<title>Bouyancy</title>
 		<description>This page describes buoyancy forces, which is what keeps some objects afloat.</description>
 		<chapter>Fluid Statics</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Cables Under Their Own Weight</title>
 		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by only their own weight.</description>
 		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Cables with Distributed Horizontal Loading</title>
 		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by a distributed horizontal load.</description>
 		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Cables with Point Loading</title>
 		<description>This page describes how to analyze the internal forces in flexible cables or ropes that are loaded by one or more point forces.</description>
 		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Calculating First Moments Through Composite Parts</title>
 		<description>This page describes how to calculate the centroid or center of mass of an object by breaking the area or volume into simpler shapes.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Calculating Second Moments Through Composite Parts</title>
 		<description>This page describes how to calculate the moments of inertia of an area or volume by breaking the area or volume into simpler shapes.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -220,6 +230,7 @@
 		<chapter>Static Equilibrium</chapter>
 		<page>websites/staticequilibrium/concurrentforces.html</page>
 		<link type="APP">Moments</link>
+		<link type="MTH">Varignon's Theorem</link>
 	</node>
 	
 	<node>
@@ -244,7 +255,7 @@
 		<title>Constraints</title>
 		<description>Ways in which bodies are prevented from moving or rotating.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>websites/constraints/constriants.html</page>
+		<page>websites/constraints/constraints.html</page>
 		<link type="CON">Connections (Planar)</link>
 		<link type="CON">Connections (3-D)</link>
 		<link type="DRV">Static Determinacy</link>
@@ -254,7 +265,7 @@
 		<title>Couples</title>
 		<description>Two forces with equal and opposite magnitude but differing lines of action that exert a moment on a body.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Equivalent Force/Couple System</link>
 		<link type="CON">Resolution of a Force Into a Force and a Couple</link>
 	</node>
@@ -278,12 +289,28 @@
 	</node>
 	
 	<node>
+		<title>Disk Brakes and Clutches</title>
+		<description>A set of rotors and pads in contact that rely on friction forces to reduce relative motion between the rotors and pads.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
+	</node>
+	
+	<node>
+		<title>Disk Friction</title>
+		<description>The friction between a rotating surface and a stationary surface in contact with one another.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="APP">Disk Brakes and Clutches</link>
+		<link type="APP">Thrust Bearings</link>
+	</node>
+	
+	<node>
 		<title>Distributed Force</title>
 		<description>A force that is applied to a body over an area or over a volume.</description>
 		<chapter>Forces</chapter>
 		<page>websites/forces/distributedforce.html</page>
-		<link type="CON">Equivalent Point Load</link>
-		<link type="SUB">Tension, Compression and Shear</link>
+		<link type="CON">Equivalent Point Load (Distributed)</link>
+		<link type="CON">Tension, Compression and Shear</link>
 		<link type="SUB">Hydrostatic Pressure</link>
 		<link type="SUB">Gravitation Force</link>
 	</node>
@@ -301,25 +328,27 @@
 		<title>Dry Friction</title>
 		<description>The force that opposes motion that results from two solid surfaces in contact with one another.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="SUB">Static Friction</link>
-		<link type="SUB">Kinetic Friction</link>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Mechanical Efficiency</link>
-		<link type="APP">Free Body Diagram</link>
+		<link type="APP">Belts</link>
+		<link type="APP">Wedges</link>
+		<link type="CON">Impending Motion</link>
+		<link type="SUB">Disk Friction</link>
+		<link type="SUB">Axel Friction</link>
 	</node>
 	
 	<node>
 		<title>Elastic Potential Energy</title>
 		<description>Energy stored in the deformation (stretching or compressing) of a body.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Energy Equations</title>
 		<description>The equations that describe the different types of energy in any given system.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Mechanical Efficiency</link>
 		<link type="DRV">Equilibrium Stability</link>
 	</node>
@@ -331,11 +360,10 @@
 		<page>websites/staticequilibrium/equationsofstaticequilibrium.html</page>
 		<link type="MTH">Solving Systems of Equations Using Matricies</link>
 		<link type="MTH">Free Body Diagram</link>
-		<link type="APP">Two Force Members</link>
 		<link type="APP">Method of Sections</link>
 		<link type="APP">Method of Joints</link>
 		<link type="APP">Analysis of Frames and Machines</link>
-		<link type="APP">Tipping</link>
+		<link type="APP">Sliding vs. Tipping</link>
 		<link type="APP">Impending Motion</link>
 		<link type="APP">Cable Under Its Own Weight</link>
 		<link type="APP">Transverse Point Loading</link>
@@ -348,22 +376,39 @@
 		<title>Equilibrium Stability</title>
 		<description>The resistance of an object in equilibrium to disturbances.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
-		<title>Equivalent Point Load</title>
-		<description>A single point force that will have the same effect on a body as the original point or distributed forces.</description>
+		<title>Equivalent Force/Couple System</title>
+		<description>A single point force that will have the same effect on a body as the a collection of point forces in question.</description>
+		<chapter>Moments</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="CON">Statically Equivalent</link>
+		<link type="CON">Wrench</link>
+	</node>
+	
+	<node>
+		<title>Equivalent Point Load (Distributed)</title>
+		<description>A single point force that will have the same effect on a body as the distributed force in in question.</description>
 		<chapter>Forces</chapter>
-		<page>websites/forces/equivalentpointload.html</page>
+		<page>websites/forces/equivalentpointload_df.html</page>
 		<link type="APP">Gravitational Force</link>
+	</node>
+	
+	<node>
+		<title>Equivalent Point Load (Point)</title>
+		<description>A single point force that will have the same effect on a body as the a collection of point forces in question.</description>
+		<chapter>Forces</chapter>
+		<page>websites/forces/equivalentpointload_pf.html</page>
+		<link type="DRV">Equivalent Point Load (Distributed)</link>
 	</node>
 	
 	<node>
 		<title>First Area Moment and the Centroid</title>
 		<description>The centroid of an area is the center of the mass, or force, distributed over that area.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
 	</node>
 	
@@ -371,7 +416,7 @@
 		<title>First Mass Moment and the Center of Mass</title>
 		<description>The center of mass of an object is the center of the mass distributed over a volume.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
 		<link type="CON">Equivalent Point Load</link>
 	</node>
@@ -380,7 +425,7 @@
 		<title>Fluid Friction</title>
 		<description>The drag force that opposes the motion of objects in fluids.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Mechanical Efficiency</link>
 		<link type="APP">Free Body Diagram</link>
 	</node>
@@ -393,8 +438,7 @@
 		<link type="CON">Static Equilibrium</link>
 		<link type="CON">Normal Forces</link>
 		<link type="CON">Work of a Force</link>
-		<link type="CON">Equivalent Force/Couple System</link>
-		<link type="CON">Static Equilibrium</link>
+		<link type="APP">Free Body Diagram</link>
 		<link type="SUB">Point Force</link>
 		<link type="SUB">Distributed Force</link>
 	</node>
@@ -403,7 +447,7 @@
 		<title>Frames</title>
 		<description>A frame is a connected multi-component assembly that is rigid and contains at least one member that is not a two force member.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Analysis of Frames and Machines</link>
 	</node>
 	
@@ -412,9 +456,7 @@
 		<description>A diagram showing a body of interest, disconnected from all other bodies with all forces acting on the body labeled.</description>
 		<chapter>Static Equilibrium</chapter>
 		<page>websites/staticequilibrium/freebodydiagram.html</page>
-		<link type="APP">Two Force Members</link>
-		<link type="APP">Joints</link>
-		<link type="APP">Bearings</link>
+		<link type="APP">Equations of Static Equilibrium</link>
 	</node>
 	
 	<node>
@@ -422,7 +464,7 @@
 		<description>The force that pulls any two objects with mass together.  On the earth's surface this force primarily pulls objects down towards the center of the earth.</description>
 		<chapter>Forces</chapter>
 		<page>websites/forces/gravityforce.html</page>
-		<link type="APP">Free Body Diagram</link>
+		<link type="DRV">Gravitational Potential Energy</link>
 		<link type="CON">Cables with Distributed Horizontal Loading</link>
 		<link type="CON">Cables Under Their Own Weight</link>
 	</node>
@@ -431,14 +473,14 @@
 		<title>Gravitational Potential Energy</title>
 		<description>The energy stored in a system by raising an object up, away from the center of the earth.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Hydrostatic Pressure</title>
 		<description>The force exerted by a fluid in equilibrium on any body in contact with the fluid.</description>
 		<chapter>Fluid Statics</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="DRV">Bouyancy</link>
 		<link type="APP">Free Body Diagram</link>
 	</node>
@@ -447,14 +489,15 @@
 		<title>Impending Motion</title>
 		<description>The point at which an object is about to move because the forces exerted on the object are on the verge of overcoming the static friction forces.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
+		<link type="APP">Sliding vs. Tipping</link>
 	</node>
 	
 	<node>
 		<title>Internal Forces</title>
 		<description>Forces between different sections of a single body.</description>
 		<chapter>Internal Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Beam Shearing Force</link>
 		<link type="CON">Internal Axial and Torque Forces</link>
 		<link type="CON">Beam Bending Moment</link>
@@ -472,26 +515,25 @@
 	</node>
 	
 	<node>
-		<title>Kinetic Energy</title>
-		<description>Energy stored in the motion (translation or rotation) of a body.</description>
-		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="CON">Energy Equations</link>
+		<title>Journal Bearings</title>
+		<description>A type of bearing that allows for rotation about an axis and allows sliding along that axis.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
-		<title>Kinetic Friction</title>
-		<description>Dry friction between two surfaces that are sliding relative to one another.</description>
-		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Wedges</link>
+		<title>Kinetic Energy</title>
+		<description>Energy stored in the motion (translation or rotation) of a body.</description>
+		<chapter>Work / Energy</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="CON">Energy Equations</link>
 	</node>
 	
 	<node>
 		<title>Machines</title>
 		<description>A connected multi-component assembly that is not rigid and contains at least one member that is not a two force member.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Analysis of Frames and Machines</link>
 	</node>
 	
@@ -507,7 +549,7 @@
 		<title>Mechanical Efficiency</title>
 		<description>The percentage of input work that results in useful output work.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -528,8 +570,7 @@
 		<title>Moment of a Force About an Axis</title>
 		<description>Describes the process used to calculate the moment a force exerts around a particular axis.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="CON">Torsion</link>
+		<page>websites/incomplete.html</page>
 		<link type="DRV">Equivalent Force/Couple System</link>
 	</node>
 	
@@ -537,7 +578,7 @@
 		<title>Moment of a Force About a Point</title>
 		<description>Describes the process used to calculate the moment a force exerts around a particular point in space.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="DRV">Moment of a Force About an Axis</link>
 	</node>
 	
@@ -545,7 +586,7 @@
 		<title>The Moment Intergral</title>
 		<description>The general idea of mass or force distributed over space relative to particular point.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="APP">First Area Moment and Centroid</link>
 		<link type="APP">First Mass Moment and Center of Mass</link>
 		<link type="APP">Second Rectangular Area Moment</link>
@@ -558,7 +599,7 @@
 		<title>Moments</title>
 		<description>Any influence with the tendency to twist or rotate a body.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="APP">Varignon's Theorem</link>
 		<link type="CON">Static Equilibrium</link>
 		<link type="CON">Couples</link>
@@ -570,7 +611,7 @@
 		<title>Multi-Component Assemblies</title>
 		<description>A collection of connected bodies being analyzed together.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="SUB">Machines</link>
 		<link type="SUB">Frames</link>
 		<link type="SUB">Trusses</link>
@@ -598,7 +639,6 @@
 		<description>The force between two solid bodies in contact that prevents objects from occupying the same space at the same time.</description>
 		<chapter>Constraints / DOF</chapter>
 		<page>websites/constraints/normalforce.html</page>
-		<link type="APP">Free Body Diagram</link>
 		<link type="CON">Constraints</link>
 	</node>
 	
@@ -617,8 +657,10 @@
 		<chapter>Forces</chapter>
 		<page>websites/forces/pointforce.html</page>
 		<link type="CON">Tension, Compression and Shear</link>
+		<link type="CON">Equivalent Force/Couple System</link>
 		<link type="SUB">Spring Force</link>
-		<link type="CON">Equivalent Point Load</link>
+		<link type="CON">Equivalent Point Load (Point)</link>
+		<link type="CON">Equivalent Point Load (Distributed)</link>
 		<link type="CON">Cables with Point Loading</link>
 		<link type="MTH">Principle of Transmissibility</link>
 		<link type="CON">Concurrent Forces</link>
@@ -628,7 +670,7 @@
 		<title>Potential Energy</title>
 		<description>Energy that is stored in a way that it can be released at a later time.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Energy Equations</link>
 		<link type="SUB">Gravitational Potential Energy</link>
 		<link type="SUB">Elastic Potential Energy</link>
@@ -646,29 +688,37 @@
 		<title>Pulleys</title>
 		<description>A type of simple machine that allows a cable to slide through it while changing the direction of the cable.</description>
 		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Resolution of a Force Into a Force and a Couple</title>
 		<description>The process of changing the representation of a single point force into force with a different point of application and a couple.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="APP">Equivalent Force/Couple System</link>
+	</node>
+	
+	<node>
+		<title>Rolling Resistance</title>
+		<description>A resistance to a wheel rolling along a surface imposed by the deformation of the wheel and the surface.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="APP">Wheels</link>
 	</node>
 	
 	<node>
 		<title>Screws</title>
 		<description>A simple machine that is essentially a wedge wound around a shaft.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Second Polar Area Moment</title>
 		<description>The second polar area moment determines a body's resistance to torsion.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
 	</node>
 	
@@ -676,7 +726,7 @@
 		<title>Second Polar Mass Moment (Polar Moment of Intertia)</title>
 		<description>Dummy Description</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
 	</node>
 	
@@ -684,7 +734,7 @@
 		<title>Second Rectangular Area Moment</title>
 		<description>The second rectangular area moment determines a body's resistance to bending.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Equivilant Point Load</link>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
 	</node>
@@ -693,7 +743,7 @@
 		<title>Second Rectangular Mass Moment (Moment of Intertia)</title>
 		<description>The second rectangular mass moment determines a body's resistance to angular acceleration (similar to the concept of mass only for angular accelerations.)</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating Second Moments Through Composite Parts</link>
 	</node>
 	
@@ -701,7 +751,14 @@
 		<title>Shear and Moment Diagrams</title>
 		<description>Diagrams that show the internal shear forces and moments over the length of a beam.</description>
 		<chapter>Internal Forces</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
+	</node>
+	
+	<node>
+		<title>Sliding vs. Tipping</title>
+		<description>Determining if a body will slide along a surface or rotate and tip over. </description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -725,7 +782,7 @@
 		<description>A force exerted by a body that has been elastically deformed.</description>
 		<chapter>Forces</chapter>
 		<page>websites/forces/springforce.html</page>
-		<link type="APP">Free Body Diagram</link>
+		<link type="DRV">Elastic Potential Energy</link>
 	</node>
 	
 	<node>
@@ -738,20 +795,17 @@
 	</node>
 	
 	<node>
-		<title>Static Friction</title>
-		<description>Dry friction between two surfaces that are not sliding relative to one another.</description>
-		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
-		<link type="APP">Belts</link>
-		<link type="APP">Tipping</link>
-		<link type="APP">Impending Motion</link>
-	</node>
-	
-	<node>
 		<title>Static Determinacy</title>
 		<description>A measure of whether or not all forces in a system can be solved for using the equations of static equilibrium.</description>
 		<chapter>Constraints / DOF</chapter>
-		<page>websites/constraints/staticdeterminancy</page>
+		<page>websites/constraints/staticdeterminacy</page>
+	</node>
+	
+	<node>
+		<title>Statically Equivalent</title>
+		<description>Two sets of forces and/or moments that would cause the same linear and angular acceleration of a body.</description>
+		<chapter>Moments</chapter>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -766,28 +820,27 @@
 		<title>Tension in Flexible Cables</title>
 		<description>An examination of the mechanics of flexible cables, and the assumptions that can be made with flexible cables.</description>
 		<chapter>Flexible Cables</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Pulleys</link>
 		<link type="CON">Cables with Point Loading</link>
 		<link type="CON">Cables with Distributed Horizontal Loading</link>
 		<link type="CON">Cables Under Their Own Weight</link>
-		<link type="APP">Free Body Diagram</link>
 	</node>
 	
 	<node>
 		<title>Theorems of Pappus</title>
 		<description>A set of mathematical theorems that can help determine centroids by relating them to volumes and surfaces of revolution.</description>
 		<chapter>Moment Intergrals</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="APP">Second Polar Area Moment</link>
 		<link type="APP">Second Polar Mass Moment (Polar Moment of Inertia)</link>
 	</node>
 	
 	<node>
-		<title>Tipping</title>
-		<description>When an object on a surface is rotated and falls over onto the surface due to the forces exerted on the object.</description>
+		<title>Thrust Bearings</title>
+		<description>A type of bearing that allows for rotation about an axis and prevents sliding along that axis.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
@@ -811,7 +864,7 @@
 		<title>Two Force Members</title>
 		<description>Bodies in equilibrium that only experience two forces, ensuring that the two forces are equal and opposite.</description>
 		<chapter>Multi-Component Assemblies</chapter>
-		<page>www.vt.edu</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Trusses</link>
 		<link type="CON">Frames</link>
 		<link type="CON">Machines</link>
@@ -821,7 +874,7 @@
 		<title>Varignon's Theorem</title>
 		<description>A theorem that states that the resultant of several concurrent forces will exert the same moment on a body as the combination of the moments exerted by all the original forces.</description>
 		<chapter>Moments</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="APP">Moment of a Force About a Point</link>
 		<link type="APP">Moment of a Force About an Axis</link>
 		<link type="APP">Equivalent Force/Couple System</link>
@@ -849,22 +902,29 @@
 		<title>Virtual Work and Equilibrium</title>
 		<description>A method for solving for forces on a system in equilibrium involving small imaginary displacements and changes in the energy of the system. </description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Wedges</title>
 		<description>A simple machine used to lift or move heavy objects.</description>
 		<chapter>Friction</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="SUB">Screws</link>
+	</node>
+	
+	<node>
+		<title>Wheels</title>
+		<description>A simple machine that allows for rolling.</description>
+		<chapter>Friction</chapter>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Work</title>
 		<description>An influence that changes the energy in a system.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="SUB">Work of a Force</link>
 		<link type="SUB">Work of a Couple or Moment</link>
 		<link type="CON">Energy Equations</link>
@@ -874,7 +934,7 @@
 		<title>Work of a Force</title>
 		<description>Describes the work a force does acting on a body.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
 	</node>
 	
@@ -882,8 +942,15 @@
 		<title>Work of a Couple or Moment</title>
 		<description>Describes the work a moment or couple does acting on a body.</description>
 		<chapter>Work / Energy</chapter>
-		<page>http://www.vt.edu/</page>
+		<page>websites/incomplete.html</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
+	</node>
+	
+	<node>
+		<title>Wrench</title>
+		<description>A force/couple system where the force and moment vectors are parallel.</description>
+		<chapter>Moments</chapter>
+		<page>websites/incomplete.html</page>
 	</node>
 	
 </textbook>
