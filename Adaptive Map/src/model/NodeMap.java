@@ -221,9 +221,12 @@ public class NodeMap
 
         horizontalPos = centerTopLevelCoords(verticalPos, horizontalPos);
 
+
         ArrayList<Point> linkedCoords = getLinkedCoords(firstLevelNodes,
             verticalPos, horizontalPos, centerIndex, centerNode);
         verticalPos = addLinkedCoords(linkedCoords, verticalPos, false);
+
+        verticalPos = reverseVerticalCoords(verticalPos);
         horizontalPos = addLinkedCoords(linkedCoords, horizontalPos, true);
 
         return centerCoords(verticalPos, horizontalPos, scale);
@@ -242,7 +245,6 @@ public class NodeMap
         double scale)
     {
         horizontalPos = centerHorizontalCoords(verticalPos, horizontalPos);
-        verticalPos = reverseVerticalCoords(verticalPos);
         int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
             + Configuration.GRID_BUFFER_SPACE) * scale);
         int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
@@ -315,10 +317,10 @@ public class NodeMap
     private static int[] reverseVerticalCoords(int[] verticalPos)
     {
         int vertMax = findMaxPos(verticalPos);
-        int[] reversedPos = verticalPos;
+        int[] reversedPos = new int[verticalPos.length];
         for (int i = 0 ; i < reversedPos.length; i++)
         {
-            reversedPos[i] -= vertMax;
+            reversedPos[i] = vertMax - verticalPos[i];
         }
         return reversedPos;
     }
@@ -372,7 +374,6 @@ public class NodeMap
                 nodesPerLevel.put(vertical, nodesPerLevel.remove(vertical) + 1);
             else
                 nodesPerLevel.put(vertical, 1);
-            System.out.println("Adding new node at x: " + horizontal + " y: " + vertical);
             linkedCoords.add(new Point(horizontal, vertical));
         }
         return linkedCoords;
