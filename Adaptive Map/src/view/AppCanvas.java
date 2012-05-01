@@ -360,7 +360,6 @@ public class AppCanvas extends JPanel {
         toolsPane.add(legendTextArea, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
 
 
-
         legendButton = new TranslucentButton("Legend");
         legendButton.addActionListener(
             new ActionListener() {
@@ -408,7 +407,7 @@ public class AppCanvas extends JPanel {
        lowViewRadioButton.setBounds( parentWidth - 105, 100, 100, 25);
        medViewRadioButton.setBounds( parentWidth - 105, 75, 100, 25);
        highViewRadioButton.setBounds( parentWidth - 105, 50, 100, 25);
-       legendTextArea.setBounds( parentWidth - 255, parentHeight - 230, 250, 225 );
+       legendTextArea.setBounds( parentWidth - 255, parentHeight - 280, 250, 275 );
        legendButton.setBounds( parentWidth - 105, 130, 100, 25 );
    }
    /**
