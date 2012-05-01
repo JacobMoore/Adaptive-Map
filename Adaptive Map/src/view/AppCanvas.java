@@ -1,5 +1,6 @@
 package view;
 
+import java.util.StringTokenizer;
 import java.awt.Point;
 import model.Node.ViewType;
 import fr.inria.zvtm.glyphs.VText;
@@ -340,7 +341,9 @@ public class AppCanvas extends JPanel {
         legendTextArea.setBackground(Color.DARK_GRAY);
         legendTextArea.setTabSize( 8 );
 
-        String legendString = new String("\tLegend\n1");
+
+
+        String legendString = new String("\tLegend\n");
         Map<String, LinkProperties> links = XmlParser.parseLinkProperties();
         Object[] linkTypes = links.keySet().toArray();
         for( int i=0; i < linkTypes.length; ++i ) {
@@ -348,8 +351,11 @@ public class AppCanvas extends JPanel {
             String description = links.get(linkTypes[i]).getDescription();
             legendString += description + "\n";
         }
+        legendString = justifyText(legendString, 40);
         legendTextArea.setText( legendString );
         toolsPane.add(legendTextArea, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
+
+
 
         legendButton = new TranslucentButton("Legend");
         legendButton.addActionListener(
@@ -362,6 +368,30 @@ public class AppCanvas extends JPanel {
             });
         toolsPane.add(legendButton, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
     }
+
+   private String justifyText(String str, int length)
+   {
+       String result = "";
+       int count = 0;
+       StringTokenizer st = new StringTokenizer(str, " ");
+       while(st.hasMoreTokens())
+       {
+           String word = st.nextToken();
+           count += word.length() + 1;
+           if (count > length)
+           {
+               result += "\n";
+               count = word.length() + 1;
+           }
+           if (word.contains("\n"))
+           {
+               count = word.length() - word.indexOf("\n");
+           }
+           result += word + " ";
+       }
+       return result;
+   }
+
    /**
     * Sets the bounds for all of the tools on the toolbar. Should be called
     * when tools are initialized, and the view is resized.
