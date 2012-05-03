@@ -24,7 +24,6 @@ import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.Translucent;
-import fr.inria.zvtm.glyphs.VRectangle;
 import fr.inria.zvtm.glyphs.VRoundRect;
 import fr.inria.zvtm.glyphs.VText;
 
@@ -47,6 +46,11 @@ public class Node {
 		private int x;
 		private int y;
 
+		/**
+		 * Create a new GridLocation object.
+		 * @param x The x for this GridLocation.
+		 * @param y The y for this GridLocation.
+		 */
 		public GridLocation(int x, int y) {
 			this.setX(x);
 			this.setY(y);
@@ -111,11 +115,20 @@ public class Node {
 		}
 
 	}
+	/**
+	 *  Types of view available for a node.
+	 */
 	public enum ViewType {
 		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY, ONLY_RECTANGLE;
 	}
 
 	private static Map<String, ChapterProperties> chapterTypes;
+
+	/**
+	 * Adds a chapter with its associated properties to the map.
+	 * @param chapterName The name of the chapter.
+	 * @param chapterProperties The properties of the chapter.
+	 */
 	public static void addChapterType(String chapterName,
 			ChapterProperties chapterProperties) {
 		if (chapterTypes == null) {
@@ -128,8 +141,13 @@ public class Node {
 
 	private static final int NODE_PADDING = 2; // in px
 	private static List<Link> nodeLinks = new LinkedList<Link>();
+	/**
+	 * X-location of this node.
+	 */
 	public static int xLocation = 0;
-
+    /**
+     * Y-location of this node.
+     */
 	public static int yLocation = 0;
 
 	/**
@@ -187,17 +205,28 @@ public class Node {
 		return shortestDepth;
 	}
 
+	/**
+	 * @return The next x-position to place a node at.
+	 */
 	public static int generateNextXPosition() {
 		return (xLocation += Configuration.GRID_COLUMN_WIDTH
 				+ Configuration.GRID_BUFFER_SPACE)
 				% ((Configuration.GRID_COLUMN_WIDTH + Configuration.GRID_BUFFER_SPACE) * 10);
 	}
 
+	   /**
+     * @return The next y-position to place a node at.
+     */
 	public static int generateNextYPosition() {
 		return -(Configuration.GRID_ROW_HEIGHT + Configuration.GRID_BUFFER_SPACE)
 				* (xLocation / ((Configuration.GRID_COLUMN_WIDTH + Configuration.GRID_BUFFER_SPACE) * 10));
 	}
 
+	/**
+	 * Gets a list of all nodes one level out from the given node.
+	 * @param selectedNode The node to check.
+	 * @return The list of all nodes one level out.
+	 */
 	public static List<Node> getFirstLevelNodes(Node selectedNode) {
         // Find all of the nodes that will go in the grid
         List<Node> nodesToShow = new ArrayList<Node>();
@@ -220,7 +249,7 @@ public class Node {
 	 *
 	 * @param selectedNode
 	 *            the selected node that the grid is based around
-	 * @return a map of nodes and their grid locations based on the given node
+	 * @param nodeCoords The coordinates of each node.
 	 */
 	public static void setGridLocations(Node selectedNode,
 	    Collection<Point> nodeCoords) {
@@ -301,6 +330,12 @@ public class Node {
 	    return null;
 	}
 
+	/**
+	 * Links two nodes together with a specific link type.
+	 * @param node1 The first node.
+	 * @param node2 The second node.
+	 * @param linkType The type of link to use.
+	 */
 	public static void link(Node node1, Node node2, String linkType) {
 	    Link link = isLinked(node1, node2);
 	    if ( link != null )
@@ -321,10 +356,16 @@ public class Node {
 	private int nodeX;
 	private int nodeY;
 
+	/**
+	 * The virtual space that all drawing is done in.
+	 */
 	protected VirtualSpace virtualSpace;
 
 	/**
 	 * Constructor
+	 * @param nodeTitle The title for the node.
+	 * @param nodeDescription The description for the node.
+	 * @param nodeChapter The chapter that the node is in.
 	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
 		// Important to create this before assigning title/description
@@ -345,20 +386,34 @@ public class Node {
 		bindTextToRectangle();
 	}
 
+	/**
+	 * @return The color of this node's chapter.
+	 */
 	public Color getNodeChapterColor() {
 	    return chapterTypes.get(nodeChapter).getChapterColor();
 	}
 
+	/**
+	 * @return The x-position of this node.
+	 */
 	public int getX()
 	{
 		return nodeX;
 	}
+	/**
+	 * @return The y-position of this node.
+	 */
 	public int getY()
 	{
 		return nodeY;
 	}
 	/**
 	 * Constructor
+	 * @param nodeTitle The title of the node.
+	 * @param nodeDescription The description of the node.
+	 * @param nodeChapter The chapter the node is in.
+	 * @param titleFontSize The font size for this node's title.
+	 * @param descriptionFontSize The font size for this node's description.
 	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
 	    int titleFontSize, int descriptionFontSize)
@@ -415,8 +470,7 @@ public class Node {
 	 * @return Point at the center of the node
 	 */
 	public Point getCenterPoint() {
-		return new Point((int) (nodeRectangle.vx - getWidth() / 2),
-				(int) (nodeRectangle.vy - getHeight() / 2));
+		return new Point((int)nodeRectangle.vx, (int)nodeRectangle.vy);
 	}
 
 	/**
@@ -732,10 +786,10 @@ public class Node {
 						return Node.this.getNodeTranslucency();
 					}
 					@Override
-					public void setTranslucencyValue(float alpha) {
-						nodeRectangle.setTranslucencyValue(alpha);
-						nodeTitle.setTranslucencyValue(alpha);
-						nodeDescription.setTranslucencyValue(alpha);
+					public void setTranslucencyValue(float alpha1) {
+						nodeRectangle.setTranslucencyValue(alpha1);
+						nodeTitle.setTranslucencyValue(alpha1);
+						nodeDescription.setTranslucencyValue(alpha1);
 					}
 				}, alpha, false, IdentityInterpolator.getInstance(),
 						new EndAction() {
@@ -783,15 +837,26 @@ public class Node {
 		}
 	}
 
+	/**
+	 *  Defines a chapter's properties (color and description).
+	 */
 	public static class ChapterProperties {
 		private Color chapterColor;
 		private String description;
 
+		/**
+		 * Create a new ChapterProperties object.
+		 * @param chapterColor The color of the chapter.
+		 * @param description The description of the chapter.
+		 */
 		public ChapterProperties(Color chapterColor, String description) {
 			this.chapterColor = chapterColor;
 			this.description = description;
 		}
 
+		/**
+		 * @return The color associated with the chapter.
+		 */
 		public Color getChapterColor() {
 			return chapterColor;
 		}

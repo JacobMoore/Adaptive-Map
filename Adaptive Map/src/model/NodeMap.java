@@ -32,6 +32,8 @@ public class NodeMap
     }
     /**
      * Add a node to the map with the chapter as its key
+     * @param chapter The chapter for this node.
+     * @param node The node to store.
      */
     public void addNode(String chapter, Node node)
     {
@@ -63,6 +65,9 @@ public class NodeMap
         return ret;
     }
 
+    /**
+     * @return The coordinates for all nodes.
+     */
     public ArrayList<Point> getNodeCoords()
     {
         ArrayList<Point> points = new ArrayList<Point>();
@@ -73,11 +78,19 @@ public class NodeMap
         return points;
     }
 
+    /**
+     * @return The list of all chapter names.
+     */
     public ArrayList<String> getChapters()
     {
         return new ArrayList<String>(nodeMap.keySet());
     }
 
+    /**
+     * Returns a list of all nodes in a chapter.
+     * @param chapter The chapter to get nodes from.
+     * @return The list of nodes.
+     */
     public ArrayList<Node> getNodesFromChapter(String chapter)
     {
         return nodeMap.get(chapter);
@@ -161,6 +174,7 @@ public class NodeMap
      * Read an edge array and set the nodes to the correct coordinates
      * @param chapterNodes the list of nodes to set
      * @param centerNode the node to center the list on
+     * @param firstLevelNodes The nodes one level out from the center node.
      * @return the new node coordinates
      */
     public static Map<Integer, Point> setNodeCoords(ArrayList<Node> chapterNodes,
@@ -195,6 +209,8 @@ public class NodeMap
 
     /**
      * Get a map of chapters to coordinates.
+     * @param nodeMap The node map of chapters to nodes.
+     * @return The coordinates of each chapter.
      */
     public static Map<String, Point> getChapterCoords(NodeMap nodeMap)
     {
