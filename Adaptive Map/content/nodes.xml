@@ -51,72 +51,84 @@
 		<title>Vector and Matrix Math</title>
 		<description>Chapter discusses how to solve equations with vectors or matrices as variables.</description>
 		<color>pink</color>
+		<default>Vector Decomposition</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Forces</title>
 		<description>Chapter discusses what forces are and how they are classified.</description>
 		<color>tan</color>
+		<default>Forces</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moments</title>
 		<description>Chapter discusses what moments are and how to calculate them.</description>
 		<color>yellow</color>
+		<default>Moments</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Constraints / DOF</title>
 		<description>Chapter discusses how objects are either allowed to move or are constrained by the other objects in contact with the first object.</description>
 		<color>orange</color>
+		<default>Constraints</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Static Equilibrium</title>
 		<description>Chapter discusses the concept of static equilibrium and the assumptions that can be made for objects in static equilibrium.</description>
 		<color>red</color>
+		<default>Static Equilibrium</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Multi-Component Assemblies</title>
 		<description>Chapter discusses how to analyze systems containing multiple bodies.</description>
 		<color>lightBlue</color>
+		<default>Multi-Component Assemblies</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Friction</title>
 		<description>Chapter discusses what friction forces are and how to calculate them.</description>
 		<color>teal</color>
+		<default>Dry Friction</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Moment Intergrals</title>
 		<description>Chapter discusses how the geometry of parts affects how bodies react to forces and moments.</description>
 		<color>darkBlue</color>
+		<default>The Moment Intergral</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Flexible Cables</title>
 		<description>Chapter discusses how to analyze systems that contain flexible cables under various loading conditions.</description>
 		<color>purple</color>
+		<default>Tension in Flexible Cables</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Fluid Statics</title>
 		<description>Chapter discusses how to analyze systems that contain liquids in static equilibrium.</description>
 		<color>Seafoam</color>
+		<default>Hydrostatic Pressure</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Work / Energy</title>
 		<description>Chapter discusses how to analyze systems using formulas for energy and work.</description>
 		<color>green</color>
+		<default>Work</default>
 	</chaptertype>
 	
 	<chaptertype>
 		<title>Internal Forces</title>
 		<description>Chapter discusses how to analyze the forces acting inside of a body.</description>
 		<color>gold</color>
+		<default>Internal Forces</default>
 	</chaptertype>
 
 	<!-- Nodes -->
@@ -180,6 +192,7 @@
 		<link type="CON">Free Body Diagram</link>
 		<link type="CON">Princliple of Transmisability</link>
 		<link type="CON">Forces</link>
+		<link type="CON">Statically Equivalent System</link>	
 	</node>
 	
 	<node>
@@ -230,7 +243,7 @@
 		<chapter>Static Equilibrium</chapter>
 		<page>websites/staticequilibrium/concurrentforces.html</page>
 		<link type="APP">Moments</link>
-		<link type="MTH">Varignon's Theorem</link>
+		<link type="CON">Varignon's Theorem</link>
 	</node>
 	
 	<node>
@@ -265,7 +278,7 @@
 		<title>Couples</title>
 		<description>Two forces with equal and opposite magnitude but differing lines of action that exert a moment on a body.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
+		<page>websites/moments/couples.html</page>
 		<link type="CON">Equivalent Force/Couple System</link>
 		<link type="CON">Resolution of a Force Into a Force and a Couple</link>
 	</node>
@@ -275,7 +288,6 @@
 		<description>A process that can be performed on any two vectors that results in a third vector perpendicular to both of the original vectors.</description>
 		<chapter>Vector and Matrix Math</chapter>
 		<page>websites/vectormath/crossproduct.html</page>
-		<link type="CON">Triple Scalar Product</link>
 		<link type="APP">Moment of a Force About a Point</link>
 	</node>
 	
@@ -320,8 +332,8 @@
 		<description>A process that can be performed on any two vectors that results in a scalar equal to the length of the first vector projected onto the second.</description>
 		<chapter>Vector and Matrix Math</chapter>
 		<page>websites/vectormath/dotproduct.html</page>
-		<link type="CON">Triple Scalar Product</link>
 		<link type="APP">Work of a Force</link>
+		<link type="APP">Moment of a Force About an Axis</link>
 	</node>
 	
 	<node>
@@ -359,7 +371,6 @@
 		<chapter>Static Equilibrium</chapter>
 		<page>websites/staticequilibrium/equationsofstaticequilibrium.html</page>
 		<link type="MTH">Solving Systems of Equations Using Matricies</link>
-		<link type="MTH">Free Body Diagram</link>
 		<link type="APP">Method of Sections</link>
 		<link type="APP">Method of Joints</link>
 		<link type="APP">Analysis of Frames and Machines</link>
@@ -370,6 +381,7 @@
 		<link type="APP">Pulleys</link>
 		<link type="APP">Hydrostatic Pressure</link>
 		<link type="APP">Internal Forces</link>
+		<link type="APP">Statically Equivalent System</link>
 	</node>
 	
 	<node>
@@ -383,7 +395,7 @@
 		<title>Equivalent Force/Couple System</title>
 		<description>A single point force that will have the same effect on a body as the a collection of point forces in question.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
+		<page>websites/moments/equivalentforcecouplesystem.html</page>
 		<link type="CON">Statically Equivalent</link>
 		<link type="CON">Wrench</link>
 	</node>
@@ -410,6 +422,7 @@
 		<chapter>Moment Intergrals</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
+		<link type="APP">Equivalent Point Load (Distributed)</link>
 	</node>
 	
 	<node>
@@ -418,7 +431,8 @@
 		<chapter>Moment Intergrals</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="MTH">Calculating First Moments Through Composite Parts</link>
-		<link type="CON">Equivalent Point Load</link>
+		<link type="APP">Equivalent Point Load (Distributed)</link>
+		<link type="APP">Gravitational Force</link>
 	</node>
 	
 	<node>
@@ -427,7 +441,6 @@
 		<chapter>Friction</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Mechanical Efficiency</link>
-		<link type="APP">Free Body Diagram</link>
 	</node>
 	
 	<node>
@@ -482,7 +495,6 @@
 		<chapter>Fluid Statics</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="DRV">Bouyancy</link>
-		<link type="APP">Free Body Diagram</link>
 	</node>
 	
 	<node>
@@ -570,16 +582,18 @@
 		<title>Moment of a Force About an Axis</title>
 		<description>Describes the process used to calculate the moment a force exerts around a particular axis.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
-		<link type="DRV">Equivalent Force/Couple System</link>
+		<page>websites/moments/momentaboutanaxis.html</page>
+		<link type="MTH">Varignon's Theorem</link>
 	</node>
 	
 	<node>
 		<title>Moment of a Force About a Point</title>
 		<description>Describes the process used to calculate the moment a force exerts around a particular point in space.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
+		<page>websites/moments/momentaboutapoint.html</page>
 		<link type="DRV">Moment of a Force About an Axis</link>
+		<link type="MTH">Varignon's Theorem</link>
+		<link type="CON">Resolution of a Force Into a Force and a Couple</link>
 	</node>
 	
 	<node>
@@ -587,8 +601,8 @@
 		<description>The general idea of mass or force distributed over space relative to particular point.</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>websites/incomplete.html</page>
-		<link type="APP">First Area Moment and Centroid</link>
-		<link type="APP">First Mass Moment and Center of Mass</link>
+		<link type="APP">First Area Moment and the Centroid</link>
+		<link type="APP">First Mass Moment and the Center of Mass</link>
 		<link type="APP">Second Rectangular Area Moment</link>
 		<link type="APP">Second Polar Area Moment</link>
 		<link type="APP">Second Rectangular Mass Moment (Moment of Inertia)</link>
@@ -599,8 +613,7 @@
 		<title>Moments</title>
 		<description>Any influence with the tendency to twist or rotate a body.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
-		<link type="APP">Varignon's Theorem</link>
+		<page>websites/moments/moments.html</page>
 		<link type="CON">Static Equilibrium</link>
 		<link type="CON">Couples</link>
 		<link type="CON">Moment of a Force About a Point</link>
@@ -622,7 +635,7 @@
 		<description>A physical law that states force is equal to mass times acceleration (F=MA).</description>
 		<chapter>Static Equilibrium</chapter>
 		<page>websites/staticequilibrium/newtonssecondlaw.html</page>
-		<link type="APP">Static Equilibrum</link>
+		<link type="APP">Static Equilibrium</link>
 	</node>
 	
 	<node>
@@ -640,6 +653,14 @@
 		<chapter>Constraints / DOF</chapter>
 		<page>websites/constraints/normalforce.html</page>
 		<link type="CON">Constraints</link>
+	</node>
+	
+	<node>
+		<title>Parallel Axis Theorem</title>
+		<description>A theorem that allows you to determine the second moment of inertia (mass or area) about any axis based on the second moment of inertia about the center of mass.</description>
+		<chapter>Moment Intergrals</chapter>
+		<page>websites/incomplete.html</page>
+		<link type="APP">Calculating Second Moments Through Composite Parts</link>
 	</node>
 	
 	<node>
@@ -680,7 +701,7 @@
 		<title>Principle of Transmissibility</title>
 		<description>A principle that states a force vector can be moved anywhere along its line of action and it will have the same effect on the body it is applied to.</description>
 		<chapter>Forces</chapter>
-		<page>websites/forces/principleoftransmissablity.html</page>
+		<page>websites/forces/principleoftransmissability.html</page>
 		<link type="APP">Moment of a Force About a Point</link>
 	</node>
 	
@@ -695,7 +716,7 @@
 		<title>Resolution of a Force Into a Force and a Couple</title>
 		<description>The process of changing the representation of a single point force into force with a different point of application and a couple.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
+		<page>websites/moments/resolution.html</page>
 		<link type="APP">Equivalent Force/Couple System</link>
 	</node>
 	
@@ -723,7 +744,7 @@
 	</node>
 	
 	<node>
-		<title>Second Polar Mass Moment (Polar Moment of Intertia)</title>
+		<title>Second Polar Mass Moment (Polar Moment of Inertia)</title>
 		<description>Dummy Description</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>websites/incomplete.html</page>
@@ -740,7 +761,7 @@
 	</node>
 	
 	<node>
-		<title>Second Rectangular Mass Moment (Moment of Intertia)</title>
+		<title>Second Rectangular Mass Moment (Moment of Inertia)</title>
 		<description>The second rectangular mass moment determines a body's resistance to angular acceleration (similar to the concept of mass only for angular accelerations.)</description>
 		<chapter>Moment Intergrals</chapter>
 		<page>websites/incomplete.html</page>
@@ -802,10 +823,14 @@
 	</node>
 	
 	<node>
-		<title>Statically Equivalent</title>
-		<description>Two sets of forces and/or moments that would cause the same linear and angular acceleration of a body.</description>
-		<chapter>Moments</chapter>
+		<title>Statically Equivalent System</title>
+		<description>Two sets of forces and/or moments are said to be statically equivalentif they would cause the same linear and angular acceleration of a body.</description>
+		<chapter>Static Equilibrium</chapter>
 		<page>websites/incomplete.html</page>
+		<link type="CON">Equivalent Point Load (Point)</link>
+		<link type="CON">Equivalent Point Load (Distributed)</link>
+		<link type="CON">Equivalent Force/Couple System</link>
+		<link type="CON">Principle of Transmissibility</link>
 	</node>
 	
 	<node>
@@ -844,14 +869,6 @@
 	</node>
 	
 	<node>
-		<title>Triple Scalar Product</title>
-		<description>A process that can be performed on any three vectors that results in a scalar.</description>
-		<chapter>Vector and Matrix Math</chapter>
-		<page>websites/vectormath/triplescalarproduct.html</page>
-		<link type="APP">Moment About and Axis</link>
-	</node>
-	
-	<node>
 		<title>Trusses</title>
 		<description>Rigid multi-component assemblies that consist entirely of two force members.</description>
 		<chapter>Multi-Component Assemblies</chapter>
@@ -874,10 +891,7 @@
 		<title>Varignon's Theorem</title>
 		<description>A theorem that states that the resultant of several concurrent forces will exert the same moment on a body as the combination of the moments exerted by all the original forces.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
-		<link type="APP">Moment of a Force About a Point</link>
-		<link type="APP">Moment of a Force About an Axis</link>
-		<link type="APP">Equivalent Force/Couple System</link>
+		<page>websites/moments/varignonstheorem.html</page>
 	</node>
 	
 	<node>
@@ -950,7 +964,7 @@
 		<title>Wrench</title>
 		<description>A force/couple system where the force and moment vectors are parallel.</description>
 		<chapter>Moments</chapter>
-		<page>websites/incomplete.html</page>
+		<page>websites/moments/wrench.html</page>
 	</node>
 	
 </textbook>
