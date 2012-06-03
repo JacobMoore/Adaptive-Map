@@ -5,9 +5,12 @@ import fr.inria.zvtm.glyphs.VPolygon;
 import fr.inria.zvtm.glyphs.VText;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+
+import controller.Configuration;
 import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.glyphs.VSegment;
 
@@ -50,15 +53,14 @@ public class Link
         linkTypes.put(linkName, linkProperties);
     }
 
-    private static final int BOLD_WIDTH   = 5;
     private static final int LINK_Z_INDEX = -1;
-    private static final int LETTER_SIZE  = 10;
 
     private Node             fromNode, toNode;
     private final String     linkType;
     private VirtualSpace     virtualSpace;
     private VText            linkText;
     private int              linkWeight;
+    private int				 arrowSize;
     private EndTriangle      endTriangle;
 
 
@@ -71,7 +73,7 @@ public class Link
      * @param linkType
      *            the type of link connecting the two given nodes
      */
-    public Link(Node fromNode, Node toNode, String linkType)
+    public Link(Node fromNode, Node toNode, String linkType, int aSize)
     {
         // Create link glyph
         // constructor for custom color
@@ -93,6 +95,8 @@ public class Link
          * setStrokeWidth(BOLD_WIDTH); break; case DASHED : setDashed(true);
          * break; case STANDARD : default : break; }
          */
+        
+        arrowSize = aSize;
 
         this.fromNode = fromNode;
         this.toNode = toNode;
@@ -110,6 +114,7 @@ public class Link
         Point linkCenter = getLinkCenter();
         linkText =
             new VText(linkCenter.x, linkCenter.y, 0, Color.red, linkType);
+        linkText.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.LINK_FONT_SIZE));
         virtualSpace.addGlyph(this);
         virtualSpace.addGlyph(linkText);
         linkText.setVisible(false);
@@ -160,7 +165,8 @@ public class Link
             toCenterPoint.x,
             toCenterPoint.y);
         Point linkCenter = getLinkCenter();
-        linkText.moveTo(linkCenter.x, linkCenter.y);
+        // Center the text on the link
+        linkText.moveTo(linkCenter.x - Configuration.LINK_FONT_SIZE, linkCenter.y);
 
         // Remove, then re-add triangle, as it will have moved
         virtualSpace.removeGlyph(endTriangle);
@@ -180,8 +186,8 @@ public class Link
      */
     private LongPoint[] createTrianglePoints(Node startNode, Node endNode)
     {
-        int arrowHeight = 20;
-        int arrowWidth = 10;
+        int arrowHeight = arrowSize;
+        int arrowWidth = arrowSize/2;
         LongPoint[] vertices = new LongPoint[3];
         Point centerOfEndNode = endNode.getCenterPoint();
         Point centerOfStartNode = startNode.getCenterPoint();
@@ -199,6 +205,7 @@ public class Link
 
         if (diffX == 0)
         {
+        	//color = Color.orange;
             if (diffY > 0)
             {
                 vertices[0] = new LongPoint(endX, endY - nodeHeight / 2);
@@ -224,6 +231,7 @@ public class Link
         }
         else if (diffY == 0)
         {
+        	//color = Color.orange;
             if (diffX > 0)
             {
                 vertices[0] = new LongPoint(endX - nodeWidth / 2, endY);
@@ -249,63 +257,61 @@ public class Link
         }
         else
         {
-
             Point intersectionPoint;
 
-            // Top or bottom
+            // Left
             if ((intersectionPoint =
-                intersection(endX, endY, linkCenter.x, linkCenter.y, endX
-                    - nodeWidth, endY + nodeHeight, endX + nodeWidth, endY
-                    + nodeHeight)) != null)
+                intersection(endX, endY, startX, startY,
+                		endX - nodeWidth, endY - nodeHeight, 
+                		endX - nodeWidth, endY + nodeHeight)) != null)
             {
-                if (linkCenter.y > endY)
-                {
+                	//color = Color.green;
                     endX = intersectionPoint.x;
                     endY = intersectionPoint.y;
-                }
-                else
-                {
-                    intersectionPoint =
-                        intersection(
-                            endX,
-                            endY,
-                            linkCenter.x,
-                            linkCenter.y,
-                            endX - nodeWidth,
-                            endY - nodeHeight,
-                            endX + nodeWidth,
-                            endY - nodeHeight);
-                    endX = intersectionPoint.x;
-                    endY = intersectionPoint.y;
-                }
+
             }
-            // Left or right
+            // Right
             else if ((intersectionPoint =
-                intersection(endX, endY, linkCenter.x, linkCenter.y, endX
-                    - nodeWidth, endY - nodeHeight, endX - nodeWidth, endY
-                    + nodeHeight)) != null)
+                    intersection(
+                        endX, endY, startX, startY,
+                        endX + nodeWidth, endY - nodeHeight,
+                        endX + nodeWidth, endY + nodeHeight)) != null)
             {
-                if (linkCenter.x < endX)
-                {
-                    endX = intersectionPoint.x;
-                    endY = intersectionPoint.y;
-                }
-                else
-                {
-                    intersectionPoint =
-                        intersection(
-                            endX,
-                            endY,
-                            linkCenter.x,
-                            linkCenter.y,
-                            endX + nodeWidth,
-                            endY - nodeHeight,
-                            endX + nodeWidth,
-                            endY + nodeHeight);
-                    endX = intersectionPoint.x;
-                    endY = intersectionPoint.y;
-                }
+
+            	//color = Color.yellow;
+                endX = intersectionPoint.x;
+                endY = intersectionPoint.y;
             }
+            // Bottom
+            else if ((intersectionPoint =
+                intersection(endX, endY, startX, startY, 
+                		endX - nodeWidth, endY + nodeHeight, 
+                		endX + nodeWidth, endY + nodeHeight)) != null)
+            {
+                	//color = Color.red;
+                    endX = intersectionPoint.x;
+                    endY = intersectionPoint.y;
+            }
+            // Top
+            else if(
+                (intersectionPoint =
+                    intersection(
+                        endX, endY, startX, startY,
+                        endX - nodeWidth, endY - nodeHeight,
+                        endX + nodeWidth, endY - nodeHeight)) != null)
+            {
+            	//color = Color.blue;
+                endX = intersectionPoint.x;
+                endY = intersectionPoint.y;
+            }
+            /*else
+            {
+            	System.out.println("No valid link intersection found.");
+            	System.out.println(startNode.getNodeTitle() + " to " + 
+            			endNode.getNodeTitle() + ".");
+            }*/
+            
+
 
             double distance = distance(endX, endY, linkCenter.x, linkCenter.y);
             int xDist = endX - linkCenter.x;
@@ -323,8 +329,7 @@ public class Link
                 endY - arrowHeight * (yDist / distance) - arrowWidth
                     * (xDist / distance);
 
-            LongPoint nodePoint = new LongPoint(endX, endY);
-            vertices[0] = nodePoint;
+            vertices[0] = new LongPoint(endX, endY);
             vertices[1] = new LongPoint(newX1, newY1);
             vertices[2] = new LongPoint(newX2, newY2);
             return vertices;
@@ -333,50 +338,64 @@ public class Link
 
 
     /**
-     * Finds the intersection point of two line segments (X1,Y1) to (X2,Y2) and
-     * (X3,Y3) to (X4,Y4).
-     * @param x1
-     *            First x.
-     * @param y1
-     *            First y.
-     * @param x2
-     *            Second x.
-     * @param y2
-     *            Second y.
-     * @param x3
-     *            Third x.
-     * @param y3
-     *            Third y.
-     * @param x4
-     *            Fourth x.
-     * @param y4
-     *            Fourth y.
-     * @return The intersection point.
+     * Computes the intersection between two segments.
+     * This is based off an explanation and expanded math presented by Paul Bourke,
+     * and corresponding C# code by Olaf Rabbachin.
+     * See http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
+     * 
+     * @param x1 Starting point of Segment 1
+     * @param y1 Starting point of Segment 1
+     * @param x2 Ending point of Segment 1
+     * @param y2 Ending point of Segment 1
+     * @param x3 Starting point of Segment 2
+     * @param y3 Starting point of Segment 2
+     * @param x4 Ending point of Segment 2
+     * @param y4 Ending point of Segment 2
+     * @return Point where the segments intersect, or null if they don't
      */
-    private Point intersection(
-        int x1,
-        int y1,
-        int x2,
-        int y2,
-        int x3,
-        int y3,
-        int x4,
-        int y4)
-    {
-        int d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-        if (d == 0)
-            return null;
+    public Point intersection(
+    	int x1,int y1,int x2,int y2, 
+        int x3, int y3, int x4,int y4
+     ) {
+    	
+           // Denominator for ua and ub are the same, so store this calculation
+           double d =
+              (y4 - y3) * (x2 - x1)
+              -
+              (x4 - x3) * (y2 - y1);
 
-        int xi =
-            ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4))
-                / d;
-        int yi =
-            ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4))
-                / d;
+           //n_a and n_b are calculated as seperate values for readability
+           double n_a =
+              (x4 - x3) * (y1 - y3)
+              -
+              (y4 - y3) * (x1 - x3);
 
-        return new Point(xi, yi);
+           double n_b =
+              (x2 - x1) * (y1 - y3)
+              -
+              (y2 - y1) * (x1 - x3);
+
+           // Make sure there is not a division by zero - this also indicates that
+           // the lines are parallel.  
+           // If n_a and n_b were both equal to zero the lines would be on top of each 
+           // other (coincidental).  This check is not done because it is not 
+           // necessary for this implementation (the parallel check accounts for this).
+           if (d == 0)
+              return null;
+
+           // Calculate the intermediate fractional point that the lines potentially intersect.
+           double ua = n_a / d;
+           double ub = n_b / d;
+
+           // The fractional point will be between 0 and 1 inclusive if the lines
+           // intersect.  If the fractional calculation is larger than 1 or smaller
+           // than 0 the lines would need to be longer to intersect.
+           if (ua >= 0d && ua <= 1d && ub >= 0d && ub <= 1d) {
+        	  Point p = new Point((int)(x1 + (ua * (x2 - x1))), (int)(y1 + (ua * (y2 - y1))));
+              return p;
+           }
+           return null;
     }
-
 
     /**
      * Finds the distance between two points (X1,Y1) and (X2,Y2).
@@ -426,11 +445,11 @@ public class Link
     /**
      * Highlights this link and its arrow, and shows its text.
      */
-    public void highlight()
+    public void highlight(boolean showText)
     {
         setColor(Color.black);
         endTriangle.setColor(Color.lightGray);
-        if (isVisible())
+        if (isVisible() && showText)
             linkText.setVisible(true);
         VirtualSpaceManager.INSTANCE.repaintNow();
     }
@@ -457,9 +476,6 @@ public class Link
             (fromNode.getCenterPoint().x + toNode.getCenterPoint().x) / 2;
         int centerY =
             (fromNode.getCenterPoint().y + toNode.getCenterPoint().y) / 2;
-        // move the text so that its center is on the center of the link
-        centerX -= LETTER_SIZE;
-        centerY -= (LETTER_SIZE / 2);
         return new Point(centerX, centerY);
     }
 
@@ -491,8 +507,6 @@ public class Link
         private LinkLineType linkLineType;
         private Color        linkColor;
         private String       description;
-        private boolean      highlighted;
-
 
         /**
          * Create a new LinkProperties object.

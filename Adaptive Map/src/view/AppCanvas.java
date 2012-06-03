@@ -6,8 +6,6 @@ import model.Node.ViewType;
 import fr.inria.zvtm.glyphs.VText;
 import model.NodeMap;
 import java.awt.event.ActionEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import fr.inria.zvtm.widgets.TranslucentButton;
 import javax.swing.JButton;
 import java.util.Map;
@@ -30,6 +28,7 @@ import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.Map.Entry;
@@ -50,10 +49,15 @@ import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -66,6 +70,7 @@ public class AppCanvas extends JPanel {
 
 	private final VirtualSpaceManager vSpaceManager;
 	private List<Node> nodeList;
+	private Map<String, String> defaultNodes;
 	private List<Node> chapterList;
 	private NodeMap nodeMap;
 	private Map<String, Point> chapterMap;
@@ -73,6 +78,11 @@ public class AppCanvas extends JPanel {
 	private Camera detailedCamera;
 	public AppletContext appletContext;
 	private View activeView;
+	
+	/* List of all chapter names */
+	private ArrayList<String> chapters;
+	/* Numbers for gradient fill for chapters */
+	private ArrayList<Integer> numPerChapter;
 
 	// Currently selected node.
 	private Node selectedNode;
@@ -82,28 +92,41 @@ public class AppCanvas extends JPanel {
 
 	// Tools panel variables.
 	private JRadioButton lowViewRadioButton, medViewRadioButton, highViewRadioButton;
-	private JButton legendButton;
+	private JButton legendButton, optionsButton;
 	private JTextField searchBar;
 	private JTextArea legendTextArea;
+	private JDialog optionsDialog;
+	private boolean canDrag = false;
 
 	// Search Variables
 	private DefaultListModel listModel;
-	private JList list;
-	private Node selectedSearchEntry;
 	private ArrayList<Node> nodes;
 	private boolean initial = true;
+	
+	// Number of total nodes, used for coloring chapter nodes.
+	private float maxNodes;
 
 	public AppCanvas(VirtualSpaceManager vSpaceManager, Container appFrame,
 	    AppletContext context) {
         nodeList = new ArrayList<Node>();
         nodeMap = new NodeMap();
 		chapterList = new ArrayList<Node>();
+		chapters = new ArrayList<String>();
+		numPerChapter = new ArrayList<Integer>();
         VText.setMainFont( VText.getMainFont().deriveFont( Configuration.NODE_FONT_SIZE ) );
 		this.vSpaceManager = vSpaceManager;
 		createView(appFrame);
         addTools(appFrame);
         appletContext = context;
 		populateCanvas();
+	}
+	
+	public float getNumNodesPerChapter(String chapterTitle) {
+		int chapter = chapters.indexOf(chapterTitle);
+		if (chapter == -1)
+			return -1;
+//		System.out.println(chapterTitle + ": " + numPerChapter.get(chapter));
+		return numPerChapter.get(chapter)/maxNodes;
 	}
 
 	/**
@@ -159,20 +182,65 @@ public class AppCanvas extends JPanel {
 
         // Hide all nodes, must be done after links are added to prevent ghost links.
         for (Node node : nodeList) {
-            node.showView( ViewType.HIDDEN );
+            node.showView( ViewType.HIDDEN, false );
+        }
+        
+        // Initialize numPerChapter.
+        for (int j = 0; j < chapters.size(); j++) {
+        	numPerChapter.add(0);
+        }
+
+        // Determine the numPerChapter for each chapter.
+        for (Node n: nodeList) {          	
+        	for (int i = 0; i < chapters.size(); i++) {
+        		if (chapters.get(i).equals(n.getNodeChapter())) {
+        			numPerChapter.set(i, numPerChapter.get(i) + 1);
+        			break;
+        		}
+        	}
+        }
+
+        maxNodes = 0;
+        for (Integer i : numPerChapter) {
+        	if (i > maxNodes)
+        		maxNodes = i;
+        }
+
+        defaultNodes = new HashMap<String, String>();
+        for (Entry<String, ChapterProperties> chapterProperty : XmlParser
+                .parseChapterProperties().entrySet()) {
+            // Add the chapter to the chapter list, and the vs.
+            // Titles and chapters of chapter nodes are the same so that
+            // chapter nodes are easily identified.
+            Node newChapter = new Node(chapterProperty.getKey(), chapterProperty
+                    .getValue().getDescription(), chapterProperty.getKey(),
+                    Configuration.CHAPTER_TITLE_FONT_SIZE,
+                    Configuration.CHAPTER_DESCRIPTION_FONT_SIZE,
+                    getNumNodesPerChapter(chapterProperty.getKey()));
+            if (Configuration.USE_FIXED_NODE_POSITIONS)
+            {
+            	newChapter.setFixedNodePosition(chapterProperty.getValue()
+            			.getChapterXPos(), chapterProperty.getValue()
+            			.getChapterYPos());
+            }
+            newChapter.addToVirtualSpace( detailedSpace );
+            chapterList.add( newChapter );
+            defaultNodes.put(chapterProperty.getKey(), chapterProperty.getValue().getDefaultNode());
         }
 
         // Set the chapter node positions.
         chapterMap = NodeMap.getChapterCoords(nodeMap);
         for ( Node n : chapterList ) {
             Point coord = chapterMap.get( n.getNodeTitle() );
-            n.moveTo( coord.x, coord.y );
+            if ( Configuration.USE_FIXED_NODE_POSITIONS )
+            	n.moveToFixedPos();
+            else
+            	n.moveAbsolute( coord.x, coord.y );
         }
         parseChapterLinks();
 
         //Set the default selected node
         selectedNode = chapterList.get(0);
-        selectedNode.showView( ViewType.TITLE_ONLY );
 	}
 
 	/**
@@ -185,16 +253,25 @@ public class AppCanvas extends JPanel {
 	            continue;
 	        // For all nodes in current chapter
 	        for ( Node node : nodeMap.getChapterNodes( chapter ) ) {
-	            // For all linked nodes
-	            for ( Node i : node.getLinkedNodes() ) {
+	            // For all links
+	        	for (Link l : node.getNodeLinks())
+	        	{
+	        		Node linkedChapter = getChapterNode(l.getToNode().getNodeChapter());
+	        		if (linkedChapter == null)
+	        			continue;
+	        		Node.link( currentChapter, linkedChapter, Link.LinkLineType.STANDARD.name(), 100, true );
+	        	}
+	        	// For all linked nodes
+	            /*for ( Node i : node.getLinkedNodes() ) {
 	                // Check not linked to current chapter
 	                if ( !i.getNodeChapter().equals( chapter ) ) {
 	                    Node linkedChapter = getChapterNode(i.getNodeChapter());
 	                    if ( linkedChapter == null )
 	                        continue;
-	                    Node.link( currentChapter, linkedChapter, Link.LinkLineType.STANDARD.name() );
+	                    Node.link( currentChapter, linkedChapter, 
+	                    	Link.LinkLineType.STANDARD.name(), 80, true );
 	                }
-	            }
+	            }*/
 	        }
 	    }
 	}
@@ -212,13 +289,17 @@ public class AppCanvas extends JPanel {
 	    return null;
 	}
 
+	/*
+	 * Searches for a node with the given string in its title or description.
+	 */
 	public ArrayList<Node> searchForNode(String searchString)
 	{
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		String str = searchString.toLowerCase();
 		for (Node n: nodeList)
 		{
-			if (n.getNodeTitle().toLowerCase().contains(str) || n.getNodeDescription().toLowerCase().contains(str) ||
+			if (n.getNodeTitle().toLowerCase().contains(str) || 
+					n.getNodeDescription().toLowerCase().contains(str) ||
 					n.getNodeChapter().toLowerCase().contains(str))
 			{
 				nodes.add(n);
@@ -227,23 +308,14 @@ public class AppCanvas extends JPanel {
 		return nodes;
 	}
     private void populateNodeMap()
-    {
+    {      
         // IMPORTANT: parse chapter properties before parsing node information
+    	// Gathers the names of all chapter nodes into 'chapters'.
         for (Entry<String, ChapterProperties> chapterProperty : XmlParser
                 .parseChapterProperties().entrySet()) {
             Node.addChapterType(chapterProperty.getKey(), chapterProperty
                     .getValue());
-
-            // Add the chapter to the chapter list, and the vs.
-            // Titles and chapters of chapter nodes are the same so that
-            // chapter nodes are easily identified.
-            Node newChapter = new Node(chapterProperty.getKey(), chapterProperty
-                    .getValue().getDescription(), chapterProperty.getKey(),
-                    Configuration.CHAPTER_TITLE_FONT_SIZE,
-                    Configuration.CHAPTER_DESCRIPTION_FONT_SIZE);
-            newChapter.showView( ViewType.TITLE_ONLY );
-            newChapter.addToVirtualSpace( detailedSpace );
-            chapterList.add( newChapter );
+            chapters.add(chapterProperty.getKey());
         }
         nodeMap = XmlParser.parseNodeInformation();
     }
@@ -364,12 +436,105 @@ public class AppCanvas extends JPanel {
         legendButton.addActionListener(
             new ActionListener() {
                 @Override
-                public void actionPerformed( ActionEvent e )
-                {
+                public void actionPerformed( ActionEvent e ) {
                     legendTextArea.setVisible( !legendTextArea.isVisible() );
                 }
             });
         toolsPane.add(legendButton, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
+        
+        // Options button components
+        optionsDialog = new JDialog((JFrame)null, "Options", true);
+        JRadioButton dragEnable = new JRadioButton("Enable Node Dragging");
+        JButton ok = new JButton("OK");
+        JButton increaseFontButton = new JButton("Increase Font Size");
+        JButton decreaseFontButton = new JButton("Decrease Font Size");
+        JLabel zoomLabel = new JLabel("Zoom Level: Mode Switch");
+        JSlider zoomSlider = new JSlider(Configuration.ZOOM_OVERVIEW_MIN,
+        		Configuration.ZOOM_OVERVIEW_MAX,
+        		Configuration.ZOOM_OVERVIEW_HEIGHT);
+        
+        // Options buttons component listeners
+        dragEnable.addActionListener(
+    		new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					canDrag = !canDrag;
+				}
+    		});
+        ok.addActionListener(
+        		new ActionListener() {
+    				@Override
+    				public void actionPerformed(ActionEvent e) {
+    					optionsDialog.setVisible(false);
+    				}
+        		});
+        increaseFontButton.addActionListener(
+        		new ActionListener() {
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				if (Configuration.NODE_FONT_SIZE >= 32)
+        					return;
+        				Configuration.NODE_FONT_SIZE += 2;
+        				Configuration.CHAPTER_TITLE_FONT_SIZE += 4;
+        				Configuration.CHAPTER_DESCRIPTION_FONT_SIZE += 4;
+        				for ( Node n : nodeList ){
+        					n.resizeFont(Configuration.NODE_FONT_SIZE);
+        				}
+        				for ( Node n : chapterList ){
+        					n.resizeFont(Configuration.CHAPTER_TITLE_FONT_SIZE, 
+        							Configuration.CHAPTER_DESCRIPTION_FONT_SIZE);
+        				}
+        			}
+        		});
+        decreaseFontButton.addActionListener(
+        		new ActionListener() {
+        			@Override
+        			public void actionPerformed(ActionEvent e) {
+        				if (Configuration.NODE_FONT_SIZE <= 8)
+        					return;
+        				Configuration.NODE_FONT_SIZE -= 2;
+        				Configuration.CHAPTER_TITLE_FONT_SIZE -= 4;
+        				Configuration.CHAPTER_DESCRIPTION_FONT_SIZE -= 4;
+        				for ( Node n : nodeList ){
+        					n.resizeFont(Configuration.NODE_FONT_SIZE);
+        				}
+        				for ( Node n : chapterList ){
+        					n.resizeFont(Configuration.CHAPTER_TITLE_FONT_SIZE, 
+        							Configuration.CHAPTER_DESCRIPTION_FONT_SIZE);
+        				}
+        			}
+        		});
+        zoomSlider.addChangeListener(
+        		new ChangeListener() {
+        			 public void stateChanged(ChangeEvent e) {
+    			        JSlider source = (JSlider)e.getSource();
+    			        if (source.getValueIsAdjusting()) {
+    			            Configuration.ZOOM_OVERVIEW_HEIGHT = (int)source.getValue();
+    			        }
+        			 }
+        		});
+        
+        // Add options button components to the dialog
+        JPanel dialogPanel = new JPanel();
+        dialogPanel.setLayout(new javax.swing.BoxLayout(dialogPanel, javax.swing.BoxLayout.Y_AXIS));
+        dialogPanel.add(dragEnable);
+        dialogPanel.add(increaseFontButton);
+        dialogPanel.add(decreaseFontButton);
+        dialogPanel.add(zoomLabel);
+        dialogPanel.add(zoomSlider);
+        dialogPanel.add(ok);
+        optionsDialog.add(dialogPanel);
+        optionsDialog.pack();
+        
+        optionsButton = new TranslucentButton("Options");
+        optionsButton.addActionListener(
+            new ActionListener() {
+                @Override
+                public void actionPerformed( ActionEvent e ) {
+                	optionsDialog.setVisible(true);
+                }
+            });
+        toolsPane.add(optionsButton, (Integer)(JLayeredPane.DEFAULT_LAYER+50));
     }
 
    private String justifyText(String str, int length)
@@ -409,6 +574,7 @@ public class AppCanvas extends JPanel {
        highViewRadioButton.setBounds( parentWidth - 105, 50, 100, 25);
        legendTextArea.setBounds( parentWidth - 255, parentHeight - 280, 250, 275 );
        legendButton.setBounds( parentWidth - 105, 130, 100, 25 );
+       optionsButton.setBounds( parentWidth - 105, 160, 100, 25 );
    }
    /**
     *  Key Listener for the search toolbar that handles calling the appropriate
@@ -422,8 +588,7 @@ public class AppCanvas extends JPanel {
         public void keyPressed( KeyEvent arg0 )
         {
             // clear the search bar when typing starts
-            if ( initial )
-            {
+            if ( initial ) {
                 searchBar.setText( "" );
                 initial = false;
             }
@@ -436,70 +601,70 @@ public class AppCanvas extends JPanel {
                 if ( nodes.size() == 1 )
                 {
                     // shift camera focus to node
-                    detailedCamera.move(
-                        nodes.get( 0 ).getX() - 500,
-                        nodes.get( 0 ).getY() + 300 );
+                   	selectedNode = nodes.get(0);
+                   	
+                   	if (!isSelectedAChapterNode())
+                   	{
+                       	selectedNode = nodes.get(0);
+                       	if ( !medViewRadioButton.isSelected() )
+                       		medViewRadioButton.setSelected( true );
+                       	else
+                       	{
+                       		setNodeVisibilities(false);
+    	                   	showSelectedChapter();
+    	                   	vSpaceManager.getActiveView().centerOnGlyph(
+    	                   		selectedNode.getGlyph(),
+    	                   		vSpaceManager.getActiveCamera(), 1000);
+                       	}
+                   	}
                 }
                 else if ( nodes.size() > 1 )
                 {
                     // display list of possibilities
                     listModel = new DefaultListModel();
 
-                    for ( int i = 0; i < nodes.size(); i++ )
-                    {
+                    for ( int i = 0; i < nodes.size(); i++ ) {
                         listModel.addElement( nodes.get( i ).getNodeTitle() );
-
                     }
-                    list = new JList( listModel );
-                    list.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
-                    list.setSelectedIndex( 0 );
-                    list.addListSelectionListener( new Listen() );
-                    list.setVisibleRowCount( 5 );
+                    JList searchList = new JList( listModel );
+                    searchList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
+                    searchList.setSelectedIndex( 0 );
+                    searchList.setVisibleRowCount( 5 );
 
-                    JScrollPane scrollPane = new JScrollPane( list );
+                    JScrollPane scrollPane = new JScrollPane( searchList );
                     JOptionPane.showMessageDialog(
                         null,
                         scrollPane,
                         "Search",
                         JOptionPane.INFORMATION_MESSAGE );
+             	
+                   	selectedNode = nodes.get(searchList.getSelectedIndex());
+                   	if ( !medViewRadioButton.isSelected() )
+                   		medViewRadioButton.setSelected( true );
+                   	else
+                   	{
+                   		setNodeVisibilities(false);
+	                   	showSelectedChapter();
+	                   	vSpaceManager.getActiveView().centerOnGlyph(
+	                   		selectedNode.getGlyph(),
+	                   		vSpaceManager.getActiveCamera(), 1000);
+                   	}
                 }
+                initial = true;
             }
         }
 
-
         @Override
-        public void keyReleased( KeyEvent arg0 )
-        {
+        public void keyReleased( KeyEvent arg0 ){
             // Empty for this listener.
         }
 
-
         @Override
-        public void keyTyped( KeyEvent arg0 )
-        {
+        public void keyTyped( KeyEvent arg0 ){
             // Empty for this listener.
         }
     }
-   private class Listen implements ListSelectionListener
-   {
-
-	@Override
-	  public void valueChanged(ListSelectionEvent e)
-	  {
-        if (e.getValueIsAdjusting() == false)
-        {
-        	//get selected Node
-            if (list.getSelectedIndex() != -1)
-            {
-            	selectedSearchEntry = nodes.get(list.getSelectedIndex());
-            	//java.awt.Desktop.getDesktop().browse(selected.getNodeContentUrl());
-            }
-
-
-        }
-	  }
-
-   }
+    
     /**
      *  Handles when the view radio buttons are selected, disabling the selected
      *  button, clearing the others, and moving to the appropriate view.
@@ -535,17 +700,31 @@ public class AppCanvas extends JPanel {
 
     private void switchToMidLevelView()
     {
-        //Change to med view.
-        if ( prevSelectedNode == null || !prevSelectedNode.getNodeChapter().equals( selectedNode.getNodeTitle() ) )
-            selectedNode = nodeMap.getChapterNodes( selectedNode.getNodeChapter() ).get( 0 );
+        //Set the selected node to the default node.
+        if ( prevSelectedNode == null || !prevSelectedNode.getNodeChapter()
+        		.equals( selectedNode.getNodeTitle() ) )
+        {
+        	selectedNode = nodeMap.getChapterNodes(selectedNode.getNodeChapter()).get(0);
+            for (Node n : nodeMap.getChapterNodes(selectedNode.getNodeChapter()))
+    		{
+            	if (n.getNodeTitle().equals(defaultNodes.get(selectedNode.getNodeChapter())))
+            	{
+            		selectedNode = n;
+            		break;
+            	}
+    		}
+        }
         else
             selectedNode = prevSelectedNode;
+
+    	selectedNode.moveAbsolute(getChapterNode(selectedNode.getNodeChapter())
+    			.getCenterPoint().x, getChapterNode(selectedNode.getNodeChapter())
+    			.getCenterPoint().y);
         showSelectedChapter();
 
         vSpaceManager.getActiveView().centerOnGlyph(
             selectedNode.getGlyph(),
             vSpaceManager.getActiveCamera(), 1000);
-        activeView.setBackgroundColor(selectedNode.getNodeChapterColor());
     }
 
     private void selectLowButton()
@@ -598,13 +777,11 @@ public class AppCanvas extends JPanel {
         else if ( altitude >= Configuration.ZOOM_CHAPTER_HEIGHT && altitude < Configuration.ZOOM_CHAPTER_HEIGHT
             + Configuration.ZOOM_HEIGHT_PADDING && !medViewRadioButton.isSelected() ) {
             medViewRadioButton.setSelected( true );
-            //selectMedButton();
             return true;
         }
         else if ( altitude >= Configuration.ZOOM_OVERVIEW_HEIGHT &&
             !highViewRadioButton.isSelected() ) {
             highViewRadioButton.setSelected( true );
-            //selectHighButton();
             return true;
         }
         return false;
@@ -614,11 +791,11 @@ public class AppCanvas extends JPanel {
     {
         ViewType newView = isMovingToChapterOverview ? ViewType.HIDDEN : ViewType.TITLE_ONLY;
         for (Node n : nodeList) {
-            n.showView( newView );
+            n.showView( newView, true );
         }
-        newView = isMovingToChapterOverview ? ViewType.TITLE_ONLY: ViewType.HIDDEN;
+        newView = isMovingToChapterOverview ? ViewType.FULL_DESCRIPTION: ViewType.HIDDEN;
         for (Node c : chapterList) {
-            c.showView( newView );
+            c.showView( newView, true );
         }
     }
 
@@ -637,37 +814,50 @@ public class AppCanvas extends JPanel {
     }
 
     /** Shows only the nodes of the selected chapter, and nodes that are linked
-     * to the currently seleceted node.
+     * to the currently selected node.
      */
     public void showSelectedChapter() {
         ArrayList<Node> chapterNodes = nodeMap.getChapterNodes(
             selectedNode.getNodeChapter());
+        
+        ArrayList<Node> firstLevelNodes = new ArrayList<Node>();
+        firstLevelNodes.addAll(Node.getFirstLevelNodes(selectedNode));
+        
 
-        List<Node> firstLevelNodes = Node.getFirstLevelNodes(selectedNode);
+        if ( Configuration.USE_FIXED_NODE_POSITIONS ) {
+            ArrayList<Node> nodesInView = new ArrayList<Node>(chapterNodes);
+            nodesInView.addAll(firstLevelNodes);
 
-        Map<Integer, Point> nodeCoords = NodeMap.setNodeCoords(
-            chapterNodes, selectedNode, firstLevelNodes);
+            for(Node n : nodesInView)
+            {
+                n.moveToFixedPos();
+            }
+        }
+        else
+        {
+        	NodeMap.setNodeCoords(chapterNodes, selectedNode, firstLevelNodes);
+        }
 
         // Hide nodes that are not linked to the selected node and show
         // nodes that are
         for (final Node node : nodeList) {
             if (!chapterNodes.contains(node) && !firstLevelNodes.contains(
                 node)) {
-                node.showView(ViewType.HIDDEN);
+                node.showView(ViewType.HIDDEN, true);
             } else if (!node.equals(selectedNode)) {
-                node.showView(ViewType.TITLE_ONLY);
+                node.showView(ViewType.TITLE_ONLY, true);
             }
         }
+        
+        selectedNode.showView(ViewType.FULL_DESCRIPTION, true);
+        
+        Color background = selectedNode.getNodeChapterColor();
+        background = background.darker();
+        background = background.darker();
+        activeView.setBackgroundColor(background);
     }
-
-	public void hideSectionNodes()
-    {
-        for (Node n : nodeList) {
-            n.showView( ViewType.HIDDEN );
-        }
-        for (Node n : nodeList) {
-            n.showView( ViewType.FULL_DESCRIPTION );
-        }
+    
+    public boolean canDrag() {
+    	return canDrag;
     }
-
 }

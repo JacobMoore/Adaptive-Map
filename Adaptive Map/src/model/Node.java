@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Collection;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -119,7 +118,7 @@ public class Node {
 	 *  Types of view available for a node.
 	 */
 	public enum ViewType {
-		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY, ONLY_RECTANGLE;
+		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY;
 	}
 
 	private static Map<String, ChapterProperties> chapterTypes;
@@ -141,14 +140,14 @@ public class Node {
 
 	private static final int NODE_PADDING = 2; // in px
 	private static List<Link> nodeLinks = new LinkedList<Link>();
-	/**
-	 * X-location of this node.
-	 */
-	public static int xLocation = 0;
-    /**
-     * Y-location of this node.
-     */
-	public static int yLocation = 0;
+	
+	private int fixedXPos = 0, fixedYPos = 0;
+	
+	public void setFixedNodePosition(int x, int y)
+	{
+		fixedXPos = x;
+		fixedYPos = y;
+	}
 
 	/**
 	 * Finds the depth of one node from another based on the links between them.
@@ -206,23 +205,6 @@ public class Node {
 	}
 
 	/**
-	 * @return The next x-position to place a node at.
-	 */
-	public static int generateNextXPosition() {
-		return (xLocation += Configuration.GRID_COLUMN_WIDTH
-				+ Configuration.GRID_BUFFER_SPACE)
-				% ((Configuration.GRID_COLUMN_WIDTH + Configuration.GRID_BUFFER_SPACE) * 10);
-	}
-
-	   /**
-     * @return The next y-position to place a node at.
-     */
-	public static int generateNextYPosition() {
-		return -(Configuration.GRID_ROW_HEIGHT + Configuration.GRID_BUFFER_SPACE)
-				* (xLocation / ((Configuration.GRID_COLUMN_WIDTH + Configuration.GRID_BUFFER_SPACE) * 10));
-	}
-
-	/**
 	 * Gets a list of all nodes one level out from the given node.
 	 * @param selectedNode The node to check.
 	 * @return The list of all nodes one level out.
@@ -231,8 +213,7 @@ public class Node {
         // Find all of the nodes that will go in the grid
         List<Node> nodesToShow = new ArrayList<Node>();
         // Get the nodes one level out
-        List<Link> selectedNodeLinks = selectedNode.getNodeLinks();
-        for (Link firstNodeLink : selectedNodeLinks) {
+        for (Link firstNodeLink : selectedNode.getNodeLinks()) {
             Node firstLevelNode = firstNodeLink.getFromNode() == selectedNode
                     ? firstNodeLink.getToNode()
                     : firstNodeLink.getFromNode();
@@ -244,104 +225,23 @@ public class Node {
 	}
 
 	/**
-	 * Returns the nodes that are 2 levels out from the given node, and where
-	 * they go in the "grid" that surrounds the given node.
-	 *
-	 * @param selectedNode
-	 *            the selected node that the grid is based around
-	 * @param nodeCoords The coordinates of each node.
-	 */
-	public static void setGridLocations(Node selectedNode,
-	    Collection<Point> nodeCoords) {
-		List<Node> firstLevelNodes = new ArrayList<Node>();
-		// Get the nodes one level out
-		firstLevelNodes = getFirstLevelNodes(selectedNode);
-		Point selectedCenter = selectedNode.getCenterPoint();
-		Point chapterMax = new Point();
-		Point chapterMin = new Point(selectedCenter);
-		//find the bounds of the arranged chapter
-		for (Point point: nodeCoords)
-		{
-		    if (point.x > chapterMax.x)
-		        chapterMax.x = point.x;
-		    if (point.y > chapterMax.y)
-		        chapterMax.y = point.y;
-		    if (point.x < chapterMin.x)
-		        chapterMin.x = point.x;
-		    if (point.y < chapterMin.y)
-		        chapterMin.y = point.y;
-		}
-		int topX, bottomX, currX;
-		boolean selectedNodeOnRight = selectedCenter.x >
-		chapterMin.x + (chapterMax.x - chapterMin.x) / 2;
-		int interval_x = (Configuration.GRID_COLUMN_WIDTH
-        + Configuration.GRID_BUFFER_SPACE) / 2;
-        int interval_y = (Configuration.GRID_ROW_HEIGHT
-        + Configuration.GRID_BUFFER_SPACE) / 2;
-        int depth = 0;
-        //place Nodes in a gridlike manner around the chapter bounds.
-        if (selectedNodeOnRight)
-        {
-            topX = bottomX = chapterMax.x;
-            for (Node node: firstLevelNodes)
-            {
-                depth = findDepthBetween(selectedNode, node);
-                if (depth <= 0)
-                {
-                    topX += interval_x;
-                    currX = topX;
-                }
-                else
-                {
-                    bottomX += interval_x;
-                    currX = bottomX;
-                }
-                node.moveTo(currX, selectedCenter.y +
-                    interval_y * depth);
-            }
-        }
-        else
-        {
-            topX = bottomX = chapterMin.x;
-            for (Node node: firstLevelNodes)
-            {
-                depth = findDepthBetween(selectedNode, node);
-                if (depth <= 0)
-                {
-                    topX -= interval_x;
-                    currX = topX;
-                }
-                else
-                {
-                    bottomX -= interval_x;
-                    currX = bottomX;
-                }
-                node.moveTo(currX, selectedCenter.y +
-                    interval_y * depth);
-            }
-        }
-	}
-
-	private static Link isLinked(Node node1, Node node2) {
-	    for ( Link link : node1.getNodeLinks() ) {
-	        if ( link.contains( node2 ) )
-	            return link;
-	    }
-	    return null;
-	}
-
-	/**
 	 * Links two nodes together with a specific link type.
 	 * @param node1 The first node.
 	 * @param node2 The second node.
 	 * @param linkType The type of link to use.
+	 * @param arrowSize The size of the links arrows.
 	 */
-	public static void link(Node node1, Node node2, String linkType) {
-	    Link link = isLinked(node1, node2);
-	    if ( link != null )
+	public static void link(Node node1, Node node2, String linkType, int arrowSize,
+			boolean isChapter) {
+	    Link link = null;
+	    for ( Link link1 : node1.getNodeLinks() ) {
+	        if ( link1.getToNode().equals(node2 ) )
+	            link = link1;
+	    }
+	    if ( link != null && isChapter )
 	        link.setWeight( link.getWeight() + 1 );
 	    else
-	        nodeLinks.add( new Link(node1, node2, linkType) );
+	        nodeLinks.add( new Link(node1, node2, linkType, arrowSize) );
 	}
 	private String nodeChapter;
 	private String nodeContentUrl;
@@ -353,8 +253,6 @@ public class Node {
 	private NodeText nodeTitle;
 
 	private ViewType nodeView;
-	private int nodeX;
-	private int nodeY;
 
 	/**
 	 * The virtual space that all drawing is done in.
@@ -369,10 +267,8 @@ public class Node {
 	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
 		// Important to create this before assigning title/description
-		nodeX = generateNextXPosition();
-		nodeY = generateNextYPosition();
-		nodeRectangle = new VRoundRect(nodeX,
-				nodeY, 0, 0, 0, chapterTypes.get(nodeChapter).getChapterColor(),
+		nodeRectangle = new VRoundRect(0,
+				0, 1, 200, 11, chapterTypes.get(nodeChapter).getChapterColor(),
 				Color.BLACK, 1f, 15, 15);
 		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
 
@@ -382,7 +278,7 @@ public class Node {
 		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, 12));
 		setNodeChapter(nodeChapter);
 
-		showView(ViewType.TITLE_ONLY);
+		showView(ViewType.TITLE_ONLY, false);
 		bindTextToRectangle();
 	}
 
@@ -396,16 +292,16 @@ public class Node {
 	/**
 	 * @return The x-position of this node.
 	 */
-	public int getX()
+	public  long getX()
 	{
-		return nodeX;
+		return nodeRectangle.vx;
 	}
 	/**
 	 * @return The y-position of this node.
 	 */
-	public int getY()
+	public long getY()
 	{
-		return nodeY;
+		return nodeRectangle.vy;
 	}
 	/**
 	 * Constructor
@@ -416,13 +312,17 @@ public class Node {
 	 * @param descriptionFontSize The font size for this node's description.
 	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
-	    int titleFontSize, int descriptionFontSize)
+	    int titleFontSize, int descriptionFontSize, float gradientAdjust)
 	{
 	    this(nodeTitle, nodeDescription, nodeChapter);
+	    nodeRectangle = new VRoundRect(0,
+				0, 1, 700, 200, chapterTypes.get(nodeChapter).getChapterColor(),
+				Color.BLACK, 1f, 15, 15, gradientAdjust);
 	    this.nodeTitle.setSpecialFont(  VText.getMainFont().
 	        deriveFont(titleFontSize * 1.0f) );
 	    this.nodeDescription.setSpecialFont(  VText.getMainFont().
 	        deriveFont(descriptionFontSize * 1.0f) );
+	    showView(ViewType.FULL_DESCRIPTION, false);
 	}
 	/**
 	 * Add this node to the given virtual space
@@ -590,9 +490,23 @@ public class Node {
 		nodeRectangle.move(x, y);
 		refreshLinks();
 	}
+	
+	/** Move this Node to the given location with no animation.
+	 * 
+	 * @param x
+	 *            the x coordinates to move this node to
+	 * @param y
+	 *            the y coordinates to move this node to
+	 */
+	public void moveAbsolute(long x, long y) {
+		nodeRectangle.vx = x;
+		nodeRectangle.vy = y;
+		realignNodeText();
+		refreshLinks();
+	}
 
 	/**
-	 * Moves this Node to the given location.
+	 * Moves this Node to the given location, with an animation.
 	 *
 	 * @param x
 	 *            the x coordinates to move this node to
@@ -609,27 +523,18 @@ public class Node {
 				nodeTranslation, true);
 		refreshLinks();
 	}
-
+	
 	/**
-	 *
-	 * @param gridLocation
-	 * @param centerPoint
+	 * Moves this Node to its fixed position.
 	 */
-	public void moveToGridLocation(GridLocation gridLocation, Point centerPoint) {
-		// Get the position where 0,0 should be drawn
-		Point startingPoint = new Point(centerPoint.x
-				+ Configuration.GRID_COLUMN_WIDTH / 2, centerPoint.y);
-		// Get the intervals to move for each grid location in x, y directions
-		int interval_x = Configuration.GRID_COLUMN_WIDTH
-				+ Configuration.GRID_BUFFER_SPACE;
-		int interval_y = Configuration.GRID_ROW_HEIGHT
-				+ Configuration.GRID_BUFFER_SPACE;
-		this.moveTo(startingPoint.x
-				+ interval_x
-				* (gridLocation.getX() % 2 == 0
-						? (gridLocation.getX() / -2)
-						: ((gridLocation.getX() + 1) / 2)), startingPoint.y
-				+ interval_y * gridLocation.getY());
+	public void moveToFixedPos() {
+		Animation nodeTranslation = VirtualSpaceManager.INSTANCE
+				.getAnimationManager().getAnimationFactory()
+				.createGlyphTranslation(1000, nodeRectangle,
+						new LongPoint(fixedXPos, fixedYPos), false,
+						IdentityInterpolator.getInstance(), null);
+		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
+				nodeTranslation, true);
 		refreshLinks();
 	}
 
@@ -648,43 +553,40 @@ public class Node {
 			case FULL_DESCRIPTION :
 				long descriptionWidth = nodeDescription.textContainerWidth;
 				long descriptionHeight = nodeDescription.textContainerHeight;
-				long nodeAdjustedWidth = Math.max(titleWidth, descriptionWidth)
+				long nodeAdjustedWidth = Math.max(Math.max(titleWidth, 
+						descriptionWidth), Configuration.MIN_NODE_WIDTH) 
 						+ NODE_PADDING;
 				long nodeAdjustedHeight = titleHeight + descriptionHeight
 						+ NODE_PADDING;
 				// Set adjusted width/height
-				nodeRectangle
-						.setWidth(nodeAdjustedWidth / 2 + NODE_PADDING * 2);
-				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING
-						* 2);
+				nodeRectangle.setWidth(nodeAdjustedWidth / 2 + NODE_PADDING * 2);
+				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING * 2);
 				nodeTitle.moveTo(nodeRectangle.vx - titleWidth / 2
 						+ NODE_PADDING, nodeRectangle.vy
-						+ nodeRectangle.getHeight() - titleHeight
+						+ nodeRectangle.vh - (long)nodeTitle.getFont().getSize2D()
 						- NODE_PADDING);
 				nodeDescription.moveTo(nodeRectangle.vx - descriptionWidth / 2
-						+ NODE_PADDING, nodeTitle.vy - titleHeight
-						- NODE_PADDING);
+						+ NODE_PADDING, nodeTitle.vy - titleHeight 
+						+ (long)nodeTitle.getFont().getSize2D()
+						- (long)nodeDescription.getFont().getSize2D()
+						+ NODE_PADDING);
+				refreshLinks();
 				break;
 			case TITLE_ONLY :
-				nodeAdjustedWidth = titleWidth + NODE_PADDING;
+				nodeAdjustedWidth = Math.max(titleWidth + NODE_PADDING, 
+						Configuration.MIN_NODE_WIDTH);
 				nodeAdjustedHeight = titleHeight + NODE_PADDING;
 				// Set adjusted width/height
-				nodeRectangle
-						.setWidth(nodeAdjustedWidth / 2 + NODE_PADDING * 2);
-				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING
-						* 2);
+				nodeRectangle.setWidth(nodeAdjustedWidth / 2 + NODE_PADDING * 2);
+				nodeRectangle.setHeight(nodeAdjustedHeight / 2 + NODE_PADDING * 2);
 				nodeTitle.moveTo(nodeRectangle.vx - titleWidth / 2
 						+ NODE_PADDING, nodeRectangle.vy
-						+ nodeRectangle.getHeight() - titleHeight
+						+ nodeRectangle.getHeight() - (long)nodeTitle.getFont().getSize2D()
 						- NODE_PADDING);
 				refreshLinks();
 				break;
 			default :
 				break;
-		}
-		// TODO hack for getting two line titles to work
-		if (nodeTitle.getText().split(" ").length > VText.WORDSPERROW) {
-			nodeTitle.move(0, 20);
 		}
 	}
 
@@ -715,14 +617,14 @@ public class Node {
 	/**
 	 * Highlight all links connected to this node
 	 */
-	public void highlightLinks() {
+	public void highlightLinks(boolean showText) {
         for (Link link : getNodeLinks()) {
-            link.highlight();
+            link.highlight(showText);
         }
     }
 
 	/**
-	 * Unhlighlight all links connected to this node
+	 * Unhighlight all links connected to this node
 	 */
     public void unhighlightLinks() {
         for (Link link: getNodeLinks()) {
@@ -755,7 +657,7 @@ public class Node {
 			virtualSpace.removeGlyph(this.nodeDescription);
 		}
 		this.nodeDescription = new NodeText(nodeRectangle.vx, nodeRectangle.vy,
-				0, Configuration.NODE_DESCRIPTION_COLOR, nodeDescription);
+				1, Configuration.NODE_DESCRIPTION_COLOR, nodeDescription);
 	}
 
 	/**
@@ -766,7 +668,7 @@ public class Node {
 		if (this.nodeTitle != null && virtualSpace != null) {
 			virtualSpace.removeGlyph(this.nodeTitle);
 		}
-		this.nodeTitle = new NodeText(nodeRectangle.vx, nodeRectangle.vy, 0,
+		this.nodeTitle = new NodeText(nodeRectangle.vx, nodeRectangle.vy, 1,
 				Configuration.NODE_TITLE_COLOR, nodeTitle);
 	}
 
@@ -776,31 +678,43 @@ public class Node {
 	 *
 	 * @param alpha
 	 *            the alpha of the translucency for the node
+	 * @param animate
+	 *            if the transition should be animated
 	 */
-	private void setNodeTranslucency(final long alpha) {
-		Animation nodeTransparancy = VirtualSpaceManager.INSTANCE
-				.getAnimationManager().getAnimationFactory()
-				.createTranslucencyAnim(1000, new Translucent() {
-					@Override
-					public float getTranslucencyValue() {
-						return Node.this.getNodeTranslucency();
-					}
-					@Override
-					public void setTranslucencyValue(float alpha1) {
-						nodeRectangle.setTranslucencyValue(alpha1);
-						nodeTitle.setTranslucencyValue(alpha1);
-						nodeDescription.setTranslucencyValue(alpha1);
-					}
-				}, alpha, false, IdentityInterpolator.getInstance(),
-						new EndAction() {
-							@Override
-							public void execute(Object subject,
-									Dimension dimension) {
-								setLinksVisibility(alpha > 0);
-							}
-						});
-		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
-				nodeTransparancy, true);
+	private void setNodeTranslucency(final long alpha, boolean animate) {
+		if (animate)
+		{
+			Animation nodeTransparancy = VirtualSpaceManager.INSTANCE
+					.getAnimationManager().getAnimationFactory()
+					.createTranslucencyAnim(1000, new Translucent() {
+						@Override
+						public float getTranslucencyValue() {
+							return Node.this.getNodeTranslucency();
+						}
+						@Override
+						public void setTranslucencyValue(float alpha1) {
+							nodeRectangle.setTranslucencyValue(alpha1);
+							nodeTitle.setTranslucencyValue(alpha1);
+							nodeDescription.setTranslucencyValue(alpha1);
+						}
+					}, alpha, false, IdentityInterpolator.getInstance(),
+							new EndAction() {
+								@Override
+								public void execute(Object subject,
+										Dimension dimension) {
+									setLinksVisibility(alpha > 0);
+								}
+							});
+			VirtualSpaceManager.INSTANCE.getAnimationManager()
+			.startAnimation(nodeTransparancy, true);
+		}
+		else
+		{
+			nodeRectangle.setTranslucencyValue(alpha);
+			nodeTitle.setTranslucencyValue(alpha);
+			nodeDescription.setTranslucencyValue(alpha);
+			setLinksVisibility(alpha > 0);
+		}
 	}
 
 	/**
@@ -808,8 +722,10 @@ public class Node {
 	 *
 	 * @param viewType
 	 *            the type of information view for this node to display
+	 * @param animate
+	 *            whether the transition should be animated if possible
 	 */
-	public final void showView(ViewType viewType) {
+	public final void showView(ViewType viewType, boolean animate) {
 		nodeView = viewType;
 		boolean nodeDescriptionVisible = false;
 		switch (viewType) {
@@ -817,23 +733,40 @@ public class Node {
 				nodeDescriptionVisible = true;
 			case TITLE_ONLY :
 				if (getNodeTranslucency() == 0) {
-					setNodeTranslucency(1);
+					setNodeTranslucency(1, animate);
 				}
 				nodeRectangle.setVisible(true);
 				nodeTitle.setVisible(true);
 				nodeDescription.setVisible(nodeDescriptionVisible);
 				break;
 			case HIDDEN :
-				setNodeTranslucency(0);
+				setNodeTranslucency(0, animate);
 				break;
-			case ONLY_RECTANGLE :
-                if (getNodeTranslucency() == 0) {
-                    setNodeTranslucency(1);
-                }
-                nodeRectangle.setVisible(true);
-                nodeTitle.setVisible(false);
-                nodeDescription.setVisible(false);
 			default :
+		}
+	}
+	
+	public void resizeFont( int newSize )
+	{
+		this.nodeTitle.setSpecialFont(nodeTitle.getFont()
+				.deriveFont(newSize * 1.0f));
+		this.nodeDescription.setSpecialFont(nodeDescription.getFont()
+				.deriveFont(newSize * 1.0f));
+	}
+	
+	public void resizeFont( int titleSize, int descriptionSize )
+	{
+		this.nodeTitle.setSpecialFont(nodeTitle.getFont()
+				.deriveFont(titleSize * 1.0f));
+		this.nodeDescription.setSpecialFont(nodeDescription.getFont()
+				.deriveFont(descriptionSize * 1.0f));
+	}
+	
+	public void printDebugInfo()
+	{
+		for(Link l: this.getNodeLinks())
+		{
+			System.out.println(l.getLinkType());
 		}
 	}
 
@@ -843,15 +776,33 @@ public class Node {
 	public static class ChapterProperties {
 		private Color chapterColor;
 		private String description;
+		private int fixedXPosition;
+		private int fixedYPosition;
+		private String defaultNode;
 
 		/**
 		 * Create a new ChapterProperties object.
 		 * @param chapterColor The color of the chapter.
 		 * @param description The description of the chapter.
 		 */
-		public ChapterProperties(Color chapterColor, String description) {
+		public ChapterProperties(Color chapterColor, String description, int x, int y, String node) {
 			this.chapterColor = chapterColor;
 			this.description = description;
+			fixedXPosition = x;
+			fixedYPosition = y;
+			defaultNode = node;
+		}
+		
+		public int getChapterXPos() {
+			return fixedXPosition;
+		}
+		
+		public int getChapterYPos() {
+			return fixedYPosition;
+		}
+		
+		public String getDefaultNode() {
+			return defaultNode;
 		}
 
 		/**

@@ -2,16 +2,12 @@ package view;
 
 import controller.Configuration;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import model.Node;
-import model.Node.GridLocation;
 import model.Node.ViewType;
 import model.NodeMap;
 import fr.inria.zvtm.engine.Camera;
@@ -37,7 +33,6 @@ public class CameraMovementListener implements ViewEventHandler {
 	private List<Node> nodeList;
 	private List<Node> chapterList;
 	private List<Point> startingNodeCoords;
-	private NodeMap nodeMap;
 	private boolean dragging = false;
 	private int xLocation;
 	private int yLocation;
@@ -58,7 +53,6 @@ public class CameraMovementListener implements ViewEventHandler {
 	    this.canvas = canvas;
 		this.nodeList = nodeList;
 		this.chapterList = chapterList;
-		this.nodeMap = nodeMap;
 		startingNodeCoords = nodeMap.getNodeCoords();
 	}
 
@@ -76,12 +70,12 @@ public class CameraMovementListener implements ViewEventHandler {
 			for (Node node : targetList) {
 				if (glyph.equals(node.getGlyph())) {
 					if (highlightedNode == null
-							|| highlightedNode != canvas.getSelectedNode()) {
-						node.showView(ViewType.FULL_DESCRIPTION);
+							|| highlightedNode != canvas.getSelectedNode()
+							&& !canvas.isSelectedAChapterNode()) {
+						node.showView(ViewType.FULL_DESCRIPTION, true);
 					}
 					highlightedNode = node;
-					if ( !canvas.isSelectedAChapterNode() )
-					    node.highlightLinks();
+					node.highlightLinks(!canvas.isSelectedAChapterNode());
 					break;
 				}
 			}
@@ -101,11 +95,11 @@ public class CameraMovementListener implements ViewEventHandler {
 				if (glyph.equals(node.getGlyph())) {
 					// Show title only if the highlighted node is not the
 					// selected node
-					if (node != canvas.getSelectedNode()) {
-						node.showView(ViewType.TITLE_ONLY);
+					if (node != canvas.getSelectedNode() && !canvas.isSelectedAChapterNode()) {
+						node.showView(ViewType.TITLE_ONLY, true);
 					}
 					highlightedNode = null;
-                    if ( !canvas.isSelectedAChapterNode() )
+//                    if ( !canvas.isSelectedAChapterNode() )
                         node.unhighlightLinks();
 					break;
 				}
@@ -118,6 +112,12 @@ public class CameraMovementListener implements ViewEventHandler {
 		// If a node was clicked on...
 		if (highlightedNode != null) {
 		    boolean centerOnNode = true;
+		    if ( mod == ViewEventHandler.SHIFT_MOD ) {
+		    	System.out.println("<xvalue>" + highlightedNode.getX() + "</xvalue>\t<yvalue>"
+		    			+ highlightedNode.getY() + "</yvalue>" );
+		    	highlightedNode.printDebugInfo();
+		    	return;
+		    }
 
 		    // If the node clicked on is the selected node...
 			if (highlightedNode.equals(canvas.getSelectedNode())) {
@@ -131,10 +131,10 @@ public class CameraMovementListener implements ViewEventHandler {
     				canvas.navigateTo(canvas.getSelectedNode().getNodeContentUrl());
                     return;
 			    }
-			} else if (canvas.getSelectedNode() != null) {
-				// If the node clicked on isn't the selected node, then show
-				// just the title of the currently selected node
-			    canvas.getSelectedNode().showView(ViewType.TITLE_ONLY);
+			} else if (canvas.getSelectedNode() != null && !canvas.isSelectedAChapterNode()) {
+				// If the node clicked on isn't the selected node, and not in overview,
+				//  then show just the title of the currently selected node
+			    canvas.getSelectedNode().showView(ViewType.TITLE_ONLY, true);
 			}
 
 			if (highlightedNode != null) {
@@ -143,7 +143,8 @@ public class CameraMovementListener implements ViewEventHandler {
 			}
 
 			// Show the full description of the newly selected node
-			canvas.getSelectedNode().showView(ViewType.FULL_DESCRIPTION);
+			if(!canvas.isSelectedAChapterNode())
+				canvas.getSelectedNode().showView(ViewType.FULL_DESCRIPTION, true);
 
 			if (!canvas.isSelectedAChapterNode())
 			    canvas.showSelectedChapter();
@@ -192,15 +193,14 @@ public class CameraMovementListener implements ViewEventHandler {
 						/ activeCamera.focal;
 				dragging = true;
 				synchronized (activeCamera) {
-// Old Code to Drag Nodes
-//					if (highlightedNode != null) {
-//						highlightedNode.move(
-//								(long) (altitude * (jpx - xLocation)),
-//								(long) (altitude * (yLocation - jpy)));
-//						xLocation = jpx;
-//						yLocation = jpy;
-// End Old Code to Drag Nodes
 
+					if (highlightedNode != null && canvas.canDrag()) {
+						highlightedNode.move(
+								(long) (altitude * (jpx - xLocation)),
+								(long) (altitude * (yLocation - jpy)));
+						xLocation = jpx;
+						yLocation = jpy;
+					}
 			        // Move the camera
 					activeCamera.move(altitude * (xLocation - jpx),
 							altitude * (jpy - yLocation));

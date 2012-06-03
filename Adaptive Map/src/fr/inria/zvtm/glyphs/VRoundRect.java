@@ -31,6 +31,9 @@ import fr.inria.zvtm.engine.VirtualSpaceManager;
  */
 
 public class VRoundRect extends ClosedShape implements RectangularShape  {
+	
+	/* Number that affects the position of the gradient */
+	private float fillNum;
 
     /* Half width and height in virtual space. MADE PUBLIC FOR OUTSIDE PACKAGE SUBCLASSING. */
     public long vw,vh;
@@ -107,6 +110,11 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
         setBorderColor(bc);
         arcWidth = aw;
         arcHeight = ah;
+        fillNum = 0;
+    }
+    public VRoundRect(long x, long y, int z, long w, long h, Color c, Color bc, float alpha, int aw, int ah, float n){
+    	this(x, y, z, w, h, c, bc, alpha, aw, ah);
+        fillNum = n;
     }
 
     public void initCams(int nbCam){
@@ -338,14 +346,11 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
             else {
                 if (filled) {
                     g.setColor(this.color);
-                    
-                    
                             
-                    GradientPaint gp = new GradientPaint(dx+pc[i].cx-pc[i].cw, dy+pc[i].cy-pc[i].ch, this.color, dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * .55f),  dy+pc[i].cy-pc[i].ch + (2*pc[i].ch * .70f), Color.WHITE);
+                    GradientPaint gp = new GradientPaint(dx+pc[i].cx-pc[i].cw,   dy+pc[i].cy-pc[i].ch, this.color, dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * fillNum),  dy+pc[i].cy-pc[i].ch + (2*pc[i].ch * .70f), Color.WHITE);
                 	g.setPaint(gp);
                 	
-                    g.fillRoundRect(dx+pc[i].cx-pc[i].cw,dy+pc[i].cy-pc[i].ch,2*pc[i].cw,2*pc[i].ch,pc[i].aw,pc[i].ah);
-
+                	g.fillRoundRect(dx+pc[i].cx-pc[i].cw, dy+pc[i].cy-pc[i].ch, 2*pc[i].cw, 2*pc[i].ch, pc[i].aw, pc[i].ah);
 
                 }
                 if (paintBorder){

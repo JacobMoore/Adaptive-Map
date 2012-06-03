@@ -40,6 +40,9 @@ enum Tag {
 	LINE_TYPE("linetype"),
 	COLOR("color"),
 	CHAPTER_TYPE("chaptertype"),
+	XPOS("xvalue"),
+	YPOS("yvalue"),
+	DEFAULT("default"),
 	// Grid Tags
 	GRIDS("grids");
 
@@ -109,6 +112,7 @@ public class XmlParser {
 	private static Color c10 = new Color(90, 232, 152);
 	private static Color c11 = new Color(76, 181, 36);
 	private static Color c12 = new Color(255, 181, 62);
+
 	public static Map<String, ChapterProperties> parseChapterProperties() {
 		NodeList nodeList = getListOfAll(Tag.CHAPTER_TYPE);
 		Map<String, ChapterProperties> chapterProperties = new HashMap<String, ChapterProperties>();
@@ -118,9 +122,10 @@ public class XmlParser {
 		}
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String chapterTitle, chapterDescription;
+			String chapterTitle, chapterDescription, defaultNode = "EMPTY";
+			int x = -99999, y = -99999;
 			Color chapterColor = null;
-			chapterTitle = chapterDescription = null;
+			chapterTitle = chapterDescription = defaultNode = null;
 
 			NodeList nodeChildList = nodeList.item(i).getChildNodes();
 			for (int p = 0; p < nodeChildList.getLength(); p++) {
@@ -130,84 +135,66 @@ public class XmlParser {
 					continue;
 				}
 				switch (Tag.fromTagLabel(nodeChild.getNodeName())) {
-					case TITLE :
-						chapterTitle = nodeChild.getTextContent();
-						break;
-					case DESCRIPTION :
-						chapterDescription = nodeChild.getTextContent();
-						break;
-					case COLOR :
-						try {
-							//Field field = Color.class.getField(nodeChild
-//							.getTextContent());
-					String color = (String) nodeChild
-							.getTextContent();
-					//chapterColor = (Color) field.get(null);
-					
-//					System.out.println(color);
-					if (color.equalsIgnoreCase("pink"))
-					{
-						chapterColor = c1;
+				case TITLE:
+					chapterTitle = nodeChild.getTextContent();
+					break;
+				case DESCRIPTION:
+					chapterDescription = nodeChild.getTextContent();
+					break;
+				case COLOR:
+					try {
+						String color = (String) nodeChild.getTextContent();
+
+						if (color.equalsIgnoreCase("pink"))
+							chapterColor = c1;
+						else if (color.equalsIgnoreCase("tan"))
+							chapterColor = c2;
+						else if (color.equalsIgnoreCase("yellow"))
+							chapterColor = c3;
+						else if (color.equalsIgnoreCase("orange"))
+							chapterColor = c4;
+						else if (color.equalsIgnoreCase("red"))
+							chapterColor = c5;
+						else if (color.equalsIgnoreCase("lightBlue"))
+							chapterColor = c6;
+						else if (color.equalsIgnoreCase("teal"))
+							chapterColor = c7;
+						else if (color.equalsIgnoreCase("darkBlue"))
+							chapterColor = c8;
+						else if (color.equalsIgnoreCase("purple"))
+							chapterColor = c9;
+						else if (color.equalsIgnoreCase("seafoam"))
+							chapterColor = c10;
+						else if (color.equalsIgnoreCase("green"))
+							chapterColor = c11;
+						else if (color.equalsIgnoreCase("gold"))
+							chapterColor = c12;
+					} catch (Exception e) {
+						throw new IllegalArgumentException(String.format(
+								"Invalid color specified (%s)",
+								nodeChild.getTextContent()));
 					}
-					else if (color.equalsIgnoreCase("tan"))
-					{
-						chapterColor = c2;
-					}
-					else if (color.equalsIgnoreCase("yellow"))
-					{
-						chapterColor = c3;
-					}
-					else if (color.equalsIgnoreCase("orange"))
-					{
-						chapterColor = c4;
-					}
-					else if (color.equalsIgnoreCase("red"))
-					{
-						chapterColor = c5;
-					}
-					else if (color.equalsIgnoreCase("lightBlue"))
-					{
-						chapterColor = c6;
-					}
-					
-					else if (color.equalsIgnoreCase("teal"))
-					{
-						chapterColor = c7;
-					}
-					else if (color.equalsIgnoreCase("darkBlue"))
-					{
-						chapterColor = c8;
-					}
-					else if (color.equalsIgnoreCase("purple"))
-					{
-						chapterColor = c9;
-					}
-					
-					else if (color.equalsIgnoreCase("seafoam"))
-					{
-						chapterColor = c10;
-					}
-					else if (color.equalsIgnoreCase("green"))
-					{
-						chapterColor = c11;
-					}
-					
-					else if (color.equalsIgnoreCase("gold"))
-					{
-						chapterColor = c12;
-					}
-						} catch (Exception e) {
-							throw new IllegalArgumentException(String.format(
-									"Invalid color specified (%s)", nodeChild
-											.getTextContent()));
-						}
-						break;
-					default :
-						break;
+					break;
+				case XPOS:
+					x = Integer.parseInt(nodeChild.getTextContent());
+					break;
+				case YPOS:
+					y = Integer.parseInt(nodeChild.getTextContent());
+					break;
+				case DEFAULT:
+					defaultNode = nodeChild.getTextContent();
+					break;
+				default:
+					break;
 				}
 			}
-			chapterProperties.put(chapterTitle, new ChapterProperties(
-					chapterColor, chapterDescription));
+			if (Configuration.USE_FIXED_NODE_POSITIONS) {
+				chapterProperties.put(chapterTitle, new ChapterProperties(
+						chapterColor, chapterDescription, x, y, defaultNode));
+			} else {
+				chapterProperties.put(chapterTitle, new ChapterProperties(
+						chapterColor, chapterDescription, 0, 0, defaultNode));
+			}
 		}
 
 		return chapterProperties;
@@ -277,6 +264,7 @@ public class XmlParser {
 			// Declare temp variables to store parsed information
 			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter;
 			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = null;
+			int x = -99999, y = -99999;
 
 			// Get all tagged information within each NODE element
 			NodeList nodeChildList = nodeList.item(i).getChildNodes();
@@ -298,11 +286,19 @@ public class XmlParser {
 					case DESCRIPTION :
 						nodeDescription = nodeChild.getTextContent();
 						break;
+					case XPOS:
+						x = Integer.parseInt(nodeChild.getTextContent());
+						break;
+					case YPOS:
+						y = Integer.parseInt(nodeChild.getTextContent());
+						break;
 					default :
 				}
 			}
 			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter);
 			newNode.setNodeContentUrl(nodeContentUrl);
+			if (x != -99999 && y != -99999)
+				newNode.setFixedNodePosition(x, y);
 			parsedNodeMap.addNode(nodeChapter, newNode);
 		}
 		return parsedNodeMap;
@@ -314,9 +310,9 @@ public class XmlParser {
 		}
 		NodeList nodeList = getListOfAll(Tag.NODE);
 		List<Link> linkList = new LinkedList<Link>();
+		String nodeTitle;
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables
-			String nodeTitle;
 			nodeTitle = null;
 
 			// Get all tagged information within each NODE element
@@ -344,7 +340,7 @@ public class XmlParser {
 															TagAttribute.LINK_TYPE
 																	.getTagLabel())
 													.getNodeValue();
-											Node.link(node1, node2, linkType);
+											Node.link(node1, node2, linkType, 20, false);
 											break;
 										}
 									}

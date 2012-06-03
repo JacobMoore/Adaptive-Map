@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public class NodeMap
 {
-    private final static double CHAPTER_SCALE = 2;
+    private final static double CHAPTER_SCALE = 1.8;
     private final static double NODE_SCALE = 0.5;
     private HashMap<String, ArrayList<Node>> nodeMap;
     /**
@@ -179,14 +179,14 @@ public class NodeMap
      */
     public static Map<Integer, Point> setNodeCoords(ArrayList<Node> chapterNodes,
         Node centerNode, List<Node> firstLevelNodes)
-    {
+    {	
         Map<Integer, Point> coordMap = new HashMap<Integer, Point>();
         Edge[] edges = generateEdgeArrayFromNodes(chapterNodes);
 
         Graph graph = new Graph(chapterNodes.size(), edges);
         int centerIndex = chapterNodes.indexOf(centerNode);
-        Point[] points = getCoords(graph, NODE_SCALE, firstLevelNodes, centerIndex,
-            centerNode);
+        Point[] points = getCoords(graph, NODE_SCALE, firstLevelNodes, 
+        		centerIndex, centerNode);
         ArrayList<Node> nodesInView = new ArrayList<Node>(chapterNodes);
         nodesInView.addAll(firstLevelNodes);
 
@@ -228,7 +228,21 @@ public class NodeMap
         return ret;
     }
 
-    private static  Point[] getCoords(Graph graphParam, double scale, List<Node>
+	/**
+	 * Gets the centered point coordinates for the given graph, and the provided
+	 * first level nodes.
+	 * 
+	 * @param graphParam
+	 *            The graph to use.
+	 * @param firstLevelNodes
+	 *            The nodes one level out from the selected node.
+	 * @param centerIndex
+	 *            The index of the selected node.
+	 * @param scale
+	 *            Scale that determines how far apart nodes should be placed.
+	 * @return The point values for the nodes.
+	 */
+    private static Point[] getCoords(Graph graphParam, double scale, List<Node>
     firstLevelNodes, int centerIndex, Node centerNode)
     {
         Graph graph = graphParam.getReducedGraph();
@@ -236,7 +250,6 @@ public class NodeMap
         int[] horizontalPos = graph.getHorizontalPosition(verticalPos);
 
         horizontalPos = centerTopLevelCoords(verticalPos, horizontalPos);
-
 
         ArrayList<Point> linkedCoords = getLinkedCoords(firstLevelNodes,
             verticalPos, horizontalPos, centerIndex, centerNode);
@@ -248,7 +261,16 @@ public class NodeMap
         return centerCoords(verticalPos, horizontalPos, scale);
     }
 
-    private static  Point[] getCoords(Graph graphParam, double scale)
+	/**
+	 * Gets the centered point coordinates for the given graph.
+	 * 
+	 * @param graphParam
+	 *            The graph to use.
+	 * @param scale
+	 *            Scale that determines how far apart nodes should be placed.
+	 * @return The point values for the nodes.
+	 */
+    private static Point[] getCoords(Graph graphParam, double scale)
     {
         Graph graph = graphParam.getReducedGraph();
         int[] verticalPos = graph.getVertexLayers();
@@ -257,6 +279,18 @@ public class NodeMap
         return centerCoords(verticalPos, horizontalPos, scale);
     }
 
+	/**
+	 * Given arrays of vertical and horizontal coordinates, centers the
+	 * coordinates and returns them as a point array
+	 * 
+	 * @param verticalPos
+	 *            The x values.
+	 * @param horizontalPos
+	 *            The y values.
+	 * @param scale
+	 *            Scale that determines how far apart nodes should be placed.
+	 * @return The centered coordinates.
+	 */
     private static Point[] centerCoords(int[] verticalPos, int[] horizontalPos,
         double scale)
     {
@@ -274,6 +308,30 @@ public class NodeMap
         return coords;
     }
 
+    private static int[] centerTopLevelCoords(int[] verticalPos, int[] horizontalPos)
+    {
+        int[] fixedhorizontalPos = horizontalPos;
+        int vertMax = findMaxPos(verticalPos);
+        int horizontalShift = 1;
+        for(int i = 0; i < horizontalPos.length; i++)
+        {
+            if(verticalPos[i] == vertMax)
+            {
+                fixedhorizontalPos[i] += horizontalShift++;
+            }
+        }
+        return fixedhorizontalPos;
+    }
+
+	/**
+	 * Centers an array of positions at 0.
+	 * 
+	 * @param verticalPos
+	 *            Array of vertical position of each node.
+	 * @param horizontalPos
+	 *            Array of horizontal position of each node.
+	 * @return The centered horizontal coordinates.
+	 */
     private static int[] centerHorizontalCoords(int[] verticalPos, int[] horizontalPos)
     {
         int[] centeredhorizontal = horizontalPos;
@@ -287,7 +345,6 @@ public class NodeMap
                 (nodesPerLevel.get(verticalPos[i]) * 2))) / 2;
 
             centeredhorizontal[i] = centeredhorizontal[i] * 2 + horizontalShift;
-
         }
 
         // Center the nodes at horizontal position 0.
@@ -306,6 +363,14 @@ public class NodeMap
         return centeredhorizontal;
     }
 
+	/**
+	 * Given an array of vertical positions, creates a map of how many nodes are
+	 * on each level.
+	 * 
+	 * @param verticalPos
+	 *            The array of each node's vertical position.
+	 * @return The map of nodes per level.
+	 */
     private static Map<Integer, Integer> getNodesPerLevel(int[] verticalPos)
     {
         Map<Integer, Integer> nodesPerLevel = new HashMap<Integer, Integer>();
@@ -319,6 +384,14 @@ public class NodeMap
         return nodesPerLevel;
     }
 
+	/**
+	 * Given a map of nodesPerLevel, finds the largest number of nodes on any
+	 * level.
+	 * 
+	 * @param nodesPerLevel
+	 *            The map to search.
+	 * @return The largest amount of nodes on any level.
+	 */
     private static int getMaxNodesPerLevel(Map<Integer, Integer> nodesPerLevel)
     {
         int max = 0;
@@ -330,21 +403,13 @@ public class NodeMap
         return max;
     }
 
-    private static int[] centerTopLevelCoords(int[] verticalPos, int[] horizontalPos)
-    {
-        int[] fixedhorizontalPos = horizontalPos;
-        int vertMax = findMaxPos(verticalPos);
-        int horizontalShift = 1;
-        for(int i = 0; i < horizontalPos.length; i++)
-        {
-            if(verticalPos[i] == vertMax)
-            {
-                fixedhorizontalPos[i] += horizontalShift++;
-            }
-        }
-        return fixedhorizontalPos;
-    }
-
+	/**
+	 * Reverses the order of a set of vertical coordinates.
+	 * 
+	 * @param verticalPos
+	 *            The coordinates to reverse.
+	 * @return The reveres coordinates.
+	 */
     private static int[] reverseVerticalCoords(int[] verticalPos)
     {
         int vertMax = findMaxPos(verticalPos);
@@ -356,6 +421,13 @@ public class NodeMap
         return reversedPos;
     }
 
+	/**
+	 * Finds the largest value in an integer array.
+	 * 
+	 * @param pos
+	 *            The array to search.
+	 * @return The largest value in the array,
+	 */
     private static int findMaxPos(int[] pos)
     {
         int max = 0;
@@ -384,7 +456,7 @@ public class NodeMap
                 vertical = verticalPos[centerIndex] + 1;
             else
                 vertical = verticalPos[centerIndex] - 1;
-            if (selectedOnRight)
+            if (selectedOnRight && nodesPerLevel.containsKey(vertical))
                 horizontal = nodesPerLevel.get(vertical) + 1;
             else
             {
@@ -410,11 +482,21 @@ public class NodeMap
         return linkedCoords;
     }
 
+	/**
+	 * Adds the given linkedCoords to the given int array.
+	 * 
+	 * @param linkedCoords
+	 *            The linked coordinates to add.
+	 * @param Coords
+	 *            The integer array to add the coordinates to.
+	 * @param horizontal
+	 *            Flag to determine if the x or y coordinates should be added.
+	 * @return The combined coordinate array.
+	 */
     private static int[] addLinkedCoords(ArrayList<Point> linkedCoords,
         int[] Coords, boolean horizontal)
     {
-        int[] newCoords = new int[Coords.length +
-                                            linkedCoords.size()];
+        int[] newCoords = new int[Coords.length + linkedCoords.size()];
         for (int i = 0; i < Coords.length; i++)
         {
             newCoords[i] = Coords[i];
