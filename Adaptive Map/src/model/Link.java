@@ -6,7 +6,11 @@ import fr.inria.zvtm.glyphs.VText;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +25,6 @@ import fr.inria.zvtm.glyphs.VSegment;
 public class Link
     extends VSegment
 {
-
     /**
      * Represents the types of links.
      */
@@ -33,7 +36,19 @@ public class Link
     }
 
     private static Map<String, LinkProperties> linkTypes;
-
+    
+    
+    public static LinkProperties getLinkProperty(String type)
+    {
+    	return linkTypes.get(type);
+    }
+    
+    public static ArrayList<String> getLinkTypes()
+    {
+    	ArrayList<String> list = new ArrayList<String>();
+    	list.addAll(linkTypes.keySet());
+    	return list;
+    }
 
     /**
      * Adds a link to the map.
@@ -62,7 +77,10 @@ public class Link
     private int              linkWeight;
     private int				 arrowSize;
     private EndTriangle      endTriangle;
-
+    private boolean			 highlighted;
+    
+    private static int 		 colorNum = 0;
+    private Color			 linkColor;
 
     /**
      * A new link object that links two nodes together.
@@ -119,17 +137,59 @@ public class Link
         virtualSpace.addGlyph(linkText);
         linkText.setVisible(false);
         linkWeight = 1;
+        
+        switch( colorNum )
+        {
+        case 0:
+        	linkColor = new Color(218, 213, 213);
+        	this.setColor(new Color(218, 213, 213));
+        	colorNum++;
+        	break;
+        case 1:
+        	linkColor = new Color(195, 191, 191);
+        	this.setColor(new Color(195, 191, 191));
+        	colorNum++;
+        	break;
+        case 2:
+        	linkColor = new Color(169, 167, 167);
+        	this.setColor(new Color(169, 167, 167));
+        	colorNum++;
+        	break;
+        case 3:
+        	linkColor = new Color(139, 137, 137);
+        	this.setColor(new Color(139, 137, 137));
+        	colorNum = 0;
+        	break;
+        }
 
         // Adding end-of-link triangle
         endTriangle =
             new EndTriangle(
                 createTrianglePoints(fromNode, toNode),
                 0,
-                this.color);
+                linkColor);
         virtualSpace.addGlyph(endTriangle);
         endTriangle.setVisible(this.isVisible());
+        highlighted = false;
     }
+    
+    public void draw(Graphics2D g,int vW,int vH,int i,Stroke stdS,AffineTransform stdT, int dx, int dy){
+    	super.draw(g, vW, vH, i, stdS, stdT, dx, dy);
 
+    	// Adjust link widths if this is an overview link
+    	if ( linkType.equals("STANDARD") )
+    	{
+        	float altitude = VirtualSpaceManager.INSTANCE.getActiveCamera().getAltitude();
+	    	float minHeight = Configuration.ZOOM_CHAPTER_HEIGHT;
+	    	float maxHeight = Configuration.ZOOM_OVERVIEW_MAX;
+	    	float adjustedWeight = linkWeight / Math.abs((altitude - minHeight) / (maxHeight-minHeight));
+	    	if ( adjustedWeight > Configuration.MAX_LINK_WIDTH)
+	    		adjustedWeight = Configuration.MAX_LINK_WIDTH;
+	    	setStrokeWidth(adjustedWeight);
+			
+			endTriangle.sizeTo(arrowSize+10*linkWeight);
+    	}
+    }
 
     @Override
     public void setVisible(boolean b)
@@ -174,9 +234,22 @@ public class Link
             new EndTriangle(
                 createTrianglePoints(fromNode, toNode),
                 0,
-                this.color);
+                linkColor);
         virtualSpace.addGlyph(endTriangle);
         endTriangle.setVisible(this.isVisible());
+
+        if (highlighted)
+        {
+	        setColor(Color.black);
+	        endTriangle.setColor(Color.black);
+	        endTriangle.setBorderColor(Color.yellow.brighter());
+        }
+        else
+        {	        
+        	setColor(linkColor);
+        	endTriangle.setColor(linkColor);
+        	endTriangle.setBorderColor(Color.black);
+        }
     }
 
 
@@ -208,6 +281,7 @@ public class Link
         	//color = Color.orange;
             if (diffY > 0)
             {
+            	endY -= endNode.getHeight()/2;
                 vertices[0] = new LongPoint(endX, endY - nodeHeight / 2);
                 vertices[1] =
                     new LongPoint(endX - arrowWidth, endY - nodeHeight / 2
@@ -219,6 +293,7 @@ public class Link
             }
             else
             {
+            	endY += endNode.getHeight()/2;
                 vertices[0] = new LongPoint(endX, endY + nodeHeight / 2);
                 vertices[1] =
                     new LongPoint(endX - arrowWidth, endY + nodeHeight / 2
@@ -234,6 +309,7 @@ public class Link
         	//color = Color.orange;
             if (diffX > 0)
             {
+            	endX -= endNode.getWidth()/2;
                 vertices[0] = new LongPoint(endX - nodeWidth / 2, endY);
                 vertices[1] =
                     new LongPoint(endX - nodeWidth / 2 - arrowHeight, endY
@@ -245,6 +321,7 @@ public class Link
             }
             else
             {
+            	endX += endNode.getWidth()/2;
                 vertices[0] = new LongPoint(endX + nodeWidth / 2, endY);
                 vertices[1] =
                     new LongPoint(endX + nodeWidth / 2 + arrowHeight, endY
@@ -310,8 +387,6 @@ public class Link
             	System.out.println(startNode.getNodeTitle() + " to " + 
             			endNode.getNodeTitle() + ".");
             }*/
-            
-
 
             double distance = distance(endX, endY, linkCenter.x, linkCenter.y);
             int xDist = endX - linkCenter.x;
@@ -447,8 +522,7 @@ public class Link
      */
     public void highlight(boolean showText)
     {
-        setColor(Color.black);
-        endTriangle.setColor(Color.lightGray);
+        highlighted = true;
         if (isVisible() && showText)
             linkText.setVisible(true);
         VirtualSpaceManager.INSTANCE.repaintNow();
@@ -460,8 +534,7 @@ public class Link
      */
     public void unhighlight()
     {
-        setColor(Color.lightGray);
-        endTriangle.setColor(Color.lightGray);
+    	highlighted = false;
         linkText.setVisible(false);
         VirtualSpaceManager.INSTANCE.repaintNow();
     }
@@ -495,7 +568,7 @@ public class Link
     public void setWeight(int newWeight)
     {
         linkWeight = newWeight;
-        this.stroke = new java.awt.BasicStroke(linkWeight);
+        //this.setStrokeWidth(linkWeight);
     }
 
 
@@ -573,7 +646,6 @@ public class Link
         }
     }
 
-
     /**
      * Represents a triangle at the end of a link.
      * @author Joe Luke
@@ -595,7 +667,6 @@ public class Link
         {
             super(v, z, c);
         }
-
 
         @Override
         public void setColor(Color color)

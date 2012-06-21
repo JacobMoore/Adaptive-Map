@@ -38,6 +38,8 @@ import fr.inria.zvtm.engine.LongPoint;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.FontMetrics;
 
+import controller.Configuration;
+
 /**
  * Standalone Text.  This version is the most efficient, but it cannot be reoriented (see VTextOr*).<br>
  * Font properties are set globally in the view, but can be changed on a per-instance basis using setSpecialFont(Font f).<br>
@@ -63,10 +65,6 @@ public class VText extends Glyph {
 
     /* Begin edited code */
     /**
-     * Words per line
-     */
-    public static final int WORDSPERROW = 6;
-    /**
      * Width of the longest line
      */
     public long textContainerWidth;
@@ -74,7 +72,6 @@ public class VText extends Glyph {
      * Height of the lines
      */
     public long textContainerHeight;
-
     /* End edited code */
     
     /**returns default font used by glyphs*/
@@ -446,24 +443,42 @@ public class VText extends Glyph {
         String[] words = text.split(" ");
         textContainerWidth = 0;
         FontMetrics fm = g.getFontMetrics();
-        if (words.length > WORDSPERROW) {
-            int fontHeight = fm.getHeight();
-            int curWordPosition = 0, rows = 0, highestCharCount = 0;
+        if (text.length() > Configuration.MAX_CHARS_PER_LINE) {
+            int startIndex = 0, endIndex = 0, rows = 0,
+            	numOfChars = 0;
+            long highestLineLength = 0;
             String lineToWrite;
-            while (curWordPosition < words.length) {
-                if (curWordPosition + WORDSPERROW < words.length) {
-                    lineToWrite = buildString(words, curWordPosition, curWordPosition + WORDSPERROW);
-                    g.drawString(lineToWrite, 0f, rows * fontHeight);
-                } else {
-                    lineToWrite = buildString(words, curWordPosition, words.length);
-                    g.drawString(lineToWrite, 0f, rows * fontHeight);
-                }
-                if (lineToWrite.length() > highestCharCount) {
-                    textContainerWidth = (long)fm.getStringBounds(lineToWrite, g).getWidth();
-                    highestCharCount = lineToWrite.length();
-                }
-                curWordPosition += WORDSPERROW;
-                rows++;
+            while (true) {
+            	if ( endIndex >= words.length-1)
+            	{
+            		lineToWrite = buildString(words, startIndex, words.length);
+            		g.drawString(lineToWrite, 0f, fm.getHeight() * rows);
+
+                    if ((long)fm.getStringBounds(lineToWrite, g).getWidth() > highestLineLength) {
+                    	highestLineLength = textContainerWidth 
+                    		= (long)fm.getStringBounds(lineToWrite, g).getWidth();
+                    }
+            		rows++;
+            		break;
+            	}
+            	else if ( numOfChars + words[endIndex].length() 
+            			< Configuration.MAX_CHARS_PER_LINE ) {
+            		numOfChars += words[endIndex].length();
+            	}
+            	else
+            	{
+            		lineToWrite = buildString(words, startIndex, endIndex+1);
+            		g.drawString(lineToWrite, 0f, fm.getHeight() * rows);
+            		numOfChars = 0;
+            		startIndex = endIndex+1;
+            		endIndex++;
+            		rows++;
+                    if ((long)fm.getStringBounds(lineToWrite, g).getWidth() > highestLineLength) {
+                    	highestLineLength = textContainerWidth 
+                			= (long)fm.getStringBounds(lineToWrite, g).getWidth();
+                    }
+            	}
+        		endIndex++;
             }
             textContainerHeight = fm.getHeight() * rows;
         } else {

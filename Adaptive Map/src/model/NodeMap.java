@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public class NodeMap
 {
-    private final static double CHAPTER_SCALE = 1.8;
+    private final static double CHAPTER_SCALE = 2.0;
     private final static double NODE_SCALE = 0.5;
     private HashMap<String, ArrayList<Node>> nodeMap;
     /**
@@ -87,16 +87,6 @@ public class NodeMap
     }
 
     /**
-     * Returns a list of all nodes in a chapter.
-     * @param chapter The chapter to get nodes from.
-     * @return The list of nodes.
-     */
-    public ArrayList<Node> getNodesFromChapter(String chapter)
-    {
-        return nodeMap.get(chapter);
-    }
-
-    /**
      * Get a list of nodes that share the same chapter.
      * @param chapter the chapter to get the list of nodes from
      * @return a list of nodes from the specified chapter
@@ -121,7 +111,7 @@ public class NodeMap
         //another chapter
         for (String chapter: chapters)
         {
-            ArrayList<Node> nodes = nodeMap.getNodesFromChapter(chapter);
+            ArrayList<Node> nodes = nodeMap.getChapterNodes(chapter);
             for (Node node: nodes)
             {
                 for (Link link: node.getNodeLinks())
@@ -187,8 +177,6 @@ public class NodeMap
         int centerIndex = chapterNodes.indexOf(centerNode);
         Point[] points = getCoords(graph, NODE_SCALE, firstLevelNodes, 
         		centerIndex, centerNode);
-        ArrayList<Node> nodesInView = new ArrayList<Node>(chapterNodes);
-        nodesInView.addAll(firstLevelNodes);
 
         //center the points on the center node
         int xDifference = centerNode.getCenterPoint().x - points[centerIndex].x;
@@ -199,11 +187,7 @@ public class NodeMap
                 points[i].y + yDifference);
             coordMap.put(i, point);
         }
-        for(Map.Entry<Integer, Point> entry: coordMap.entrySet())
-        {
-            nodesInView.get(entry.getKey()).moveTo(entry.getValue().x,
-                entry.getValue().y);
-        }
+
         return coordMap;
     }
 
@@ -214,18 +198,18 @@ public class NodeMap
      */
     public static Map<String, Point> getChapterCoords(NodeMap nodeMap)
     {
-        Map<String, Point> ret = new HashMap<String, Point>();
+        Map<String, Point> coordMap = new HashMap<String, Point>();
         ArrayList<String> chapters = new ArrayList<String>(nodeMap.getChapters());
         Edge[] edges = generateEdgeArrayFromChapters(chapters, nodeMap);
         Graph graph = new Graph(chapters.size(), edges);
         Point[] coords = getCoords(graph, CHAPTER_SCALE);
-
+        
         for (int i = 0; i < chapters.size(); i++)
         {
             String chapter = chapters.get(i);
-            ret.put(chapter, coords[i]);
+            coordMap.put(chapter, coords[i]);
         }
-        return ret;
+        return coordMap;
     }
 
 	/**
@@ -253,12 +237,31 @@ public class NodeMap
 
         ArrayList<Point> linkedCoords = getLinkedCoords(firstLevelNodes,
             verticalPos, horizontalPos, centerIndex, centerNode);
-        verticalPos = addLinkedCoords(linkedCoords, verticalPos, false);
+        verticalPos = combineLinkedCoords(linkedCoords, verticalPos, false);
 
         verticalPos = reverseVerticalCoords(verticalPos);
-        horizontalPos = addLinkedCoords(linkedCoords, horizontalPos, true);
+        horizontalPos = combineLinkedCoords(linkedCoords, horizontalPos, true);
 
-        return centerCoords(verticalPos, horizontalPos, scale);
+        //return centerCoords(verticalPos, horizontalPos, scale);
+        Point[] coords = new Point[verticalPos.length];
+        int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
+                + Configuration.GRID_BUFFER_SPACE) * Configuration.NODE_FONT_SIZE / 20);
+        int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
+                + Configuration.GRID_BUFFER_SPACE) * scale);
+
+        // Shifts every other row over
+    	float shift = 0.0f;
+        for (int i = 0; i < coords.length; i++)
+        {
+        	if ( verticalPos[i] % 2 == 1)
+        		shift = 0.5f;
+        	else
+        		shift = 0;
+        	
+            coords[i] = new Point((int) ((horizontalPos[i]-shift) * interval_x),
+                (verticalPos[i]) * interval_y);
+        }
+        return coords;
     }
 
 	/**
@@ -296,7 +299,7 @@ public class NodeMap
     {
         horizontalPos = centerHorizontalCoords(verticalPos, horizontalPos);
         int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
-            + Configuration.GRID_BUFFER_SPACE) * scale);
+            + Configuration.GRID_BUFFER_SPACE) * Configuration.CHAPTER_TITLE_FONT_SIZE / 50);
         int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
             + Configuration.GRID_BUFFER_SPACE) * scale);
         Point[] coords = new Point[verticalPos.length];
@@ -310,17 +313,17 @@ public class NodeMap
 
     private static int[] centerTopLevelCoords(int[] verticalPos, int[] horizontalPos)
     {
-        int[] fixedhorizontalPos = horizontalPos;
+        int[] newHorizontalPos = horizontalPos;
         int vertMax = findMaxPos(verticalPos);
         int horizontalShift = 1;
         for(int i = 0; i < horizontalPos.length; i++)
         {
             if(verticalPos[i] == vertMax)
             {
-                fixedhorizontalPos[i] += horizontalShift++;
+                newHorizontalPos[i] += horizontalShift++;
             }
         }
-        return fixedhorizontalPos;
+        return newHorizontalPos;
     }
 
 	/**
@@ -453,25 +456,41 @@ public class NodeMap
             int vertical, horizontal;
             int depth = Node.findDepthBetween(centerNode, node);
             if (depth > 0)
-                vertical = verticalPos[centerIndex] + 1;
+                vertical = verticalPos[centerIndex] + depth;
             else
-                vertical = verticalPos[centerIndex] - 1;
-            if (selectedOnRight && nodesPerLevel.containsKey(vertical))
-                horizontal = nodesPerLevel.get(vertical) + 1;
-            else
+                vertical = verticalPos[centerIndex] - depth;
+
+            if (!nodesPerLevel.containsKey(vertical))
+            	horizontal = horizontalPos[centerIndex];
+            else if (selectedOnRight)
             {
-                //shift all nodes, and put this node on the left
-                for (int i = 0; i < horizontalPos.length; i++)
-                {
-                    if(verticalPos[i] == vertical)
-                        horizontalPos[i]++;
-                }
+            	int max = horizontalPos[centerIndex];
+            	for (int i = 0; i < horizontalPos.length; i++)
+            	{
+            		if(horizontalPos[i] > max && verticalPos[i] == vertical)
+            			max = horizontalPos[i];
+            	}
                 for (Point point: linkedCoords)
                 {
-                    if (point.y == vertical)
-                        point.x++;
+                    if (point.y == vertical && point.x > max)
+                        max = point.x;
                 }
-                horizontal = 1;
+                horizontal = max + 1;
+            }
+            else
+            {
+            	int min = horizontalPos[centerIndex];
+            	for (int i = 0; i < horizontalPos.length; i++)
+            	{
+            		if(horizontalPos[i] < min && verticalPos[i] == vertical)
+            			min = horizontalPos[i];
+            	}
+                for (Point point: linkedCoords)
+                {
+                    if (point.y == vertical && point.x < min)
+                        min = point.x;
+                }
+                horizontal = min - 1;
             }
             if (nodesPerLevel.containsKey(vertical))
                 nodesPerLevel.put(vertical, nodesPerLevel.remove(vertical) + 1);
@@ -493,7 +512,7 @@ public class NodeMap
 	 *            Flag to determine if the x or y coordinates should be added.
 	 * @return The combined coordinate array.
 	 */
-    private static int[] addLinkedCoords(ArrayList<Point> linkedCoords,
+    private static int[] combineLinkedCoords(ArrayList<Point> linkedCoords,
         int[] Coords, boolean horizontal)
     {
         int[] newCoords = new int[Coords.length + linkedCoords.size()];

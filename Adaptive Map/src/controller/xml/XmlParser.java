@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +42,7 @@ enum Tag {
 	XPOS("xvalue"),
 	YPOS("yvalue"),
 	DEFAULT("default"),
+	DEFAULTCHAPTER("defaultChapter"),
 	// Grid Tags
 	GRIDS("grids");
 
@@ -125,6 +125,7 @@ public class XmlParser {
 			String chapterTitle, chapterDescription, defaultNode = "EMPTY";
 			int x = -99999, y = -99999;
 			Color chapterColor = null;
+			boolean defaultChapter = false;
 			chapterTitle = chapterDescription = defaultNode = null;
 
 			NodeList nodeChildList = nodeList.item(i).getChildNodes();
@@ -184,16 +185,20 @@ public class XmlParser {
 				case DEFAULT:
 					defaultNode = nodeChild.getTextContent();
 					break;
+				case DEFAULTCHAPTER:
+					defaultChapter = Boolean.parseBoolean
+						(nodeChild.getTextContent());
+					break;
 				default:
 					break;
 				}
 			}
 			if (Configuration.USE_FIXED_NODE_POSITIONS) {
 				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, x, y, defaultNode));
+						chapterColor, chapterDescription, x, y, defaultNode, defaultChapter));
 			} else {
 				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, 0, 0, defaultNode));
+						chapterColor, chapterDescription, 0, 0, defaultNode, defaultChapter));
 			}
 		}
 
@@ -394,7 +399,7 @@ public class XmlParser {
 					DocumentBuilder db;
 					db = dbf.newDocumentBuilder();
 					Document xmlFile = db.parse(Configuration
-							.getNodesFilePath());
+							.getXMLFilePath());
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();

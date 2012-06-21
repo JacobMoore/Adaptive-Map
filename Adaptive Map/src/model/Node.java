@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
 import controller.Configuration;
 import fr.inria.zvtm.animation.Animation;
 import fr.inria.zvtm.animation.EndAction;
@@ -122,6 +122,8 @@ public class Node {
 	}
 
 	private static Map<String, ChapterProperties> chapterTypes;
+	
+	private List<Node> subNodes;
 
 	/**
 	 * Adds a chapter with its associated properties to the map.
@@ -140,6 +142,11 @@ public class Node {
 
 	private static final int NODE_PADDING = 2; // in px
 	private static List<Link> nodeLinks = new LinkedList<Link>();
+	
+	public final static List<Link> getAllLinks()
+	{
+		return nodeLinks;
+	}
 	
 	private int fixedXPos = 0, fixedYPos = 0;
 	
@@ -212,13 +219,14 @@ public class Node {
 	public static List<Node> getFirstLevelNodes(Node selectedNode) {
         // Find all of the nodes that will go in the grid
         List<Node> nodesToShow = new ArrayList<Node>();
-        // Get the nodes one level out
+        // Get the nodes one level out, that are not subNodes
         for (Link firstNodeLink : selectedNode.getNodeLinks()) {
             Node firstLevelNode = firstNodeLink.getFromNode() == selectedNode
                     ? firstNodeLink.getToNode()
                     : firstNodeLink.getFromNode();
             if (!firstLevelNode.getNodeChapter().equals(
-                selectedNode.getNodeChapter()))
+                selectedNode.getNodeChapter()) && ( selectedNode.subNodes == null ||
+                !selectedNode.subNodes.contains(firstLevelNode)))
                 nodesToShow.add(firstLevelNode);
         }
         return nodesToShow;
@@ -235,14 +243,19 @@ public class Node {
 			boolean isChapter) {
 	    Link link = null;
 	    for ( Link link1 : node1.getNodeLinks() ) {
-	        if ( link1.getToNode().equals(node2 ) )
+	        if ( link1.getToNode().equals(node2) )
 	            link = link1;
 	    }
-	    if ( link != null && isChapter )
+	    if ( link != null && isChapter && 
+	    		link.getWeight() < Configuration.MAX_LINK_WIDTH )
+	    {
 	        link.setWeight( link.getWeight() + 1 );
+	        link.setZindex(link.getZindex()-1);
+	    }
 	    else
 	        nodeLinks.add( new Link(node1, node2, linkType, arrowSize) );
 	}
+	
 	private String nodeChapter;
 	private String nodeContentUrl;
 	private NodeText nodeDescription;
@@ -277,6 +290,7 @@ public class Node {
 		setNodeDescription(nodeDescription);
 		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, 12));
 		setNodeChapter(nodeChapter);
+		subNodes = null;
 
 		showView(ViewType.TITLE_ONLY, false);
 		bindTextToRectangle();
@@ -324,6 +338,7 @@ public class Node {
 	        deriveFont(descriptionFontSize * 1.0f) );
 	    showView(ViewType.FULL_DESCRIPTION, false);
 	}
+	
 	/**
 	 * Add this node to the given virtual space
 	 *
@@ -449,7 +464,7 @@ public class Node {
 	}
 
 	/**
-	 * @return
+	 * @return the node's translucency value
 	 */
 	private float getNodeTranslucency() {
 		return (nodeRectangle.getTranslucencyValue()
@@ -488,6 +503,7 @@ public class Node {
 	 */
 	public void move(long x, long y) {
 		nodeRectangle.move(x, y);
+		realignNodeText();
 		refreshLinks();
 	}
 	
@@ -521,6 +537,7 @@ public class Node {
 						IdentityInterpolator.getInstance(), null);
 		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
 				nodeTranslation, true);
+		realignNodeText();
 		refreshLinks();
 	}
 	
@@ -535,6 +552,7 @@ public class Node {
 						IdentityInterpolator.getInstance(), null);
 		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
 				nodeTranslation, true);
+		realignNodeText();
 		refreshLinks();
 	}
 
@@ -600,7 +618,9 @@ public class Node {
 	}
 
 	/**
-	 * @param b
+	 * Sets the visibility of links connected to this node.
+	 * @param visibility
+	 * 		True to show links, false otherwise.
 	 */
 	private void setLinksVisibility(boolean visibility) {
 		for (Link link : getNodeLinks()) {
@@ -614,8 +634,34 @@ public class Node {
 			}
 		}
 	}
+	
+	/**
+	 * Highlights this node.
+	 * @param borderColor
+	 * 		The new color of the node's border.
+	 * @param borderWidth
+	 * 		The new border width.
+	 */
+	public void highlight(Color borderColor, int borderWidth)
+	{
+		nodeRectangle.setBorderColor(borderColor);
+		nodeRectangle.setStrokeWidth(borderWidth);
+	}
+	
+	
+	/**
+	 * Unhighlights this node.
+	 */
+	public void unhighlight()
+	{
+		nodeRectangle.setBorderColor(Color.black);
+		nodeRectangle.setStrokeWidth(1);
+	}
+	
 	/**
 	 * Highlight all links connected to this node
+	 * @param showText
+	 * 		If the link text should be displayed.
 	 */
 	public void highlightLinks(boolean showText) {
         for (Link link : getNodeLinks()) {
@@ -684,6 +730,7 @@ public class Node {
 	private void setNodeTranslucency(final long alpha, boolean animate) {
 		if (animate)
 		{
+			setLinksVisibility(alpha > 0);
 			Animation nodeTransparancy = VirtualSpaceManager.INSTANCE
 					.getAnimationManager().getAnimationFactory()
 					.createTranslucencyAnim(1000, new Translucent() {
@@ -702,7 +749,7 @@ public class Node {
 								@Override
 								public void execute(Object subject,
 										Dimension dimension) {
-									setLinksVisibility(alpha > 0);
+									refreshLinks();
 								}
 							});
 			VirtualSpaceManager.INSTANCE.getAnimationManager()
@@ -710,10 +757,10 @@ public class Node {
 		}
 		else
 		{
+			setLinksVisibility(alpha > 0);
 			nodeRectangle.setTranslucencyValue(alpha);
 			nodeTitle.setTranslucencyValue(alpha);
 			nodeDescription.setTranslucencyValue(alpha);
-			setLinksVisibility(alpha > 0);
 		}
 	}
 
@@ -769,6 +816,72 @@ public class Node {
 			System.out.println(l.getLinkType());
 		}
 	}
+	
+	public List<Node> getSubNodeList()
+	{
+		return subNodes;
+	}
+	
+	/**
+	 * Goes through all links and creates a list of subnodes
+	 * that represent each type of link with 3 or more occurrences.
+	 */
+	public void initializeSubNodeList()
+	{
+        // Initialize map of all link types.
+    	Map<String, Integer> linkOccurrences = new HashMap<String, Integer>();
+    	ArrayList<String> typeList = Link.getLinkTypes();
+    	for ( String s : typeList )
+    		linkOccurrences.put(s, 0);
+    		
+    	// Determine the number of each type of link
+        for ( Link l : getNodeLinks() )
+        {
+        	if ( linkOccurrences.containsKey(l.getLinkType()) && 
+        			!l.getToNode().getNodeChapter().equals(l.getFromNode().getNodeChapter()) )
+        		linkOccurrences.put(l.getLinkType(), linkOccurrences.get(l.getLinkType())+1);
+        }
+        
+        // Remove entries with less than 3 occurrences
+        for ( String s : typeList )
+        {
+        	if ( linkOccurrences.get(s) < 3 )
+        		linkOccurrences.remove(s);
+        }
+        
+        if ( !linkOccurrences.isEmpty() )
+            subNodes = new ArrayList<Node>();
+        
+        // Create the special nodes
+        for ( Entry<String, Integer> entry : linkOccurrences.entrySet() )
+        {
+        	String names = ". TOPICS: ";
+            for ( Link l : getNodeLinks() )
+            {
+            	if ( l.getLinkType().equals(entry.getKey()) && 
+            			!l.getToNode().getNodeChapter().equals(l.getFromNode().getNodeChapter()) ) {
+            		names += " - ";
+            		if ( l.getFromNode().getGlyph().equals(this.getGlyph()) )
+                		names += l.getToNode().getNodeTitle().toUpperCase();
+            		else
+                		names += l.getFromNode().getNodeTitle().toUpperCase();
+            	}
+            }
+        	Node newNode = new Node( entry.getValue() + " " + entry.getKey() 
+        			+ " Nodes in Other Chapters", Link.getLinkProperty(entry.getKey())
+        			.getDescription() + names, nodeChapter);
+        	newNode.addToVirtualSpace(virtualSpace);
+        	newNode.nodeRectangle.setColor(Color.white);
+        	Node.link(this, newNode, entry.getKey(), 20, false);
+        	newNode.showView(ViewType.HIDDEN, false);
+        	subNodes.add(newNode);
+        }  
+	}
+	
+	public boolean hasSubNodes()
+	{
+		return subNodes != null;
+	}
 
 	/**
 	 *  Defines a chapter's properties (color and description).
@@ -779,18 +892,21 @@ public class Node {
 		private int fixedXPosition;
 		private int fixedYPosition;
 		private String defaultNode;
+		private boolean isDefaultChapter;
 
 		/**
 		 * Create a new ChapterProperties object.
 		 * @param chapterColor The color of the chapter.
 		 * @param description The description of the chapter.
 		 */
-		public ChapterProperties(Color chapterColor, String description, int x, int y, String node) {
+		public ChapterProperties(Color chapterColor, String description, 
+				int x, int y, String node, boolean isDefault) {
 			this.chapterColor = chapterColor;
 			this.description = description;
 			fixedXPosition = x;
 			fixedYPosition = y;
 			defaultNode = node;
+			isDefaultChapter = isDefault;
 		}
 		
 		public int getChapterXPos() {
@@ -803,6 +919,11 @@ public class Node {
 		
 		public String getDefaultNode() {
 			return defaultNode;
+		}
+		
+		public boolean isDefaultChapter()
+		{
+			return isDefaultChapter;
 		}
 
 		/**
