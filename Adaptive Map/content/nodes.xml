@@ -52,6 +52,8 @@
 		<description>Chapter discusses how to solve equations with vectors or matrices as variables.</description>
 		<color>pink</color>
 		<default>Vector Decomposition</default>
+		<xvalue>0</xvalue>
+		<yvalue>2000</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -59,6 +61,8 @@
 		<description>Chapter discusses what forces are and how they are classified.</description>
 		<color>tan</color>
 		<default>Forces</default>
+		<xvalue>-2000</xvalue>
+		<yvalue>1000</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -66,6 +70,8 @@
 		<description>Chapter discusses what moments are and how to calculate them.</description>
 		<color>yellow</color>
 		<default>Moments</default>
+		<xvalue>2000</xvalue>
+		<yvalue>1000</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -73,6 +79,8 @@
 		<description>Chapter discusses how objects are either allowed to move or are constrained by the other objects in contact with the first object.</description>
 		<color>orange</color>
 		<default>Constraints</default>
+		<xvalue>2000</xvalue>
+		<yvalue>0</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -80,6 +88,8 @@
 		<description>Chapter discusses the concept of static equilibrium and the assumptions that can be made for objects in static equilibrium.</description>
 		<color>red</color>
 		<default>Static Equilibrium</default>
+		<xvalue>0</xvalue>
+		<yvalue>0</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -87,6 +97,8 @@
 		<description>Chapter discusses how to analyze systems containing multiple bodies.</description>
 		<color>lightBlue</color>
 		<default>Multi-Component Assemblies</default>
+		<xvalue>3750</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -94,6 +106,8 @@
 		<description>Chapter discusses what friction forces are and how to calculate them.</description>
 		<color>teal</color>
 		<default>Dry Friction</default>
+		<xvalue>-2250</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -101,6 +115,8 @@
 		<description>Chapter discusses how the geometry of parts affects how bodies react to forces and moments.</description>
 		<color>darkBlue</color>
 		<default>The Moment Intergral</default>
+		<xvalue>-2000</xvalue>
+		<yvalue>0</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -108,6 +124,8 @@
 		<description>Chapter discusses how to analyze systems that contain flexible cables under various loading conditions.</description>
 		<color>purple</color>
 		<default>Tension in Flexible Cables</default>
+		<xvalue>750</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -115,6 +133,8 @@
 		<description>Chapter discusses how to analyze systems that contain liquids in static equilibrium.</description>
 		<color>Seafoam</color>
 		<default>Hydrostatic Pressure</default>
+		<xvalue>-3750</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -122,6 +142,8 @@
 		<description>Chapter discusses how to analyze systems using formulas for energy and work.</description>
 		<color>green</color>
 		<default>Work</default>
+		<xvalue>-750</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
@@ -129,6 +151,8 @@
 		<description>Chapter discusses how to analyze the forces acting inside of a body.</description>
 		<color>gold</color>
 		<default>Internal Forces</default>
+		<xvalue>2250</xvalue>
+		<yvalue>-1500</yvalue>
 	</chaptertype>
 
 	<!-- Nodes -->
