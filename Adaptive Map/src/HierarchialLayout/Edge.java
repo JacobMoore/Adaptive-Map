@@ -43,6 +43,8 @@ package HierarchialLayout;
 /**
  * Holds a (from, to) pair of integers representing an edge.
 */
+
+@SuppressWarnings("javadoc")
 public class Edge {
     /** the index of the origin node */
     private int from;
@@ -55,5 +57,5 @@ public class Edge {
     @return index of destination node */
     public int getTo() {return to;}
     /** Initializes private members. */
-    public Edge(int a_from, int a_to) {from = a_from; to = a_to;}
+	public Edge(int a_from, int a_to) {from = a_from; to = a_to;}
 }

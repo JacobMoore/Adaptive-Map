@@ -346,7 +346,7 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
             else {
                 if (filled) {
                     g.setColor(this.color);
-                            
+                    // Changed code
                     GradientPaint gp = new GradientPaint(dx+pc[i].cx-pc[i].cw,   dy+pc[i].cy-pc[i].ch, this.color, dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * fillNum),  dy+pc[i].cy-pc[i].ch + (2*pc[i].ch * .70f), Color.WHITE);
                 	g.setPaint(gp);
                 	
@@ -438,5 +438,12 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
         res.cursorInsideColor=this.cursorInsideColor;
         return res;
     }
+    
+    //Begin changed code
+    public void setFillNum(float num)
+    {
+    	fillNum = num;
+    }
+    //End changed code
 
 }

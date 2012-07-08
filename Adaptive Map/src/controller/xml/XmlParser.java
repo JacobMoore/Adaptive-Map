@@ -113,6 +113,10 @@ public class XmlParser {
 	private static Color c11 = new Color(76, 181, 36);
 	private static Color c12 = new Color(255, 181, 62);
 
+	/**
+	 * Goes through the xml file and creates a map of chapter titles to chapter properties.
+	 * @return map of chapter titles to chapter properties.
+	 */
 	public static Map<String, ChapterProperties> parseChapterProperties() {
 		NodeList nodeList = getListOfAll(Tag.CHAPTER_TYPE);
 		Map<String, ChapterProperties> chapterProperties = new HashMap<String, ChapterProperties>();
@@ -205,6 +209,10 @@ public class XmlParser {
 		return chapterProperties;
 	}
 
+	/**
+	 * Goes through the xml file and creates a map of link type names to link properties.
+	 * @return map of link type names to link properties.
+	 */
 	public static Map<String, LinkProperties> parseLinkProperties() {
 		NodeList nodeList = getListOfAll(Tag.LINK_TYPE);
 		Map<String, LinkProperties> linkProperties = new HashMap<String, LinkProperties>();
@@ -257,6 +265,10 @@ public class XmlParser {
 		return linkProperties;
 	}
 
+	/**
+	 * Goes through the xml file and creates all nodes.
+	 * @return a nodeMap with th created node data.
+	 */
 	public static NodeMap parseNodeInformation() {
 		NodeList nodeList = getListOfAll(Tag.NODE);
 		if (nodeList == null) {
@@ -309,6 +321,12 @@ public class XmlParser {
 		return parsedNodeMap;
 	}
 
+	/**
+	 * Goes through the xml file and sets up links for all given nodes.
+	 * @param nodesToLink
+	 * 				List of all nodes to link
+	 * @return list of all created links
+	 */
 	public static List<Link> parseNodeLinks(List<Node> nodesToLink) {
 		if (nodesToLink == null || nodesToLink.size() <= 1) {
 			return null;
@@ -399,7 +417,7 @@ public class XmlParser {
 					DocumentBuilder db;
 					db = dbf.newDocumentBuilder();
 					Document xmlFile = db.parse(Configuration
-							.getXMLFilePath());
+							.getXMLFilePath(Configuration.USE_LOCAL_PATH));
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();

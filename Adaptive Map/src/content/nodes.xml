@@ -52,6 +52,7 @@
 		<description>Chapter discusses how to solve equations with vectors or matrices as variables.</description>
 		<color>pink</color>
 		<default>Vector Decomposition</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>0</xvalue>
 		<yvalue>2000</yvalue>
 	</chaptertype>
@@ -61,6 +62,7 @@
 		<description>Chapter discusses what forces are and how they are classified.</description>
 		<color>tan</color>
 		<default>Forces</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>-2000</xvalue>
 		<yvalue>1000</yvalue>
 	</chaptertype>
@@ -70,15 +72,17 @@
 		<description>Chapter discusses what moments are and how to calculate them.</description>
 		<color>yellow</color>
 		<default>Moments</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>2000</xvalue>
 		<yvalue>1000</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
-		<title>Constraints / DOF</title>
+		<title>Constraints And DOF</title>
 		<description>Chapter discusses how objects are either allowed to move or are constrained by the other objects in contact with the first object.</description>
 		<color>orange</color>
 		<default>Constraints</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>2000</xvalue>
 		<yvalue>0</yvalue>
 	</chaptertype>
@@ -98,6 +102,7 @@
 		<description>Chapter discusses how to analyze systems containing multiple bodies.</description>
 		<color>lightBlue</color>
 		<default>Multi-Component Assemblies</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>5000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
@@ -107,6 +112,7 @@
 		<description>Chapter discusses what friction forces are and how to calculate them.</description>
 		<color>teal</color>
 		<default>Dry Friction</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>-3000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
@@ -116,6 +122,7 @@
 		<description>Chapter discusses how the geometry of parts affects how bodies react to forces and moments.</description>
 		<color>darkBlue</color>
 		<default>The Moment Intergral</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>-2000</xvalue>
 		<yvalue>0</yvalue>
 	</chaptertype>
@@ -125,6 +132,7 @@
 		<description>Chapter discusses how to analyze systems that contain flexible cables under various loading conditions.</description>
 		<color>purple</color>
 		<default>Tension in Flexible Cables</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>1000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
@@ -134,15 +142,17 @@
 		<description>Chapter discusses how to analyze systems that contain liquids in static equilibrium.</description>
 		<color>Seafoam</color>
 		<default>Hydrostatic Pressure</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>-5000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
 	
 	<chaptertype>
-		<title>Work / Energy</title>
+		<title>Work And Energy</title>
 		<description>Chapter discusses how to analyze systems using formulas for energy and work.</description>
 		<color>green</color>
 		<default>Work</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>-1000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
@@ -152,6 +162,7 @@
 		<description>Chapter discusses how to analyze the forces acting inside of a body.</description>
 		<color>gold</color>
 		<default>Internal Forces</default>
+		<defaultChapter>false</defaultChapter>
 		<xvalue>3000</xvalue>
 		<yvalue>-1500</yvalue>
 	</chaptertype>
@@ -274,7 +285,7 @@
 	<node>
 		<title>Connections (Planar)</title>
 		<description>This page describes the different ways two bodies can be connected to one another in 2-D or planar systems.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/connectionsandsupports_2D.html</page>
 		<link type="APP">Free Body Diagram</link>
 		<link type="CON">Plane Trusses</link>
@@ -283,7 +294,7 @@
 	<node>
 		<title>Connections (3-D)</title>
 		<description>This page describes the different ways two bodies can be connected to one another in 3-D systems.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/connectionsandsupports_3D.html</page>
 		<link type="APP">Free Body Diagram</link>
 		<link type="CON">Space Trusses</link>
@@ -292,7 +303,7 @@
 	<node>
 		<title>Constraints</title>
 		<description>Ways in which bodies are prevented from moving or rotating.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/constraints.html</page>
 		<link type="CON">Connections (Planar)</link>
 		<link type="CON">Connections (3-D)</link>
@@ -319,7 +330,7 @@
 	<node>
 		<title>Degrees of Freedom</title>
 		<description>The degrees of freedom of a body is the number of independent ways a body can move.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/degreesoffreedom.html</page>
 		<link type="CON">Equilibrium Stability</link>
 		<link type="ALT">Constraints</link>
@@ -377,14 +388,14 @@
 	<node>
 		<title>Elastic Potential Energy</title>
 		<description>Energy stored in the deformation (stretching or compressing) of a body.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 	</node>
 	
 	<node>
 		<title>Energy Equations</title>
 		<description>The equations that describe the different types of energy in any given system.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Mechanical Efficiency</link>
 		<link type="DRV">Equilibrium Stability</link>
@@ -412,7 +423,7 @@
 	<node>
 		<title>Equilibrium Stability</title>
 		<description>The resistance of an object in equilibrium to disturbances.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 	</node>
 	
@@ -510,7 +521,7 @@
 	<node>
 		<title>Gravitational Potential Energy</title>
 		<description>The energy stored in a system by raising an object up, away from the center of the earth.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 	</node>
 	
@@ -561,7 +572,7 @@
 	<node>
 		<title>Kinetic Energy</title>
 		<description>Energy stored in the motion (translation or rotation) of a body.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Energy Equations</link>
 	</node>
@@ -585,7 +596,7 @@
 	<node>
 		<title>Mechanical Efficiency</title>
 		<description>The percentage of input work that results in useful output work.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 	</node>
 	
@@ -666,7 +677,7 @@
 	<node>
 		<title>Newton's Third Law</title>
 		<description>A physical law that states that for every action (force) there is an equal and opposite reaction.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/newtonsthirdlaw.html</page>
 		<link type="APP">Normal Force</link>
 		<link type="APP">Multi-Component Assemblies</link>
@@ -675,7 +686,7 @@
 	<node>
 		<title>Normal Force</title>
 		<description>The force between two solid bodies in contact that prevents objects from occupying the same space at the same time.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/normalforce.html</page>
 		<link type="CON">Constraints</link>
 	</node>
@@ -715,7 +726,7 @@
 	<node>
 		<title>Potential Energy</title>
 		<description>Energy that is stored in a way that it can be released at a later time.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Energy Equations</link>
 		<link type="SUB">Gravitational Potential Energy</link>
@@ -843,7 +854,7 @@
 	<node>
 		<title>Static Determinacy</title>
 		<description>A measure of whether or not all forces in a system can be solved for using the equations of static equilibrium.</description>
-		<chapter>Constraints / DOF</chapter>
+		<chapter>Constraints And DOF</chapter>
 		<page>websites/constraints/staticdeterminacy</page>
 	</node>
 	
@@ -940,7 +951,7 @@
 	<node>
 		<title>Virtual Work and Equilibrium</title>
 		<description>A method for solving for forces on a system in equilibrium involving small imaginary displacements and changes in the energy of the system. </description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 	</node>
 	
@@ -962,7 +973,7 @@
 	<node>
 		<title>Work</title>
 		<description>An influence that changes the energy in a system.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="SUB">Work of a Force</link>
 		<link type="SUB">Work of a Couple or Moment</link>
@@ -972,7 +983,7 @@
 	<node>
 		<title>Work of a Force</title>
 		<description>Describes the work a force does acting on a body.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
 	</node>
@@ -980,7 +991,7 @@
 	<node>
 		<title>Work of a Couple or Moment</title>
 		<description>Describes the work a moment or couple does acting on a body.</description>
-		<chapter>Work / Energy</chapter>
+		<chapter>Work And Energy</chapter>
 		<page>websites/incomplete.html</page>
 		<link type="CON">Virtual Work and Equilibrium</link>
 	</node>

@@ -1,16 +1,13 @@
 package view;
 
 import controller.Configuration;
-
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import model.Node;
 import model.Node.ViewType;
-import model.NodeMap;
 import fr.inria.zvtm.engine.Camera;
 import fr.inria.zvtm.engine.View;
 import fr.inria.zvtm.engine.ViewEventHandler;
@@ -33,7 +30,6 @@ public class CameraMovementListener implements ViewEventHandler {
 	private Node highlightedNode;
 	private List<Node> nodeList;
 	private List<Node> chapterList;
-	private List<Point> startingNodeCoords;
 	private boolean dragging = false;
 	private int xLocation;
 	private int yLocation;
@@ -46,17 +42,19 @@ public class CameraMovementListener implements ViewEventHandler {
 	 *        A reference to the node list of the attached AppCanvas.
 	 * @param chapterList
 	 *        A reference to the chapter list of the attached AppCanvas.
-	 * @param nodeMap
-	 *        A reference to the node map of the attached AppCanvas.
 	 */
 	public CameraMovementListener(AppCanvas canvas, List<Node> nodeList,
-	    List<Node> chapterList, NodeMap nodeMap) {
+	    List<Node> chapterList) {
 	    this.canvas = canvas;
 		this.nodeList = nodeList;
 		this.chapterList = chapterList;
-		startingNodeCoords = nodeMap.getNodeCoords();
 	}
 
+	/**
+	 * Listener for when the user enters a node.
+	 * @param glyph
+	 * 			The glyph the user entered.
+	 */
 	public void enterGlyph(Glyph glyph) {
 		if (!ignoreGlyph(glyph)) {
 		    // Determine if the chapter or node list should be searched.
@@ -71,9 +69,9 @@ public class CameraMovementListener implements ViewEventHandler {
 		    boolean isSubNode = true;
 			for (Node node : targetList) {
 				if (glyph.equals(node.getGlyph())) {
-					if (highlightedNode == null
-							&& !glyph.equals(canvas.getSelectedNode().getGlyph())) {
-						node.showView(ViewType.FULL_DESCRIPTION, true);
+					if (highlightedNode == null ) {
+						node.showView(ViewType.FULL_DESCRIPTION, node, true);
+						node.highlight(node.getNodeChapterColor(), 4);
 						node.highlightLinks(!canvas.isSelectedAChapterNode());
 					}
 					isSubNode = false;
@@ -87,7 +85,7 @@ public class CameraMovementListener implements ViewEventHandler {
 				for (Node node : canvas.getSelectedNode().getSubNodeList()) {
 					if (glyph.equals(node.getGlyph())) {
 						if (highlightedNode == null)
-							node.showView(ViewType.FULL_DESCRIPTION, true);
+							node.showView(ViewType.FULL_DESCRIPTION, canvas.getSelectedNode(), true);
 						highlightedNode = node;
 						break;
 					}
@@ -96,6 +94,11 @@ public class CameraMovementListener implements ViewEventHandler {
 		}
 	}
 
+	/**
+	 * Listener for when the user exits a node.
+	 * @param glyph
+	 * 			The glyph the user exited.
+	 */
 	public void exitGlyph(Glyph glyph) {
 		if (!ignoreGlyph(glyph)) {
 		    // Determine if the chapter or node list should be searched.
@@ -110,15 +113,15 @@ public class CameraMovementListener implements ViewEventHandler {
 				if (glyph.equals(node.getGlyph())) {
 					// Show title only if the highlighted node is not the
 					// selected node
+					node.unhighlight();
 					if (node != canvas.getSelectedNode() && !canvas.isSelectedAChapterNode()) {
-						node.showView(ViewType.TITLE_ONLY, true);
+						node.showView(ViewType.TITLE_ONLY, canvas.getSelectedNode(), true);
 					}
+					else if ( node == canvas.getSelectedNode() )
+						node.highlight(Color.yellow, 2);
 					highlightedNode = null;
-					if ( !glyph.equals(canvas.getSelectedNode().getGlyph()) )
-					{
-						node.unhighlightLinks();
-						canvas.getSelectedNode().highlightLinks(!canvas.isSelectedAChapterNode());
-					}
+					node.unhighlightLinks();
+					//canvas.getSelectedNode().highlightLinks(false);
 					isSubNode = false;
 					break;
 				}
@@ -126,7 +129,7 @@ public class CameraMovementListener implements ViewEventHandler {
 			if (isSubNode) {
 				for (Node node : canvas.getSelectedNode().getSubNodeList()) {
 					if (glyph.equals(node.getGlyph())) {
-							node.showView(ViewType.FULL_DESCRIPTION, true);
+							node.showView(ViewType.FULL_DESCRIPTION, canvas.getSelectedNode(), true);
 						highlightedNode = null;
 						break;
 					}
@@ -141,8 +144,8 @@ public class CameraMovementListener implements ViewEventHandler {
 		if (highlightedNode != null) {
 		    boolean centerOnNode = true;
 		    if ( mod == ViewEventHandler.SHIFT_MOD ) {
-		    	System.out.println("<xvalue>" + highlightedNode.getX() + "</xvalue>\t<yvalue>"
-		    			+ highlightedNode.getY() + "</yvalue>" );
+		    	System.out.println("<xvalue>" + highlightedNode.getGlyph().vx + "</xvalue>\t<yvalue>"
+		    			+ highlightedNode.getGlyph().vy + "</yvalue>" );
 		    	//highlightedNode.printDebugInfo();
 		    	return;
 		    }
@@ -173,7 +176,7 @@ public class CameraMovementListener implements ViewEventHandler {
 			// If the node clicked on isn't the selected node, isn't a sub-node,
 			//  and not in overview, then show just the title of the currently selected node
 			else if (selectedNode != null && !canvas.isSelectedAChapterNode()) {
-				selectedNode.showView(ViewType.TITLE_ONLY, true);
+				selectedNode.showView(ViewType.TITLE_ONLY, selectedNode, true);
 			}
 
 			if (highlightedNode != null) {
@@ -181,19 +184,21 @@ public class CameraMovementListener implements ViewEventHandler {
 				selectedNode.unhighlightLinks();
 	            if ( selectedNode.hasSubNodes() ) {
 	            	for ( Node n : selectedNode.getSubNodeList())
-	            		n.showView(ViewType.HIDDEN, true);
+	            		n.showView(ViewType.HIDDEN, selectedNode, true);
 	            }
+	            if ( !canvas.isSelectedAChapterNode() )
+	            	canvas.addNodeToBackList(selectedNode);
     			canvas.setSelectedNode( highlightedNode );
 
     			// Show the full description of the newly selected node
     			if(!canvas.isSelectedAChapterNode())
     			{
-    				highlightedNode.showView(ViewType.FULL_DESCRIPTION, true);
+    				highlightedNode.showView(ViewType.FULL_DESCRIPTION, selectedNode, true);
     			    canvas.showSelectedChapter();
     			}
     			
     			highlightedNode.highlight(Color.yellow, 3);
-    			highlightedNode.highlightLinks(!canvas.isSelectedAChapterNode());
+    			highlightedNode.highlightLinks(false);
     			highlightedNode = null;
 			}
 
@@ -201,7 +206,8 @@ public class CameraMovementListener implements ViewEventHandler {
 			if (centerOnNode) {
 			    vSpaceManager.getActiveView().centerOnGlyph(
 			        canvas.getSelectedNode().getGlyph(),
-			        vSpaceManager.getActiveCamera(), 1000);
+			        vSpaceManager.getActiveCamera(), 1000, 
+			        canvas.isSelectedAChapterNode() ? false : true);
 			}
 		}
 	}
@@ -342,18 +348,9 @@ public class CameraMovementListener implements ViewEventHandler {
 	public void viewClosing(View view) {
 	}
 
-	public void moveNodesToOriginalPositions()
-	{
-	    int count = 0;
-        //move nodes back to their starting positions
-        for (Node node : nodeList) {
-            int nodeX = startingNodeCoords.get(count).x;
-            int nodeY = startingNodeCoords.get(count).y;
-            node.moveTo(nodeX, nodeY);
-            count++;
-        }
-	}
-
+	/**
+	 * Unhighlights links of the highlighted node, and sets it to null.
+	 */
 	public void deselectNodes()
     {
         if (highlightedNode != null) {

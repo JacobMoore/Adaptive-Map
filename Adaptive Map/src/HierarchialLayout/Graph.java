@@ -51,7 +51,7 @@ import java.util.*;
 /**
  * A collection element for sorting key-value pairs
 */
-
+@SuppressWarnings("javadoc")
 class IntSortNode implements Comparable {
     /** the key */
     private int first; /* holds the node's topological index */
@@ -75,7 +75,7 @@ class IntSortNode implements Comparable {
 /**
  * A collection element for sorting key-value pairs
 */
-
+@SuppressWarnings("javadoc")
 class DoubleSortNode implements Comparable {
     /** key */
     private double key; /* holds the node's position */
@@ -102,7 +102,7 @@ class DoubleSortNode implements Comparable {
 /**
  * A collection element for sorting key-value pairs
 */
-
+@SuppressWarnings("javadoc")
 class TwinDoubleSortNode implements Comparable {
     /** first key */
     private double primary; /* holds the node's median */

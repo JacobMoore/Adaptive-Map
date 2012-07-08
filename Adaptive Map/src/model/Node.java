@@ -33,70 +33,6 @@ import fr.inria.zvtm.glyphs.VText;
  * @author james
  */
 public class Node {
-
-	/**
-	 * Represents an (x,y) coordinate location in the grid surrounding a
-	 * selected node.
-	 *
-	 * @author John Nein
-	 * @version Nov 9, 2011
-	 */
-	public static class GridLocation {
-		private int x;
-		private int y;
-
-		/**
-		 * Create a new GridLocation object.
-		 * @param x The x for this GridLocation.
-		 * @param y The y for this GridLocation.
-		 */
-		public GridLocation(int x, int y) {
-			this.setX(x);
-			this.setY(y);
-		}
-
-		/**
-		 * Returns the x coordinate location.
-		 *
-		 * @return the x
-		 */
-		public int getX() {
-			return x;
-		}
-
-		/**
-		 * Returns the y coordinate location.
-		 *
-		 * @return the y
-		 */
-		public int getY() {
-			return y;
-		}
-
-		/**
-		 * Sets the x coordinate location.
-		 *
-		 * @param x
-		 *            the x to set
-		 */
-		public void setX(int x) {
-			if (x < 0) {
-				throw new UnsupportedOperationException(
-						"Cannot declare a negative x grid index.");
-			}
-			this.x = x;
-		}
-
-		/**
-		 * Sets the y coordinate location.
-		 *
-		 * @param y
-		 *            the y to set
-		 */
-		public void setY(int y) {
-			this.y = y;
-		}
-	}
 	/**
 	 * Represents the text of a node
 	 */
@@ -117,12 +53,16 @@ public class Node {
 	/**
 	 *  Types of view available for a node.
 	 */
+	@SuppressWarnings("javadoc")
 	public enum ViewType {
 		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY;
 	}
 
+	// Map of chapter names to chapter properties
 	private static Map<String, ChapterProperties> chapterTypes;
 	
+	// List of special 'subnodes' that represent multiple firstlevel nodes
+	// with the same link type
 	private List<Node> subNodes;
 
 	/**
@@ -140,16 +80,24 @@ public class Node {
 
 	private static final int NODE_NOT_CONNECTED = -999;
 
-	private static final int NODE_PADDING = 2; // in px
 	private static List<Link> nodeLinks = new LinkedList<Link>();
 	
+	/**
+	 * @return The list of links between all nodes.
+	 */
 	public final static List<Link> getAllLinks()
 	{
 		return nodeLinks;
 	}
 	
+	// Fixed positions used in overview
 	private int fixedXPos = 0, fixedYPos = 0;
 	
+	/**
+	 * Sets the fixed position for this node.
+	 * @param x The node's fixed x position.
+	 * @param y The node's fixed y position.
+	 */
 	public void setFixedNodePosition(int x, int y)
 	{
 		fixedXPos = x;
@@ -171,6 +119,10 @@ public class Node {
 
 	/**
 	 * Helper method for findDepthBetween().
+	 * @param fromNode The starting node
+	 * @param toNode The target node
+	 * @param traversedNodes The nodes that have already been traversed
+	 * @return The shortest depth between the nodes
 	 */
 	private static int findDepthBetween(Node fromNode, Node toNode,
 			List<Node> traversedNodes) {
@@ -238,6 +190,7 @@ public class Node {
 	 * @param node2 The second node.
 	 * @param linkType The type of link to use.
 	 * @param arrowSize The size of the links arrows.
+	 * @param isChapter If this link is between overview nodes.
 	 */
 	public static void link(Node node1, Node node2, String linkType, int arrowSize,
 			boolean isChapter) {
@@ -264,7 +217,6 @@ public class Node {
 	private VRoundRect nodeRectangle;
 	// Node information variables
 	private NodeText nodeTitle;
-
 	private ViewType nodeView;
 
 	/**
@@ -273,7 +225,7 @@ public class Node {
 	protected VirtualSpace virtualSpace;
 
 	/**
-	 * Constructor
+	 * Constructor, used for regular ndoe
 	 * @param nodeTitle The title for the node.
 	 * @param nodeDescription The description for the node.
 	 * @param nodeChapter The chapter that the node is in.
@@ -286,44 +238,25 @@ public class Node {
 		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
 
 		setNodeTitle(nodeTitle);
-		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, 12));
+		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.NODE_FONT_SIZE));
 		setNodeDescription(nodeDescription);
-		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, 12));
+		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, Configuration.NODE_FONT_SIZE));
 		setNodeChapter(nodeChapter);
 		subNodes = null;
 
-		showView(ViewType.TITLE_ONLY, false);
+		showView(ViewType.TITLE_ONLY, this, false);
 		bindTextToRectangle();
+		realignNodeText();
 	}
-
+	
 	/**
-	 * @return The color of this node's chapter.
-	 */
-	public Color getNodeChapterColor() {
-	    return chapterTypes.get(nodeChapter).getChapterColor();
-	}
-
-	/**
-	 * @return The x-position of this node.
-	 */
-	public  long getX()
-	{
-		return nodeRectangle.vx;
-	}
-	/**
-	 * @return The y-position of this node.
-	 */
-	public long getY()
-	{
-		return nodeRectangle.vy;
-	}
-	/**
-	 * Constructor
+	 * Constructor, used for overview nodes
 	 * @param nodeTitle The title of the node.
 	 * @param nodeDescription The description of the node.
 	 * @param nodeChapter The chapter the node is in.
 	 * @param titleFontSize The font size for this node's title.
 	 * @param descriptionFontSize The font size for this node's description.
+	 * @param gradientAdjust The positioning of the gradient color of the node.
 	 */
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
 	    int titleFontSize, int descriptionFontSize, float gradientAdjust)
@@ -336,7 +269,7 @@ public class Node {
 	        deriveFont(titleFontSize * 1.0f) );
 	    this.nodeDescription.setSpecialFont(  VText.getMainFont().
 	        deriveFont(descriptionFontSize * 1.0f) );
-	    showView(ViewType.FULL_DESCRIPTION, false);
+	    showView(ViewType.FULL_DESCRIPTION, this, false);
 	}
 	
 	/**
@@ -382,10 +315,19 @@ public class Node {
 	}
 
 	/**
+	 * Return's the center point of the node
 	 * @return Point at the center of the node
 	 */
 	public Point getCenterPoint() {
 		return new Point((int)nodeRectangle.vx, (int)nodeRectangle.vy);
+	}
+
+	/**
+	 * Returns the color of the node's chapter
+	 * @return The color of this node's chapter.
+	 */
+	public Color getNodeChapterColor() {
+	    return chapterTypes.get(nodeChapter).getChapterColor();
 	}
 
 	/**
@@ -398,13 +340,7 @@ public class Node {
 	}
 
 	/**
-	 * @return nodeRectangle.height
-	 */
-	public long getHeight() {
-		return nodeRectangle.getHeight();
-	}
-
-	/**
+	 * Returns a list of all linked nodes
 	 * @return List of linked nodes
 	 */
 	public List<Node> getLinkedNodes() {
@@ -422,6 +358,7 @@ public class Node {
 	}
 
 	/**
+	 * Returns the node's chapter
 	 * @return the nodeChapter
 	 */
 	public String getNodeChapter() {
@@ -429,6 +366,7 @@ public class Node {
 	}
 
 	/**
+	 * Returns the node's description
 	 * @return nodeDescription in string format
 	 */
 	public String getNodeDescription()
@@ -436,6 +374,7 @@ public class Node {
 		return nodeDescription.toString();
 	}
 	/**
+	 * Returns the node's url
 	 * @return the nodeContentLocation
 	 */
 	public String getNodeContentUrl() {
@@ -457,6 +396,7 @@ public class Node {
 	}
 
 	/**
+	 * Returns the nodes title
 	 * @return nodeTitle in string format
 	 */
 	public String getNodeTitle() {
@@ -464,6 +404,8 @@ public class Node {
 	}
 
 	/**
+	 * Return's the average translucency of the node's rectangle,
+	 * title and description.
 	 * @return the node's translucency value
 	 */
 	private float getNodeTranslucency() {
@@ -473,17 +415,59 @@ public class Node {
 	}
 
 	/**
-	 * @return nodeView
+	 * Return's the node's view type
+	 * @return nodeView THhe current view type
 	 */
 	public ViewType getViewType() {
 		return nodeView;
 	}
 
 	/**
+	 * Returns the absolute half-width of the nodeRectangle.
 	 * @return nodeRectangle.width
 	 */
 	public long getWidth() {
 		return nodeRectangle.getWidth();
+	}
+	
+	/**
+	 * Returns the unadjusted width of the node's title
+	 * @return nodeTitle.textContainerWidth
+	 */
+	public long getNodeTitleWidth() {
+		return nodeTitle.textContainerWidth;
+	}
+	
+	/**
+	 * Returns the unadjusted width of the node's description
+	 * @return nodeDescription.textContainerWidth
+	 */
+	public long getNodeDescriptionWidth() {
+		return nodeDescription.textContainerWidth;
+	}
+	
+	/**
+	 * Returns the absolute half-height of the node rectangle.
+	 * @return nodeRectangle.height
+	 */
+	public long getHeight() {
+		return nodeRectangle.getHeight();
+	}
+	
+	/**
+	 * Returns the unadjusted height of the node's title
+	 * @return nodeTitle.textContainerHeight
+	 */
+	public long getNodeTitleHeight() {
+		return nodeTitle.textContainerHeight;
+	}
+	
+	/**
+	 * Returns the unadjusted height of the node's description
+	 * @return nodeDescription.textContainerHeight
+	 */
+	public long getNodeDescriptionHeight() {
+		return nodeDescription.textContainerHeight;
 	}
 
 	@Override
@@ -565,6 +549,7 @@ public class Node {
 	public void realignNodeText() {
 		long titleWidth = nodeTitle.textContainerWidth;
 		long titleHeight = nodeTitle.textContainerHeight;
+		int NODE_PADDING = Configuration.NODE_PADDING;
 
 		// Center the node description text
 		switch (nodeView) {
@@ -619,18 +604,26 @@ public class Node {
 
 	/**
 	 * Sets the visibility of links connected to this node.
+	 * @param selectedNode The node currently selected, used to set transparency.
 	 * @param visibility
 	 * 		True to show links, false otherwise.
 	 */
-	private void setLinksVisibility(boolean visibility) {
+	private void setLinksVisibility(final Node selectedNode, boolean visibility) {
 		for (Link link : getNodeLinks()) {
 			Node fromNode = link.getFromNode();
 			Node linkedNode = fromNode.equals(this)
 					? link.getToNode()
 					: fromNode;
-			if (visibility == false
-					|| linkedNode.getViewType() != ViewType.HIDDEN) {
-				link.setVisible(visibility);
+			if (visibility == false || linkedNode.getViewType() == ViewType.HIDDEN)
+				link.setVisible(false);
+			else {
+				int depth = findDepthBetween(selectedNode, linkedNode);
+				if ( Math.abs(depth) >= 3)
+					link.setVisible(visibility, 0.2f);
+				else if ( Math.abs(depth) == 2)
+					link.setVisible(visibility, 0.4f);
+				else
+					link.setVisible(visibility, 1.0f);
 			}
 		}
 	}
@@ -675,6 +668,13 @@ public class Node {
     public void unhighlightLinks() {
         for (Link link: getNodeLinks()) {
             link.unhighlight();
+			int depth = findDepthBetween(this, link.getToNode());
+			if ( Math.abs(depth) >= 3)
+				link.setTranslucencyValue(0.2f);
+			else if ( Math.abs(depth) == 2)
+				link.setTranslucencyValue(0.4f);
+			else
+				link.setTranslucencyValue(1.0f);
         }
     }
 
@@ -724,13 +724,15 @@ public class Node {
 	 *
 	 * @param alpha
 	 *            the alpha of the translucency for the node
+	 * @param selectedNode 
+	 * 			 The node currently selected, used to determine gradient fill and translucency.
 	 * @param animate
 	 *            if the transition should be animated
 	 */
-	private void setNodeTranslucency(final long alpha, boolean animate) {
+	private void setNodeTranslucency(final long alpha, final Node selectedNode, boolean animate) {
 		if (animate)
 		{
-			setLinksVisibility(alpha > 0);
+			setLinksVisibility(selectedNode, alpha > 0);
 			Animation nodeTransparancy = VirtualSpaceManager.INSTANCE
 					.getAnimationManager().getAnimationFactory()
 					.createTranslucencyAnim(1000, new Translucent() {
@@ -757,7 +759,7 @@ public class Node {
 		}
 		else
 		{
-			setLinksVisibility(alpha > 0);
+			setLinksVisibility(selectedNode, alpha > 0);
 			nodeRectangle.setTranslucencyValue(alpha);
 			nodeTitle.setTranslucencyValue(alpha);
 			nodeDescription.setTranslucencyValue(alpha);
@@ -769,10 +771,12 @@ public class Node {
 	 *
 	 * @param viewType
 	 *            the type of information view for this node to display
+	 * @param selectedNode 
+	 * 			  The currently selected node, used to set link transparency. 
 	 * @param animate
 	 *            whether the transition should be animated if possible
 	 */
-	public final void showView(ViewType viewType, boolean animate) {
+	public final void showView(ViewType viewType, Node selectedNode, boolean animate) {
 		nodeView = viewType;
 		boolean nodeDescriptionVisible = false;
 		switch (viewType) {
@@ -780,19 +784,46 @@ public class Node {
 				nodeDescriptionVisible = true;
 			case TITLE_ONLY :
 				if (getNodeTranslucency() == 0) {
-					setNodeTranslucency(1, animate);
+					setNodeTranslucency(1, selectedNode, animate);
 				}
 				nodeRectangle.setVisible(true);
 				nodeTitle.setVisible(true);
 				nodeDescription.setVisible(nodeDescriptionVisible);
 				break;
 			case HIDDEN :
-				setNodeTranslucency(0, animate);
+				setNodeTranslucency(0, selectedNode, animate);
 				break;
 			default :
 		}
 	}
 	
+	/**
+	 * Sets the node to show specific information.
+	 *
+	 * @param viewType
+	 *            the type of information view for this node to display
+	 * @param selectedNode 
+	 * 			  The currently selected node, used to set link transparency. 
+	 * @param animate
+	 *            whether the transition should be animated if possible
+	 * @param depth 
+	 * 			  How far away this node is from the selected node.
+	 */
+	public final void showView(ViewType viewType, Node selectedNode, boolean animate, int depth)
+	{
+		if ( Math.abs(depth) <= 1 )
+			nodeRectangle.setFillNum(1.0f);
+		else if ( Math.abs(depth) == 2 )
+			nodeRectangle.setFillNum(0.3f);
+		else
+			nodeRectangle.setFillNum(0.1f);
+			
+		showView(viewType, selectedNode, animate);
+	}
+	
+	/**
+	 * @param newSize The new size of this node's font.
+	 */
 	public void resizeFont( int newSize )
 	{
 		this.nodeTitle.setSpecialFont(nodeTitle.getFont()
@@ -801,6 +832,11 @@ public class Node {
 				.deriveFont(newSize * 1.0f));
 	}
 	
+	/**
+	 * Resizes the node's title and description separately.
+	 * @param titleSize The new size of this node's title font.
+	 * @param descriptionSize The new size of this node's description font.
+	 */
 	public void resizeFont( int titleSize, int descriptionSize )
 	{
 		this.nodeTitle.setSpecialFont(nodeTitle.getFont()
@@ -809,14 +845,9 @@ public class Node {
 				.deriveFont(descriptionSize * 1.0f));
 	}
 	
-	public void printDebugInfo()
-	{
-		for(Link l: this.getNodeLinks())
-		{
-			System.out.println(l.getLinkType());
-		}
-	}
-	
+	/**
+	 * @return The list of this node's subnodes.
+	 */
 	public List<Node> getSubNodeList()
 	{
 		return subNodes;
@@ -873,11 +904,14 @@ public class Node {
         	newNode.addToVirtualSpace(virtualSpace);
         	newNode.nodeRectangle.setColor(Color.white);
         	Node.link(this, newNode, entry.getKey(), 20, false);
-        	newNode.showView(ViewType.HIDDEN, false);
+        	newNode.showView(ViewType.HIDDEN, this, false);
         	subNodes.add(newNode);
         }  
 	}
 	
+	/**
+	 * @return True if this node has any subnodes, false otherwise
+	 */
 	public boolean hasSubNodes()
 	{
 		return subNodes != null;
@@ -885,6 +919,8 @@ public class Node {
 
 	/**
 	 *  Defines a chapter's properties (color and description).
+	 *  !NOTE!: This code is a duplicate of AdaptiveMapGUI's ChapterProperties!
+	 *  Duplicate any changes across projects to maintain consistency!
 	 */
 	public static class ChapterProperties {
 		private Color chapterColor;
@@ -898,6 +934,10 @@ public class Node {
 		 * Create a new ChapterProperties object.
 		 * @param chapterColor The color of the chapter.
 		 * @param description The description of the chapter.
+		 * @param x The fixed x position of the chapter.
+		 * @param y The fixed y position of the chapter.
+		 * @param node The chapter's default node.
+		 * @param isDefault Is this the default chapter.
 		 */
 		public ChapterProperties(Color chapterColor, String description, 
 				int x, int y, String node, boolean isDefault) {
@@ -909,18 +949,30 @@ public class Node {
 			isDefaultChapter = isDefault;
 		}
 		
+		/**
+		 * @return fixedXPosition
+		 */
 		public int getChapterXPos() {
 			return fixedXPosition;
 		}
 		
+		/**
+		 * @return fixedYPosition
+		 */
 		public int getChapterYPos() {
 			return fixedYPosition;
 		}
 		
+		/**
+		 * @return defaultNode
+		 */
 		public String getDefaultNode() {
 			return defaultNode;
 		}
 		
+		/**
+		 * @return isDefaultChapter
+		 */
 		public boolean isDefaultChapter()
 		{
 			return isDefaultChapter;

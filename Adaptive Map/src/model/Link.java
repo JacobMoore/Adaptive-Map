@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import view.AppCanvas;
+
 import controller.Configuration;
 import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.glyphs.VSegment;
@@ -28,9 +30,10 @@ public class Link
     /**
      * Represents the types of links.
      */
+    @SuppressWarnings("javadoc")
     public enum LinkLineType
     {
-        BOLD,
+		BOLD,
         DASHED,
         STANDARD;
     }
@@ -38,11 +41,18 @@ public class Link
     private static Map<String, LinkProperties> linkTypes;
     
     
+    /**
+     * @param type Type of link
+     * @return the link properties object for that type
+     */
     public static LinkProperties getLinkProperty(String type)
     {
     	return linkTypes.get(type);
     }
     
+    /**
+     * @return All link types
+     */
     public static ArrayList<String> getLinkTypes()
     {
     	ArrayList<String> list = new ArrayList<String>();
@@ -79,6 +89,7 @@ public class Link
     private EndTriangle      endTriangle;
     private boolean			 highlighted;
     
+    // Number of next link color, used to give all new links different colors
     private static int 		 colorNum = 0;
     private Color			 linkColor;
 
@@ -90,6 +101,8 @@ public class Link
      *            the node that is being linked to
      * @param linkType
      *            the type of link connecting the two given nodes
+     * @param aSize 
+     * 			  the size of the arrowhead
      */
     public Link(Node fromNode, Node toNode, String linkType, int aSize)
     {
@@ -119,7 +132,11 @@ public class Link
         this.fromNode = fromNode;
         this.toNode = toNode;
         this.linkType = linkType;
-        if (fromNode.virtualSpace.equals(toNode.virtualSpace))
+        if (AppCanvas.appletContext == null)
+        {
+        	return;
+        }
+        else if (fromNode.virtualSpace.equals(toNode.virtualSpace))
         {
             this.virtualSpace = fromNode.virtualSpace;
         }
@@ -136,6 +153,7 @@ public class Link
         virtualSpace.addGlyph(this);
         virtualSpace.addGlyph(linkText);
         linkText.setVisible(false);
+        virtualSpace.onTop(linkText);
         linkWeight = 1;
         
         switch( colorNum )
@@ -197,6 +215,18 @@ public class Link
         super.setVisible(b);
         endTriangle.setVisible(b);
     }
+    
+    /**
+     * setVisible with option to set link transparency
+     * @param b Visible or not
+     * @param alpha Transparency value
+     */
+    public void setVisible(boolean b, float alpha)
+    {
+        super.setVisible(b);
+        setTranslucencyValue(alpha);
+        endTriangle.setVisible(b);
+    }
 
 
     /**
@@ -227,6 +257,7 @@ public class Link
         Point linkCenter = getLinkCenter();
         // Center the text on the link
         linkText.moveTo(linkCenter.x - Configuration.LINK_FONT_SIZE, linkCenter.y);
+        virtualSpace.onTop(linkText);
 
         // Remove, then re-add triangle, as it will have moved
         virtualSpace.removeGlyph(endTriangle);
@@ -256,6 +287,9 @@ public class Link
     /**
      * Creates an array of vertices for a link-ending triangle based on the node
      * to which the end of the link is pointing.
+     * @param startNode The node the link originates from
+     * @param endNode The node the link goes to
+     * @return Array of points representing each vertex of the triangle
      */
     private LongPoint[] createTrianglePoints(Node startNode, Node endNode)
     {
@@ -519,9 +553,11 @@ public class Link
 
     /**
      * Highlights this link and its arrow, and shows its text.
+     * @param showText Whether the text should be shown.
      */
     public void highlight(boolean showText)
     {
+    	this.setTranslucencyValue(1.0f);
         highlighted = true;
         if (isVisible() && showText)
             linkText.setVisible(true);
@@ -574,47 +610,38 @@ public class Link
 
     /**
      *  Represents all the properties of a link.
+	 *  !NOTE!: This code is a duplicate of AdaptiveMapGUI's LinkProperties!
+	 *  Duplicate any changes across projects to maintain consistency!
      */
     public static class LinkProperties
     {
-        private LinkLineType linkLineType;
         private Color        linkColor;
+        private LinkLineType linkLineType;
         private String       description;
 
         /**
          * Create a new LinkProperties object.
-         * @param linkLineType The type of link.
+         * @param linkLineType 
          * @param linkColor The color of the link.
          * @param description The description for this link.
          */
         public LinkProperties(
-            LinkLineType linkLineType,
-            Color linkColor,
+            LinkLineType linkLineType, Color linkColor,
             String description)
         {
-            this(linkLineType, linkColor);
+            this(linkColor);
+            this.linkLineType = linkLineType;
             this.description = description;
         }
 
 
         /**
          * Create a new LinkProperties object.
-         * @param linkLineType The type of link.
          * @param linkColor The color of the the link.
          */
-        public LinkProperties(LinkLineType linkLineType, Color linkColor)
+        public LinkProperties( Color linkColor)
         {
-            this.linkLineType = linkLineType;
             this.linkColor = linkColor;
-        }
-
-
-        /**
-         * @return The type of link.
-         */
-        public LinkLineType getLinkLineType()
-        {
-            return linkLineType;
         }
 
 
@@ -625,7 +652,22 @@ public class Link
         {
             return linkColor;
         }
-
+        
+        /**
+         * @param type The line type of this link
+         */
+        public void setLinkLineType(LinkLineType type)
+        {
+        	linkLineType = type;
+        }
+        
+        /**
+         * @return The line type of this link
+         */
+        public LinkLineType getLinkLineType()
+        {
+        	return linkLineType;
+        }
 
         /**
          * @param description
