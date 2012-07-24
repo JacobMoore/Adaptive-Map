@@ -103,9 +103,78 @@ public class Node {
 		fixedXPos = x;
 		fixedYPos = y;
 	}
+	
+	/**
+	 * Finds the distance between two nodes based on the links between them.
+	 * 
+	 * Depth is different from distance in that, if two nodes are on the same level
+	 * but are not directly linked, they will have the same depth, but will have
+	 * some positive distance from each other.
+	 *
+	 * @param fromNode
+	 *            first node that you are trying to find the depth from
+	 * @param toNode
+	 *            second node that you are trying to find the depth to
+	 * @return the shortest number of links between the two given nodes
+	 */
+	public static int findDistanceFrom(Node fromNode, Node toNode) {
+		if (fromNode.getNodeTitle().equals("Dry Friction") && toNode.getNodeTitle().equals("Rolling Resistance"))
+			System.out.print("");
+		return findDistanceFrom(fromNode, toNode, new ArrayList<Node>());
+	}
+	
+	/**
+	 * Helper method for findDistanceFrom().
+	 * @param fromNode The starting node
+	 * @param toNode The target node
+	 * @param traversedNodes The nodes that have already been traversed
+	 * @return The shortest distance between the nodes
+	 */
+	private static int findDistanceFrom(Node fromNode, Node toNode, List<Node> traversedNodes)
+	{
+		int shortestDepth = NODE_NOT_CONNECTED;
+		traversedNodes.add(fromNode);
+		for (Link link : nodeLinks) {
+			if (link.contains(fromNode)) {
+				Node tempFromNode = link.getFromNode();
+				Node tempToNode = link.getToNode();
+				if (traversedNodes.contains(tempFromNode)
+						&& traversedNodes.contains(tempToNode)) {
+					continue;
+				}
+				if (tempFromNode.equals(fromNode)) {
+					if (tempToNode.equals(toNode)) {
+						return 1;
+					} else {
+						int tempDepth = 1 + findDistanceFrom(tempToNode,
+								toNode, traversedNodes);
+						if (Math.abs(shortestDepth) > Math.abs(tempDepth)) {
+							shortestDepth = tempDepth;
+						}
+					}
+				} else {
+					if (tempFromNode.equals(toNode)) {
+						return 1;
+					} else {
+						int tempDepth = 1
+								+ findDistanceFrom(tempFromNode, toNode,
+										traversedNodes);
+						if (Math.abs(shortestDepth) > Math.abs(tempDepth)) {
+							shortestDepth = tempDepth;
+						}
+					}
+				}
+			}
+		}
+		return shortestDepth;
+	}
 
 	/**
 	 * Finds the depth of one node from another based on the links between them.
+	 * 
+	 * Depth is different from distance in that, if two nodes are on the same level
+	 * but are not directly linked, they will have the same depth, but will have
+	 * some positive distance from each other.
 	 *
 	 * @param fromNode
 	 *            first node that you are trying to find the depth from
@@ -235,7 +304,8 @@ public class Node {
 		nodeRectangle = new VRoundRect(0,
 				0, 1, 200, 11, chapterTypes.get(nodeChapter).getChapterColor(),
 				Color.BLACK, 1f, 15, 15);
-		nodeRectangle.setStroke( new BasicStroke( 2.0f ) );
+		nodeRectangle.setStroke( new BasicStroke( 1.0f ) );
+		nodeRectangle.setOwner(Node.class);
 
 		setNodeTitle(nodeTitle);
 		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.NODE_FONT_SIZE));
@@ -265,6 +335,7 @@ public class Node {
 	    nodeRectangle = new VRoundRect(0,
 				0, 1, 700, 200, chapterTypes.get(nodeChapter).getChapterColor(),
 				Color.BLACK, 1f, 15, 15, gradientAdjust);
+		nodeRectangle.setOwner(Node.class);
 	    this.nodeTitle.setSpecialFont(  VText.getMainFont().
 	        deriveFont(titleFontSize * 1.0f) );
 	    this.nodeDescription.setSpecialFont(  VText.getMainFont().
@@ -536,6 +607,7 @@ public class Node {
 						IdentityInterpolator.getInstance(), null);
 		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
 				nodeTranslation, true);
+		System.out.println("X: " + fixedXPos + ", Y: " + fixedYPos);
 		realignNodeText();
 		refreshLinks();
 	}
@@ -664,11 +736,19 @@ public class Node {
 
 	/**
 	 * Unhighlight all links connected to this node
+	 * @param selectedNode The node currently selected
 	 */
-    public void unhighlightLinks() {
+    public void unhighlightLinks(Node selectedNode) {
         for (Link link: getNodeLinks()) {
             link.unhighlight();
-			int depth = findDepthBetween(this, link.getToNode());
+			int depth = 0;
+            if ( link.getToNode().equals(selectedNode))
+            	findDepthBetween(selectedNode, link.getFromNode());
+            else
+            	findDepthBetween(selectedNode, link.getToNode());
+            
+			if ( link.getToNode().getNodeContentUrl() == null)
+				continue;
 			if ( Math.abs(depth) >= 3)
 				link.setTranslucencyValue(0.2f);
 			else if ( Math.abs(depth) == 2)
@@ -811,14 +891,24 @@ public class Node {
 	 */
 	public final void showView(ViewType viewType, Node selectedNode, boolean animate, int depth)
 	{
-		if ( Math.abs(depth) <= 1 )
+		if ( Math.abs(depth) == 0)
 			nodeRectangle.setFillNum(1.0f);
+		else if ( Math.abs(depth) == 1 )
+			nodeRectangle.setFillNum(0.7f);
 		else if ( Math.abs(depth) == 2 )
 			nodeRectangle.setFillNum(0.3f);
 		else
 			nodeRectangle.setFillNum(0.1f);
 			
 		showView(viewType, selectedNode, animate);
+	}
+	
+	/**
+	 * Test method for printing out debug information.
+	 */
+	public void printDebugInfo()
+	{
+		System.out.println(nodeRectangle.getFillNum());
 	}
 	
 	/**
@@ -886,12 +976,12 @@ public class Node {
         // Create the special nodes
         for ( Entry<String, Integer> entry : linkOccurrences.entrySet() )
         {
-        	String names = ". TOPICS: ";
+        	String names = ". \n TOPICS: \n";
             for ( Link l : getNodeLinks() )
             {
             	if ( l.getLinkType().equals(entry.getKey()) && 
             			!l.getToNode().getNodeChapter().equals(l.getFromNode().getNodeChapter()) ) {
-            		names += " - ";
+            		names += "\n ";
             		if ( l.getFromNode().getGlyph().equals(this.getGlyph()) )
                 		names += l.getToNode().getNodeTitle().toUpperCase();
             		else
@@ -901,8 +991,10 @@ public class Node {
         	Node newNode = new Node( entry.getValue() + " " + entry.getKey() 
         			+ " Nodes in Other Chapters", Link.getLinkProperty(entry.getKey())
         			.getDescription() + names, nodeChapter);
-        	newNode.addToVirtualSpace(virtualSpace);
+    		newNode.nodeRectangle.setStroke( new BasicStroke( 1.0f ) );
+        	newNode.nodeRectangle.setBorderColor(Color.black);
         	newNode.nodeRectangle.setColor(Color.white);
+        	newNode.addToVirtualSpace(virtualSpace);
         	Node.link(this, newNode, entry.getKey(), 20, false);
         	newNode.showView(ViewType.HIDDEN, this, false);
         	subNodes.add(newNode);

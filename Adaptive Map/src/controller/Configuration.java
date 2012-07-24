@@ -2,8 +2,6 @@ package controller;
 
 import java.io.File;
 import java.awt.Color;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  *
@@ -38,6 +36,7 @@ public class Configuration {
     
     public static final boolean USE_FIXED_NODE_POSITIONS = true;
     public static final boolean USE_LOCAL_PATH = false;
+	public static final int GRAPHVIZ_BUFFER_LIMIT = 4096;
 
     /**
      * Returns the path to the nodes.xml file.
@@ -47,20 +46,20 @@ public class Configuration {
      * 			The path to the file.
      */
 	public static final String getXMLFilePath(final boolean useLocal) {
-		return AccessController.doPrivileged(new PrivilegedAction<String>() {
-			@Override
-			public String run() {
-				 if ( useLocal )
-				 {
-					 String currentDirPath = (new File(".")).getAbsolutePath();
-					 currentDirPath = currentDirPath.substring(0, currentDirPath
-					 .length() - 1);
-					 return String.format("%scontent/nodes.xml", currentDirPath);
-				 }
-				 else
-					 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
-			}
-		});
+		 if ( useLocal )
+		 {
+			 String currentDirPath = (new File(".")).getAbsolutePath();
+			 currentDirPath = currentDirPath.substring(0, currentDirPath
+			 .length() - 1);
+			 return String.format("%scontent/nodes.xml", currentDirPath);
+		 }
+		 else
+			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
+	}
+	
+	public static final String getServerFolder()
+	{
+		return "http://adaptivemap.me.vt.edu/AdaptiveMap/";
 	}
 	
 	/**
@@ -71,20 +70,15 @@ public class Configuration {
      * 			The path to the file.
 	 */
 	public static final String getDataFilePath(final boolean useLocal) {
-		return AccessController.doPrivileged(new PrivilegedAction<String>() {
-			@Override
-			public String run() {
-				 if ( useLocal )
-				 {
-					 String currentDirPath = (new File(".")).getAbsolutePath();
-					 currentDirPath = currentDirPath.substring(0, currentDirPath
-					 .length() - 1);
-					 return String.format("%sgraphvizData", currentDirPath);
-				 }
-				 else
-					 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/graphvizData";
-			}
-		});
+		 if ( useLocal )
+		 {
+			 String currentDirPath = (new File(".")).getAbsolutePath();
+			 currentDirPath = currentDirPath.substring(0, currentDirPath
+			 .length() - 1);
+			 return String.format("%sgraphvizData", currentDirPath);
+		 }
+		 else
+			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/graphvizData";
 	}
 
 }

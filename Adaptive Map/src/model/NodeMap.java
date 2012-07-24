@@ -4,11 +4,12 @@ import controller.Configuration;
 import controller.GraphViz;
 import HierarchialLayout.Graph;
 import HierarchialLayout.Edge;
+
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.List;
 import java.awt.Point;
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ public class NodeMap
     private final static double CHAPTER_SCALE = 2.0;
     private final static double NODE_SCALE = 0.5;
     private HashMap<String, ArrayList<Node>> nodeMap;
-    private static HashMap<String, byte[]> nodeData;
+    private HashMap<String, byte[]> nodeData;
     /**
      * Create a new NodeMap
      */
@@ -174,58 +175,75 @@ public class NodeMap
     }
     
 	/**
-	 * Gets saved graphViz data from the server.
+	 * Gets saved graphViz data from the server. The data is then saved in nodeData,
+	 * so that it only needs to be retrieved from the server once.
 	 * @param centerNode The selected node.
 	 * @param overview If the graph layout for the overview nodes is desired
 	 * @return The graphviz data for the desired chapter, or the overview if specified.
 	 */
-	private static byte[] getGraphData(final Node centerNode, final boolean overview) {
-		return AccessController.doPrivileged(new PrivilegedAction<byte[]>() {
-			@Override
-			public byte[] run() {
-				if ( !overview && nodeData.containsKey(centerNode.getNodeChapter()))
-					return nodeData.get(centerNode.getNodeChapter());
-				else if ( overview && nodeData.containsKey("OVERVIEW"))
-					return nodeData.get("OVERVIEW");
-				
-				byte[] graph = null;
-				try {
-		        	String location = "";
-		        	
-		        	if (!overview )
-		        	{
-		        		location = String.format("%s-%s", 
-		        			Configuration.getDataFilePath(false), 
-		        			centerNode.getNodeChapter().replace(" ", "_"));
-		        	}
-		        	else
-		        	{
-		        		location = String.format("%s-%s", 
-			        			Configuration.getDataFilePath(false), 
-			        			"OVERVIEW");
-		        	}
-					URL target = new URL(location);
-					InputStream in = target.openStream();
+	private byte[] getGraphData(final Node centerNode, final boolean overview) {
+		if ( !overview && nodeData.containsKey(centerNode.getNodeChapter()))
+			return nodeData.get(centerNode.getNodeChapter());
+		else if ( overview && nodeData.containsKey("OVERVIEW"))
+			return nodeData.get("OVERVIEW");
+		
+		byte[] graph = null;
+		try {
+        	String location = "";
+        	
+        	if (!overview )
+        	{
+        		location = String.format("%s-%s", 
+        			Configuration.getDataFilePath(false), 
+        			centerNode.getNodeChapter().replace(" ", "_"));
+        	}
+        	else
+        	{
+        		location = String.format("%s-%s", 
+	        			Configuration.getDataFilePath(false), 
+	        			"OVERVIEW");
+        	}
+        	URL target = null;
+        	try {
+			target = new URL(location);
+        	}	catch (MalformedURLException e)	{
+        		System.err.println("ERROR: Malformed URL");
+    			System.err.println(e.getLocalizedMessage());
+        	}
+			InputStream stream = target.openStream();
+			BufferedInputStream in = new BufferedInputStream(stream);
 
-			        graph = new byte[in.available()];
-					in.read(graph);
-					// Close it if we need to
-					if (in != null)
-						in.close();
-				} catch (FileNotFoundException e) {
-					System.out.println(e.getLocalizedMessage());
-					return null;
-				} catch (IOException e) {
-					System.out.println(e.getLocalizedMessage());
-					return null;
-				}
-				if (!overview)
-					nodeData.put(centerNode.getNodeChapter(), graph);
-				else
-					nodeData.put("OVERVIEW", graph);
-				return graph;
-			}
-		});
+			// Code required to make eclipse load data
+	        graph = new byte[Configuration.GRAPHVIZ_BUFFER_LIMIT];
+	        in.mark(2);
+	        int next = in.read();
+	        if ( next != -1 ) {
+	        	in.reset();
+	        	next = in.read(graph);
+	        }
+	        /*
+	         * OLD code that works fine everywhere except eclipse
+	         * 	graph = new byte[in.available()];
+			 *  in.read(graph);
+	         */
+
+			if (in != null)
+				in.close();
+			
+			if (!overview)
+				nodeData.put(centerNode.getNodeChapter(), graph);
+			else
+				nodeData.put("OVERVIEW", graph);
+			return graph;
+		} catch (FileNotFoundException e) {
+    		System.err.println("ERROR: File not found");
+			System.err.println(e.getLocalizedMessage());
+			return null;
+		} catch (IOException e) {
+    		System.err.println("ERROR: IO Exception");
+			System.err.println(e.getLocalizedMessage());
+			return null;
+		}
 	}
     
     /**
@@ -234,15 +252,18 @@ public class NodeMap
      * @param centerNode the node to center the list on
      * @return the new node coordinates
      */
-    public static HashMap<Integer, Point> setNodeCoordsFromFile(ArrayList<Node> nodes,
+    public HashMap<Integer, Point> setNodeCoordsFromFile(ArrayList<Node> nodes,
     		Node centerNode)
-    {    	
+    {
         HashMap<Integer, Point> coords = new HashMap<Integer, Point>();
         byte[] graph = getGraphData(centerNode, false);
-        if ( graph == null )
+        if ( graph == null ) {
+        	System.err.println("ERROR!: Unable to load Graphviz data.");
+        	System.err.println("ERROR!: getGraphData returned null.");
         	return null;
+        }
         
-        // Determine intitial node positions
+        // Determine initial node positions
         int minWidth = 0, minHeight = Configuration.GRID_BUFFER_SPACE;
         for ( Node n : nodes )
         {
@@ -252,6 +273,11 @@ public class NodeMap
         minHeight *= 2;
 		
         Map<Integer, Point> coordMap = GraphViz.parseText(graph, minWidth, minHeight);
+        if ( coordMap.isEmpty() ) {
+        	System.err.println("ERROR!: Unable to parse Graphviz data.");
+        	System.err.println("ERROR!: getGraphData returned empty byte array.");
+        	return null;
+        }
         
         // Reposition nodes, depending on how many rows and columns there are
         Map<Integer, Integer> rows = new HashMap<Integer, Integer>();
@@ -269,6 +295,10 @@ public class NodeMap
         minWidth = rows.size() * Configuration.MIN_NODE_WIDTH;
         minHeight = columns.size() * VText.getMainFont().getSize() * 20;
         coordMap = GraphViz.parseText(graph, minWidth, minHeight);
+        if ( coordMap.isEmpty() ) {
+        	System.err.println("ERROR!: Unable to parse Graphviz data.");
+        	return null;
+        }
         
         int centerIndex = nodes.indexOf(centerNode) + 10;
         int xDifference = (int) (centerNode.getGlyph().vx - coordMap.get(centerIndex).x);
@@ -289,7 +319,7 @@ public class NodeMap
      * @param centerNode the default chapter node
      * @return the new chapter coordinates
      */
-    public static HashMap<String, Point> setChapterCoordsFromFile(
+    public HashMap<String, Point> setChapterCoordsFromFile(
     		ArrayList<String> chapters, Node centerNode)
 	{
         HashMap<String, Point> coords = new HashMap<String, Point>();

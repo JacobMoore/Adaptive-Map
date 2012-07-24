@@ -1,7 +1,9 @@
 package model;
 
 import fr.inria.zvtm.engine.LongPoint;
+import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.VPolygon;
+import fr.inria.zvtm.glyphs.VRoundRect;
 import fr.inria.zvtm.glyphs.VText;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import java.awt.Color;
@@ -39,7 +41,6 @@ public class Link
     }
 
     private static Map<String, LinkProperties> linkTypes;
-    
     
     /**
      * @param type Type of link
@@ -87,10 +88,11 @@ public class Link
     private int              linkWeight;
     private int				 arrowSize;
     private EndTriangle      endTriangle;
+    private VRoundRect	 	 selectionRectangle;
     private boolean			 highlighted;
     
     // Number of next link color, used to give all new links different colors
-    private static int 		 colorNum = 0;
+    //private static int 		 colorNum = 0;
     private Color			 linkColor;
 
     /**
@@ -107,12 +109,6 @@ public class Link
     public Link(Node fromNode, Node toNode, String linkType, int aSize)
     {
         // Create link glyph
-        // constructor for custom color
-        /*
-         * super(fromNode.getCenterPoint().x, fromNode.getCenterPoint().y,
-         * LINK_Z_INDEX, linkTypes.get(linkType).getLinkColor(), toNode
-         * .getCenterPoint().x, toNode.getCenterPoint().y);
-         */
         super(
             fromNode.getCenterPoint().x,
             fromNode.getCenterPoint().y,
@@ -120,12 +116,6 @@ public class Link
             Color.lightGray,
             toNode.getCenterPoint().x,
             toNode.getCenterPoint().y);
-        // switch for custom line types
-        /**
-         * switch (linkTypes.get(linkType).getLinkLineType()) { case BOLD :
-         * setStrokeWidth(BOLD_WIDTH); break; case DASHED : setDashed(true);
-         * break; case STANDARD : default : break; }
-         */
         
         arrowSize = aSize;
 
@@ -133,62 +123,45 @@ public class Link
         this.toNode = toNode;
         this.linkType = linkType;
         if (AppCanvas.appletContext == null)
-        {
         	return;
-        }
         else if (fromNode.virtualSpace.equals(toNode.virtualSpace))
-        {
             this.virtualSpace = fromNode.virtualSpace;
-        }
         else
         {
             throw new UnsupportedOperationException(
                 "Cannot link nodes on different VirtualSpaces");
         }
-
-        Point linkCenter = getLinkCenter();
-        linkText =
-            new VText(linkCenter.x, linkCenter.y, 0, Color.red, linkType);
-        linkText.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.LINK_FONT_SIZE));
         virtualSpace.addGlyph(this);
+
+        Point linkCenter = getPointAlongLink(0.6f);
+        linkText =
+            new VText(linkCenter.x, linkCenter.y, 0, Color.black, linkType);
+        linkText.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.LINK_FONT_SIZE));
         virtualSpace.addGlyph(linkText);
-        linkText.setVisible(false);
         virtualSpace.onTop(linkText);
+        linkText.setVisible(false);
         linkWeight = 1;
         
-        switch( colorNum )
-        {
-        case 0:
-        	linkColor = new Color(218, 213, 213);
-        	this.setColor(new Color(218, 213, 213));
-        	colorNum++;
-        	break;
-        case 1:
-        	linkColor = new Color(195, 191, 191);
-        	this.setColor(new Color(195, 191, 191));
-        	colorNum++;
-        	break;
-        case 2:
-        	linkColor = new Color(169, 167, 167);
-        	this.setColor(new Color(169, 167, 167));
-        	colorNum++;
-        	break;
-        case 3:
-        	linkColor = new Color(139, 137, 137);
-        	this.setColor(new Color(139, 137, 137));
-        	colorNum = 0;
-        	break;
-        }
+    	linkColor = Color.gray;
+    	this.setColor(Color.gray);
 
         // Adding end-of-link triangle
         endTriangle =
             new EndTriangle(
                 createTrianglePoints(fromNode, toNode),
-                0,
-                linkColor);
+                0, linkColor);
         virtualSpace.addGlyph(endTriangle);
         endTriangle.setVisible(this.isVisible());
+        
+        selectionRectangle = new VRoundRect(linkText.vx, linkText.vy, linkText.getZindex()+1, 
+        		5, 5, Color.LIGHT_GRAY, Color.black, 10, 10);
+        selectionRectangle.setFillNum(0);
+        selectionRectangle.setOwner(Link.class);
+        virtualSpace.addGlyph(selectionRectangle);
+        virtualSpace.above(selectionRectangle, this);
+        
         highlighted = false;
+        refresh();
     }
     
     public void draw(Graphics2D g,int vW,int vH,int i,Stroke stdS,AffineTransform stdT, int dx, int dy){
@@ -208,12 +181,41 @@ public class Link
 			endTriangle.sizeTo(arrowSize+10*linkWeight);
     	}
     }
+    
+	/**
+	 * Gets the link text in this link. Used for showing link info.
+	 *
+	 * @return the glyph
+	 */
+    public Glyph getGlyph()
+    {
+    	return selectionRectangle;
+    }
+    
+    /**
+     * Changes the link text to display the link description.
+     */
+    public void showLinkInfo()
+    {
+    	linkText.setText(getLinkProperty(linkType).description);
+        linkText.setVisible(true);
+    }
+    
+    /**
+     * Changes the link text back to displaying the link type.
+     */
+    public void hideLinkInfo()
+    {
+    	linkText.setText(linkType);
+        linkText.setVisible(false);
+    }
 
     @Override
     public void setVisible(boolean b)
     {
         super.setVisible(b);
         endTriangle.setVisible(b);
+        selectionRectangle.setVisible(b);
     }
     
     /**
@@ -226,6 +228,7 @@ public class Link
         super.setVisible(b);
         setTranslucencyValue(alpha);
         endTriangle.setVisible(b);
+        selectionRectangle.setVisible(b);
     }
 
 
@@ -254,9 +257,11 @@ public class Link
             fromCenterPoint.y,
             toCenterPoint.x,
             toCenterPoint.y);
-        Point linkCenter = getLinkCenter();
+        
         // Center the text on the link
-        linkText.moveTo(linkCenter.x - Configuration.LINK_FONT_SIZE, linkCenter.y);
+        Point linkCenter = getPointAlongLink(0.6f);
+        linkText.vx = linkCenter.x - (long)linkText.textContainerWidth/2;
+        linkText.vy = linkCenter.y;
         virtualSpace.onTop(linkText);
 
         // Remove, then re-add triangle, as it will have moved
@@ -264,10 +269,23 @@ public class Link
         endTriangle =
             new EndTriangle(
                 createTrianglePoints(fromNode, toNode),
-                0,
-                linkColor);
+                0, linkColor);
         virtualSpace.addGlyph(endTriangle);
         endTriangle.setVisible(this.isVisible());
+        
+        // Center the selection rectangle
+        if ( linkText.isVisible())
+        {
+	        selectionRectangle.setWidth(linkText.textContainerWidth/2+6);
+	        selectionRectangle.setHeight(linkText.textContainerHeight/2+6);
+        }
+        else
+        {
+        	selectionRectangle.setWidth(5);
+        	selectionRectangle.setHeight(5);
+        }
+        selectionRectangle.vx = linkCenter.x;
+        selectionRectangle.vy = linkCenter.y;
 
         if (highlighted)
         {
@@ -422,7 +440,7 @@ public class Link
             			endNode.getNodeTitle() + ".");
             }*/
 
-            double distance = distance(endX, endY, linkCenter.x, linkCenter.y);
+            double distance = Point.distance(endX, endY, linkCenter.x, linkCenter.y);
             int xDist = endX - linkCenter.x;
             int yDist = endY - linkCenter.y;
             double newX1 =
@@ -506,23 +524,6 @@ public class Link
            return null;
     }
 
-    /**
-     * Finds the distance between two points (X1,Y1) and (X2,Y2).
-     * @param x1
-     *            First x.
-     * @param y1
-     *            First y.
-     * @param x2
-     *            Second x.
-     * @param y2
-     *            Second y.
-     * @return The distance between the points.
-     */
-    private static double distance(double x1, double y1, double x2, double y2)
-    {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    }
-
 
     /**
      * @return The node this link is pointing from.
@@ -585,6 +586,20 @@ public class Link
             (fromNode.getCenterPoint().x + toNode.getCenterPoint().x) / 2;
         int centerY =
             (fromNode.getCenterPoint().y + toNode.getCenterPoint().y) / 2;
+        return new Point(centerX, centerY);
+    }
+    
+    /**
+     * Gets the coordinates of a point value % along the link
+     * @param value From 0 to 1
+     * @return A point along this link.
+     */
+    private Point getPointAlongLink(float value)
+    {
+        int centerX =
+            (int) ((fromNode.getCenterPoint().x * (1-value) + toNode.getCenterPoint().x * value));
+        int centerY =
+            (int) ((fromNode.getCenterPoint().y * (1-value) + toNode.getCenterPoint().y * value));
         return new Point(centerX, centerY);
     }
 

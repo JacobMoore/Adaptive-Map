@@ -449,7 +449,7 @@ public class VText extends Glyph {
             long highestLineLength = 0;
             String lineToWrite;
             while (true) {
-            	if ( endIndex >= words.length-1)
+            	if ( endIndex >= words.length-1 )
             	{
             		lineToWrite = buildString(words, startIndex, words.length);
             		g.drawString(lineToWrite, 0f, fm.getHeight() * rows);
@@ -462,7 +462,7 @@ public class VText extends Glyph {
             		break;
             	}
             	else if ( numOfChars + words[endIndex].length() 
-            			< Configuration.MAX_CHARS_PER_LINE ) {
+            			< Configuration.MAX_CHARS_PER_LINE && !words[endIndex].contains("\n")) {
             		numOfChars += words[endIndex].length();
             	}
             	else
@@ -484,7 +484,7 @@ public class VText extends Glyph {
         } else {
             textContainerWidth = (long)fm.getStringBounds(text, g).getWidth();
             textContainerHeight = (long)fm.getStringBounds(text, g).getHeight();
-            g.drawString(text, 0.0f, 0.0f);
+    		g.drawString(text, 0.0f, 0.0f);
         }
     }
 

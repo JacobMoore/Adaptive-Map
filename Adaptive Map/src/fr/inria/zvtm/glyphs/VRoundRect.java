@@ -110,7 +110,7 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
         setBorderColor(bc);
         arcWidth = aw;
         arcHeight = ah;
-        fillNum = 0;
+        fillNum = 1.0f;
     }
     public VRoundRect(long x, long y, int z, long w, long h, Color c, Color bc, float alpha, int aw, int ah, float n){
     	this(x, y, z, w, h, c, bc, alpha, aw, ah);
@@ -347,9 +347,12 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
                 if (filled) {
                     g.setColor(this.color);
                     // Changed code
-                    GradientPaint gp = new GradientPaint(dx+pc[i].cx-pc[i].cw,   dy+pc[i].cy-pc[i].ch, this.color, dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * fillNum),  dy+pc[i].cy-pc[i].ch + (2*pc[i].ch * .70f), Color.WHITE);
+                    GradientPaint gp = new GradientPaint(
+                    		dx+pc[i].cx-pc[i].cw + (pc[i].cw * fillNum), 0, 
+                    		this.color, 
+                    		dx+pc[i].cx-pc[i].cw + (2*pc[i].cw * fillNum), 0, 
+                    		Color.WHITE);
                 	g.setPaint(gp);
-                	
                 	g.fillRoundRect(dx+pc[i].cx-pc[i].cw, dy+pc[i].cy-pc[i].ch, 2*pc[i].cw, 2*pc[i].ch, pc[i].aw, pc[i].ah);
 
                 }
@@ -443,6 +446,11 @@ public class VRoundRect extends ClosedShape implements RectangularShape  {
     public void setFillNum(float num)
     {
     	fillNum = num;
+    }
+    
+    public float getFillNum()
+    {
+    	return fillNum;
     }
     //End changed code
 

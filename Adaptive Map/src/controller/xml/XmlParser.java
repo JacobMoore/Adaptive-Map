@@ -313,6 +313,9 @@ public class XmlParser {
 				}
 			}
 			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter);
+			if ( nodeContentUrl.startsWith("http") )
+				nodeContentUrl.replaceAll("&amp;", "&");
+			
 			newNode.setNodeContentUrl(nodeContentUrl);
 			if (x != -99999 && y != -99999)
 				newNode.setFixedNodePosition(x, y);

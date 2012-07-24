@@ -25,6 +25,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		NodeMap nodeMap = new NodeMap();
+    	System.out.println("Loading data from: " + Configuration.getXMLFilePath(false));
 		
         for (Entry<String, ChapterProperties> chapterProperty : XmlParser
                 .parseChapterProperties().entrySet()) {
@@ -45,6 +46,7 @@ public class Main {
         {
         	String location = String.format("%s-%s", Configuration.getDataFilePath(true), 
         			chapter.replace(" ", "_"));
+        	System.out.println("Creating file: " + location);
             File out = new File(location);
             out.createNewFile();
         	GraphViz gv = nodeMap.generateGraphFromNodes(nodeMap.getChapterNodes(chapter));
