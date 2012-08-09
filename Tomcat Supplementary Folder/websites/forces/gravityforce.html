@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Gravity Force</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Gravity Force</h1>
+<hr/>
+
+<p>Gravity is the force that pulls all bodies with mass towards one another.  On the surface of the earth, the only gravity force that has a significant effect on bodies is the gravity force between the body and the earth itself.  Therefore, the only gravity forces that are usually modeled in engineering are the forces between each object that is assumed to have mass and the earth.</p>
+
+<div class="picright">
+<img src="gravityforcepics/dig1.png" width="400" height="280" alt="Universal Gravitation"/>
+<div class="caption">
+Newton's Law of Universal Gravitation
+</div>
+</div>
+
+<p>Newton's Law of Universal Gravitation states that </p>
+
+\[ \mathrm{
+			F_{gravity} = G\frac{m1 \times m2}{r^2}
+}\]
+
+\[ \mathrm{		
+	G = 6.674 \times 10^{-11} \frac{N m^2}{kg^2}
+}\]
+
+<p>Where F gravity is the magnitude of the gravity force pulling the two bodies together, m1 and m2 are the masses of the two bodies r is the distance between the centers of mass of the two bodies, and G is a constant.</p>
+
+<p>If we plug in the values for G, the mass of the earth, and the radius of the earth (which is approximately the distance between the center of mass of the earth and the center of mass of anything on the earth's surface) then we are left with the following.</p>
+
+<table width="600px" align="center">
+<colgroup width="300px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>In Metric Units</b>
+		</td>
+		<td>
+		<b>In English Units</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+						F_{gravity} = m1 \times 9.81 \frac{m}{s^2}
+			}\]
+		</td>
+		<td>
+			\[ \mathrm{
+						F_{gravity} = m1 \times 32.2 \frac{ft}{s^2}
+			}\]
+		</td>
+</tr>
+</table>
+
+<p>Where F gravity is the force of gravity on the object pulling it downward (towards the center of the earth) and m1 is the mass of the body.</p>
+
+<p>Fundamentally gravity is a <b>body force</b>, meaning that the force is distributed over the entire volume of the body.  Every atom in the body has mass and therefore a small gravity force acting on it.  This is hard to analyze though, so most of the time the distributed gravity force is approximated as single point load acting on the body.  This point load is the equivalent point load of the distributed gravity force.  The point of application of this point load is called the center of mass of the body.  The "center of mass" page goes over several processes for determining the center of mass of a body.</p>
+
+<div class="piccenter">
+<img src="gravityforcepics/dig2.png" width="561" height="434" alt="Gravitation of the Earth's Surface"/>
+<div class="caption">
+Gravitation on the Earth's Surface
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

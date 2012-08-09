@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -8,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 
+import model.Node;
 import view.AppCanvas;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 
@@ -19,10 +22,12 @@ import fr.inria.zvtm.engine.VirtualSpaceManager;
 public class VirtualTextbookApplet extends JApplet {
 
 	private static final long serialVersionUID = 4637779516193337728L;
-	private static VirtualSpaceManager vSpaceManager;
-	private static AppCanvas canvas;
-
-    BufferedImage startImage = null;
+	private VirtualSpaceManager vSpaceManager;
+	private AppCanvas canvas;
+	
+	private boolean showStart;
+	SizeChangedListener listener;
+    BufferedImage startImage;
 
 	@Override
 	public void init() {
@@ -32,9 +37,14 @@ public class VirtualTextbookApplet extends JApplet {
 					// Line below is for ZVTM support for applets
 					getRootPane().putClientProperty(
 							"defeatSystemEventQueueCheck", Boolean.TRUE);
+					showStart = true;
+					startImage = null;
 					vSpaceManager = VirtualSpaceManager.INSTANCE;
+					vSpaceManager.getAnimationManager().start();
 					canvas = new AppCanvas(vSpaceManager, VirtualTextbookApplet.this,
 						    getAppletContext());
+					listener = new SizeChangedListener();
+			        addComponentListener(listener);
 			        try {
 						startImage = 
 								ImageIO.read(new URL(Configuration.getServerFolder() + "startImage.jpg"));
@@ -51,13 +61,43 @@ public class VirtualTextbookApplet extends JApplet {
 	}
 	
 	@Override
+	public void stop() {
+		Node.destroyAllLinks();
+		vSpaceManager.getActiveView().destroyView();
+		vSpaceManager.destroyVirtualSpace(Configuration.APPLICATION_TITLE);
+		removeAll();
+		removeComponentListener(listener);
+	}
+	
+	@Override
 	public void destroy() {
-		vSpaceManager = null;
 	}
 	
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-        g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
+		if (showStart)
+			g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
 	}
+	
+	/**
+	 * Hides the starting image.
+	 */
+	public void hideStartImage()
+	{
+		showStart = false;
+	}
+	
+	private class SizeChangedListener implements ComponentListener {
+        @Override public void componentHidden( ComponentEvent e ) {}
+        @Override public void componentMoved( ComponentEvent e ) {}
+        @Override
+        public void componentResized( ComponentEvent e ) {
+            canvas.setToolSizes();
+        }
+        @Override
+        public void componentShown( ComponentEvent e ) {
+            canvas.setToolSizes();
+        } 
+    }
 }

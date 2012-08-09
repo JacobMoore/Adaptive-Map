@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Moment of a Force about a Point</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Moment of a Force about a Point</h1>
+<hr/>
+
+<p>Forces acting on extended bodies will often tend to rotate the body about some point.  This point can either be the center of mass of the body, or some point that constrained in a way that prevents motion (like the hinge on a door).  The tendency a force to rotate a body about any given point, called the <b>moment</b>, is equal to the magnitude of the force times the distance between the given point on the body and the line of action of the force.</p>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/dig1.png" width="359" height="454" alt="The moment of a force about a point"/>
+<div class="caption">
+In the diagram shown, the magnitude of the moment exerted by force <b>F</b> about point P is equal to the magnitude of the force <b>F</b> times the shortest distance between the line of action of force <b>F</b> and point P.
+</div>
+</div>
+
+<p>In 2-D examples like the one above, moments that cause counter-clockwise rotations are said to have positive magnitudes while moments that cause a clockwise rotation are said to have negative magnitudes.  This means that the example above is has a magnitude of -(F * d).</p>
+
+<h4>Using the Cross Product to Find Moment about a Point:</h4>
+
+<p>Finding the minimum distance between the line of action of a force and the point of rotation can become difficult with more complex problems.  Another way to calculate the moment is to use cross products.  Specifically, the moment of F about P is equal to the distance vector from P to any point along the force's line of action (<b>d</b>) cross the force vector (<b>F</b>).</p>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/dig2.png" width="287" height="418" alt="The moment of a force about a point (cross product)"/>
+<div class="caption">
+The moment vector can be found by calculating <b>d</b> cross <b>F</b>
+</div>
+</div>
+
+\[ \mathrm{
+	\mathbf{M}_P = \mathbf{d} \times \mathbf{F}
+}\]
+
+<p>No matter what point <b>d</b> goes to along the line of action of <b>F</b>, the cross product will result in the same answer.  The moment vector \( \mathrm{\mathbf{M}_P} \), which is always assumed to travel through point P, will indicate the magnitude, axis of rotation and direction of rotation of the moment.  This formula works for both problems in 2D and 3D space.</p>
+
+<p>Now let us readdress the earlier statement about counter-clockwise rotations being positive and clockwise rotations being negative for 2D problems.  This is derived from the cross product.  In any 2D problem, where both <b>d</b> and <b>F</b> lie in the XY plane, the cross product of <b>d</b> and <b>F</b> will be in the Z direction (either into or out of the page).  In cases where the force would tend to cause clockwise rotations (as in A below) <b>d</b> cross <b>F</b> results in a moment vector in the negative Z direction.  Likewise, where <b>d</b> cross <b>F</b> results in counter-clockwise rotations (as in B below) <b>d</b> cross <b>F</b> results in a moment vector in the positive Z direction.</p>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/dig3.png" width="560" height="328" alt="Positive and negative moments"/>
+</div>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/dig4.png" width="567" height="397" alt="Positive and negative moments"/>
+<div class="caption">
+Moment vectors in the positive and negative Z directions.
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find the moment wind force F exerts about point O.  Report the moment as a vector.</p>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/probdig1.png" width="507" height="445" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{M}_O = \mathbf{d} \times \mathbf{F}
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_O = [-5, 100, -1]\text{ m} \times[5000, 0, 1000] \text{ N}
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_O = [100000, 0, -500000] \text{ Nm}
+			}\]
+		</td>
+		<td>
+		Since the <b>F</b> and <b>d</b> vectors are already given (<b>F</b> being the force vector and <b>d</b> being the distance vector from O to the point of application of the wind force), the only step needed to find the moment is to calculate <b>d</b> cross <b>F</b>. <br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\text{Magnitude }=sqrt{-500000^2+100000^2}
+			}\]
+			\[ \mathrm{
+				\text{Magnitude }=509902 \text{ Nm} 
+			}\]
+			<img src="momentaboutapointpics/P1_1.png" width="497" height="443" alt="The moment about O"/>
+		</td>
+		<td>
+		Here a few more calculations are done to find the magnitude of the moment and the moment is shown drawn into the original diagram.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<h4>Worked Problem 2:</h4><br/>
+
+<p>Find the magnitude of \( \mathrm{\mathbf{F}_2} \) needed to counter the moment exerted by \( \mathrm{\mathbf{F}_1} \).</p>
+
+<div class="piccenter">
+<img src="momentaboutapointpics/probdig2.png" width="601" height="214" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{M}_{F1} = \mathbf{d} \times \mathbf{F}
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_{F1} = [12, 0, 0]\text{ ft} \times[0, -30, 0] \text{ lbs}
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_{F1} = [0, 0, -360] \text{ ft lbs}
+			}\]
+		</td>
+		<td>
+		\( \mathrm{\mathbf{F}_2} \) needs to exert a moment of equal and opposite magnitude to the moment exerted by \( \mathrm{\mathbf{F}_1} \) in order keep the body in equilibrium.  We will first solve for the moment exerted by \( \mathrm{\mathbf{F}_1} \).<br/><br/>
+		</td>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{M}_{F1} = -\mathbf{M}_{F2}
+			}\]
+			\[ \mathrm{
+				-360 \text{ ft lbs} = - (3 \text{ ft} * F_2 \text{ lbs})
+			}\]
+			<p>The value (3 ft * \( \mathrm{\mathbf{F}_2} \)) is positive because it produces a counter-clockwise rotation.</p>
+			\[ \mathrm{
+				120 \text{ lbs} = F_2
+			}\]
+		</td>
+		<td>
+		Because the moment exerted by \( \mathrm{\mathbf{F}_1} \) is 360 ft lbs in the negative Z direction, we need \( \mathrm{\mathbf{F}_2} \) to exert a moment of 360 ft lbs in the positive Z direction to counter it.  Knowing that the line of action of \( \mathrm{\mathbf{F}_2} \) is a minimum of 3 ft from the point of rotation allows us to solve for the magnitude of \( \mathrm{\mathbf{F}_2} \).<br/><br/>
+		</td>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

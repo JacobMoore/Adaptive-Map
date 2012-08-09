@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import fr.inria.zvtm.glyphs.VText;
-import view.AppCanvas;
+import model.Node.ChapterProperties;
 
+import fr.inria.zvtm.glyphs.VText;
 
 /**
  * // -------------------------------------------------------------------------
@@ -36,6 +36,33 @@ public class NodeMap
     private final static double NODE_SCALE = 0.5;
     private HashMap<String, ArrayList<Node>> nodeMap;
     private HashMap<String, byte[]> nodeData;
+
+	 // Map of chapter names to chapter properties
+	 private Map<String, ChapterProperties> chapterTypes;
+	
+	 /**
+	  * Adds a chapter with its associated properties to the map.
+	  * @param chapterName The name of the chapter.
+	  * @param chapterProperties The properties of the chapter.
+	  */
+	 public void addChapterType(String chapterName,
+	 		ChapterProperties chapterProperties) {
+	 	if (chapterTypes == null) {
+	 		chapterTypes = new HashMap<String, ChapterProperties>();
+	 	}
+	 	chapterTypes.put(chapterName, chapterProperties);
+	 }
+	 
+	 /**
+	  * Gets the chapterProperties object for a given chapter.
+	  * @param chapter The name of the chapter.
+	  * @return The chapter properties of the given chapter, or null.
+	  */
+	 public ChapterProperties getChapterType(String chapter)
+	 {
+		 return chapterTypes.get(chapter);
+	 }
+    
     /**
      * Create a new NodeMap
      */
@@ -117,15 +144,16 @@ public class NodeMap
     /**
      * Get a map of chapters to coordinates.
      * @param nodeMap The node map of chapters to nodes.
+     * @param fontSize The size of the overview font, used for spacing.
      * @return The coordinates of each chapter.
      */
-	public static Map<String, Point> getChapterCoords(NodeMap nodeMap)
+	public static Map<String, Point> getChapterCoords(NodeMap nodeMap, int fontSize)
     {
         Map<String, Point> coordMap = new HashMap<String, Point>();
         ArrayList<String> chapters = new ArrayList<String>(nodeMap.getChapters());
         Edge[] edges = generateEdgeArrayFromChapters(chapters, nodeMap);
         Graph graph = new Graph(chapters.size(), edges);
-        Point[] coords = getCoords(graph, CHAPTER_SCALE);
+        Point[] coords = getCoords(graph, CHAPTER_SCALE, fontSize);
         
         for (int i = 0; i < chapters.size(); i++)
         {
@@ -145,7 +173,8 @@ public class NodeMap
      */
     public GraphViz generateGraphFromNodes(ArrayList<Node> nodes)
     {
-    	assert(AppCanvas.appletContext == null); //Only call in java application
+    	if ( Configuration.RUN_AS_APPLET ) //Only call in java application
+    		return null;
     	
         GraphViz gv = new GraphViz();
         gv.addln(gv.start_graph());
@@ -612,7 +641,7 @@ public class NodeMap
         //return centerCoords(verticalPos, horizontalPos, scale);
         Point[] coords = new Point[verticalPos.length];
         int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
-                + Configuration.GRID_BUFFER_SPACE) * Configuration.NODE_FONT_SIZE / 20);
+                + Configuration.GRID_BUFFER_SPACE) * centerNode.getTitleFontSize() / 20);
         int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
                 + Configuration.GRID_BUFFER_SPACE) * scale);
 
@@ -638,15 +667,17 @@ public class NodeMap
 	 *            The graph to use.
 	 * @param scale
 	 *            Scale that determines how far apart nodes should be placed.
+	 * @param fontSize The size of the overview font, used for spacing.
+	 * 
 	 * @return The point values for the nodes.
 	 */
-    private static Point[] getCoords(Graph graphParam, double scale)
+    private static Point[] getCoords(Graph graphParam, double scale, int fontSize)
     {
         Graph graph = graphParam.getReducedGraph();
         int[] verticalPos = graph.getVertexLayers();
         int[] horizontalPos = graph.getHorizontalPosition(verticalPos);
         horizontalPos = centerTopLevelCoords(verticalPos, horizontalPos);
-        return centerCoords(verticalPos, horizontalPos, scale);
+        return centerCoords(verticalPos, horizontalPos, scale, fontSize);
     }
 
 	/**
@@ -659,14 +690,16 @@ public class NodeMap
 	 *            The y values.
 	 * @param scale
 	 *            Scale that determines how far apart nodes should be placed.
+	 * @param fontSize The size of the overview font, used for spacing.
+	 * 
 	 * @return The centered coordinates.
 	 */
     private static Point[] centerCoords(int[] verticalPos, int[] horizontalPos,
-        double scale)
+        double scale, int fontSize)
     {
         horizontalPos = centerHorizontalCoords(verticalPos, horizontalPos);
         int interval_x = (int)((Configuration.GRID_COLUMN_WIDTH
-            + Configuration.GRID_BUFFER_SPACE) * Configuration.CHAPTER_TITLE_FONT_SIZE / 50);
+            + Configuration.GRID_BUFFER_SPACE) * fontSize / 50);
         int interval_y = (int)((Configuration.GRID_ROW_HEIGHT
             + Configuration.GRID_BUFFER_SPACE) * scale);
         Point[] coords = new Point[verticalPos.length];

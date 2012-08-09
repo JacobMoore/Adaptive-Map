@@ -67,11 +67,13 @@ public class VText extends Glyph {
     /**
      * Width of the longest line
      */
-    public long textContainerWidth;
+    private long textContainerWidth;
     /**
      * Height of the lines
      */
-    public long textContainerHeight;
+    private long textContainerHeight;
+    
+    private int rows;
     /* End edited code */
     
     /**returns default font used by glyphs*/
@@ -441,10 +443,14 @@ public class VText extends Glyph {
     /* Begin edited code*/
     private void drawTheString(Graphics2D g) {
         String[] words = text.split(" ");
+        int rows = 0;
         textContainerWidth = 0;
         FontMetrics fm = g.getFontMetrics();
+        /* When this is set to true, all text will be on the same line
+         * unless the '\n' character is encountered */
+        boolean oneLine = false;
         if (text.length() > Configuration.MAX_CHARS_PER_LINE) {
-            int startIndex = 0, endIndex = 0, rows = 0,
+            int startIndex = 0, endIndex = 0,
             	numOfChars = 0;
             long highestLineLength = 0;
             String lineToWrite;
@@ -461,22 +467,23 @@ public class VText extends Glyph {
             		rows++;
             		break;
             	}
-            	else if ( numOfChars + words[endIndex].length() 
-            			< Configuration.MAX_CHARS_PER_LINE && !words[endIndex].contains("\n")) {
-            		numOfChars += words[endIndex].length();
-            	}
-            	else
+            	else if ( (numOfChars + words[endIndex].length()  >= Configuration.MAX_CHARS_PER_LINE && !oneLine) 
+            			|| words[endIndex].endsWith("\n"))
             	{
+            		if ( words[endIndex].equals("|TOPICS|:\n"))
+            			oneLine = true;
             		lineToWrite = buildString(words, startIndex, endIndex+1);
             		g.drawString(lineToWrite, 0f, fm.getHeight() * rows);
-            		numOfChars = 0;
             		startIndex = endIndex+1;
-            		endIndex++;
-            		rows++;
+            		numOfChars = words[startIndex].length();
                     if ((long)fm.getStringBounds(lineToWrite, g).getWidth() > highestLineLength) {
                     	highestLineLength = textContainerWidth 
                 			= (long)fm.getStringBounds(lineToWrite, g).getWidth();
                     }
+            		rows++;
+            	}
+            	else {
+            		numOfChars += words[endIndex].length();
             	}
         		endIndex++;
             }
@@ -484,8 +491,10 @@ public class VText extends Glyph {
         } else {
             textContainerWidth = (long)fm.getStringBounds(text, g).getWidth();
             textContainerHeight = (long)fm.getStringBounds(text, g).getHeight();
+            rows++;
     		g.drawString(text, 0.0f, 0.0f);
         }
+        this.rows = rows;
     }
 
     private String buildString(String[] strArray, int start, int end) {
@@ -495,7 +504,6 @@ public class VText extends Glyph {
         }
         return str;
     }
-
     /* End edited code */
     public void drawForLens(Graphics2D g, int vW, int vH, int i, Stroke stdS, AffineTransform stdT, int dx, int dy) {
         if (!pc[i].lvalid) {
@@ -687,4 +695,28 @@ public class VText extends Glyph {
             VirtualSpaceManager.INSTANCE.repaintNow();
         }
     }
+    
+
+	  //---Edited Code---
+    /**
+     * @return textContainerWidth
+     */
+	  public long getTextContainerWidth()
+	  {
+	  	return textContainerWidth;
+	  }
+	  /**
+	   * @return textContainerHeight
+	   */
+	  public long getTextContainerHeight()
+	  {
+	  	return textContainerHeight;
+	  }
+	  /**
+	   * @return rows
+	   */
+	  public int getRows()
+	  {
+	  	return rows;
+	  }
 }

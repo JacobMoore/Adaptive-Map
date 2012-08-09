@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Equivalent Point Load (Point Forces)</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Equivalent Point Load (Point Forces)</h1>
+<hr/>
+
+<p>An equivalent point load is a <b>single point force</b> that will have the <b>same effect</b> on a body as the original loading condition, which is usually either 1) several point forces or 2) a distributed load.  The equivalent point load should always cause the same linear acceleration and angular acceleration as the original force or forces it is equivalent to.  Finding the equivalent point load for a number of other point forces or a distributed force often helps simplify the analysis of a system.  On this page we discuss the process of finding the equivalent point load for a number of point forces.</p>
+
+<div class="piccenter">
+<table width="800px" align="center">
+<tr>
+<td width="400px">
+<img src="equivalentpointload_pfpics/dig1.png" width="350" height="216" alt="Equivalent Point Load of Multiple Point Loads"/>
+<div class="caption">
+F3 will have the same effect on the block as F1 and F2 together.  F3 is the equivalent point load for the system with F1 and F2.</br>
+</div>
+</td>
+<td width="400px">
+<img src="equivalentpointload_pfpics/dig2.png" width="350" height="225" alt="Equivalent Point Load of a Distributed Load"/>
+<div class="caption">
+F3 will have the same effect on the block as the distributed force F1.  F3 is the equivalent point load for the distributed force F1.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<h3>Finding the Equivalent Point Load for Multiple Point Loads</h3>
+
+<p>The equivalent point load can be found for any combination of forces.  This single point force will have the same effect on the system as the combination of the original forces.  Like all forces, the force will have a magnitude, a direction and a point of application.  The sections below outline how to find the equivalent point load for a set of concurrent forces and a set of parallel forces.  Finding the equivalent point load for forces that are neither concurrent nor parallel is not covered in this book.</p>
+
+<h4>Concurrent Point Forces:</h4>
+
+<p><b>Magnitude and Direction:</b> As with any type of vectors, you can find the magnitude and direction of the equivalent point load by simply adding together all the force vectors.  The magnitude and direction of the sum of all the force vectors is the magnitude and direction of the equivalent point load.</p>
+
+\[ \mathrm{
+	\mathbf{F_{eq}} = \sum_{i=1}^{n} \mathbf{(F_i)}
+}\]
+
+<p><b>Point of Application:</b> What is special about concurrent forces is that they have lines of action that all intersect at a single point.  Using the principle of transmissibility, we know that we can therefore translate the points of application to this single point of intersection without changing the effect the forces have on the body.  With all forces having the same point of application, we can assume that the point of application of the equivalent point load is this same intersection point.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_pfpics/dig3.png" width="700" height="184" alt="The equivalent point load of concurrent forces"/>
+<div class="caption">
+The magnitude and direction for the equivalent point load for a number of point forces is found by adding all the force vectors.  The point of application of the equivalent point load is the intersection point of all the lines of action of the force vectors.</br>
+</div>
+</div>
+
+<h4>Parallel Point Forces:</h4>
+
+<p>Parallel forces are represented by vectors that all have the same direction, but different points of application.</p>
+
+<p><b>Magnitude and Direction:</b> Like in the concurrent forces, the magnitude and direction of the equivalent point load can be obtained by adding all the original force vectors.  This particular case is made even simpler because of the fact that all vectors have the same direction, so you really just need to add the magnitudes.</p> 
+
+<p><b>Point of Application:</b> Since there is no single point of application, the point of application will need to be determined mathematically.  With two forces of equal magnitude we would assume that the point of application of the equivalent point load would be midway between the points of application of the two original forces.  This is a correct assumption; the point of application of the equivalent point load will be midway between the two original points of application for forces of equal magnitude.  What if the forces are not of equal magnitude though?  Will the point of application be still be midway between the two original points of application or will it be closer to the larger forces point of application.  The answer is that it will be closer to the larger force's point of application, so the magnitude of the force is a factor.</p>
+
+<p>We know that the equivalent point load should exert the same moment on the body as the combination of the original forces.  The moment a force exerts on a body around any one point is simply the magnitude of the force, times the perpendicular distance to the given point.  Using this we come up with the following equation.</p>
+
+\[ \mathrm{
+	(F_{eq})(X_{eq}) = \sum_{i=1}^{n} (F_i)(x_i)
+}\]
+
+<p>The magnitude of the equivalent point load \( (\mathrm{F_{eq}}) \) times the distance from the origin point to point of application of the equivalent point load \( (\mathrm{x_{eq}}) \) is equal to the sum of (the magnitde each force \( (\mathrm{F_i}) \) times its respective distance from the origin to its point of application \( (\mathrm{x_i}) \)).  If we know the magnitude and location of each individual force, and since we can find the magnitude of the equivalent point load, we can solve for the only unknown.  This is the distance from the origin to the point of application of the equivalent point load.</p>
+
+\[ \mathrm{
+	X_{eq} = \frac{\sum_{i=1}^{n} (F_i)(x_i)}{F_{eq}}
+}\]
+
+<div class="piccenter">
+<img src="equivalentpointload_pfpics/dig4.png" width="655" height="416" alt="The equivalent point load of parallel forces"/>
+<div class="caption">
+The equivalent point load will exert the same moment as the sum of the original forces.  Since we know the magnitudes (F1, F2) and position (X1, X2) of each original force and since we know the magnitude of the equivalent point load (F3 = F1+F2), we can solve for the point of application of the equivalent point load (X3).</br>
+</div>
+</div>
+
+<p>So far we have been looking at parallel forces in 2-D systems where the forces can all be lined up nicely and we only need one number (X) to describe the point of application.  Next we will move to a more complicated 3-D system where we need two numbers to describe the point of application of each force (X and Y).  We use the principle of transmissibility to make the Z position zero for all forces.  To solve for the X and Y coordinate for the equivalent point load, we use the following formulas.</p>
+
+\[ \mathrm{
+	x_{eq} = \frac{\sum_{i=1}^{n} (F_i)(X_i)}{F_{eq}}
+}\]
+
+\[ \mathrm{
+	y_{eq} = \frac{\sum_{i=1}^{n} (F_i)(Y_i)}{F_{eq}}
+}\]
+
+<div class="piccenter">
+<img src="equivalentpointload_pfpics/dig5.png" width="688" height="478" alt="The equivalent point load of 3D parallel forces"/>
+<div class="caption">
+With two numbers to describe the point of application of each force, we need to solve for each coordinate of the point of application of the equivalent point load separately.</br>
+</div>
+</div>
+
+<hr/>
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4>
+
+<p>Find the equivalent point load for the combination of \( \mathbf{F_1} \text{, } \mathbf{F2} \text{ and } \mathbf{F3} \).  Show the magnitude, direction and point of application of the equivalent point load.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_pfpics/probdig1.jpg" width="500" height="609" alt="The Problem Diagram"/>
+</div>
+
+<br/><br/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Magnitude and Direction:</b>
+			<br/>
+			\[ \mathrm{
+				\mathbf{F_{eq}} = \mathbf{F_1+F_2+F_3} = -25,000 \text{ lbs in the -Z direction}
+			}\]
+		</td>
+		<td>
+		The first step is to find the magnitude and direction of the of the equivalent point load.  This is done by adding the vectors together.  Since the vectors all have the same direction (-Z) we can simply add up the magnitudes.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Point of Application:</b>
+		<br/>
+		\[ \mathrm{
+			x_{eq} = \frac{\sum_{i=1}^{n} (F_i)(x_i)}{F_{eq}}
+		}\]
+		
+		\[ \mathrm{
+			x_{eq} = \frac{(5000 \text{ lbs} \times 3 \text{ ft})+(10000 \text{ lbs} \times 5 \text{ ft})+(10000 \text{ lbs} \times 10 \text{ ft})}{25,000 \text{ lbs}} = 6.6 \text{ ft}
+		}\]
+		<br/><br/>
+		</td>
+		<td>
+		Next I've decided to solve for the x coordinate of the point of application.  We use the fact that the equivalent point force should exert the same moment on the body as the sum of all the original forces to solve for \( \mathrm{x_{eq}} \).<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		\[ \mathrm{
+			y_{eq} = \frac{\sum_{i=1}^{n} (F_i)(y_i)}{F_{eq}}
+		}\]
+		
+		\[ \mathrm{
+			y_{eq} = \frac{(5000 \text{ lbs} \times 6 \text{ ft})+(10000 \text{ lbs} \times 1 \text{ ft})+(10000 \text{ lbs} \times 8 \text{ ft})}{25,000 \text{ lbs}} = 4.8 \text{ ft}
+		}\]
+		<br/><br/>
+		</td>
+		<td>
+		Now repeat for the y coordinate.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentpointload_pfpics/P1_1.jpg" width="400" height="390" alt="A diagram of the equivalent point load."/>
+			</div>
+		</td>
+		<td>
+			A diagram of the equivalent point load.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

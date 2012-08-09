@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="timingframework-1.0.jar"/>
+	<classpathentry kind="lib" path="xercesImpl-2.8.1.jar"/>
+	<classpathentry kind="lib" path="xml-apis-1.3.03.jar"/>
+	<classpathentry kind="lib" path="xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/jcip-annotations-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/timingframework-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xercesImpl-2.8.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xml-apis-1.3.03.jar"/>
-	<classpathentry kind="lib" path="C:/Users/CS-Research/Adaptive-Map/Adaptive Map/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

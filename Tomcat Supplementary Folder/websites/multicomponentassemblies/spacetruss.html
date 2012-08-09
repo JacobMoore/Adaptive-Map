@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Space Trusses</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Space Trusses</h1>
+<hr/>
+
+<p>Space trusses are truss structures that must be analyzed as <b>3-Dimensional systems</b>.  The members in the space truss are not confined to a single plane and they cannot be broken down into parallel flat truss structures.</p>
+
+<div class="piccenter">
+<table width="700px" align="center">
+<tr>
+<td width="350px">
+<img src="spacetrusspics/radiotower.jpg" width="250" height="400" alt="A Radio Tower"/>
+<div class="caption">
+This radio tower is an example of a space truss.</br>
+</div>
+</td>
+<td width="350px">
+<img src="spacetrusspics/eiffeltower.jpg" width="300" height="400" alt="The Eiffel Tower"/>
+<div class="caption">
+The Eiffel Tower is essentially a complex space truss</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<p>In space trusses, it is assumed that all members are connected by ball and socket joints.  This means that the members exert forces on the connection points, but they do not exert moments on the connection points.  Even if the joints in the real life system are not ball and socket joints, the moments exerted are usually negligible when compared to the forces exerted so it is reasonable to approximate the joints as ball and socket joints.</p>
+
+<p>A space trusses can be analyzed using the method of joints or the method of sections, just like a plane truss can.  Because space trusses are 3-Dimensional systems, there are six possible equilibrium equations for each member or section of the truss.   These equations can be used to solve for both internal and external forces.</p>
+
+<ol>
+<li>The sum of the forces in the X direction is zero.</li>
+<li>The sum of the forces in the Y direction is zero.</li>
+<li>The sum of the forces in the Z direction is zero.</li>
+<li>The sum of the moments about the X axis is zero.</li>
+<li>The sum of the moments about the Y axis is zero.</li>
+<li>The sum of the moments about the Z axis is zero.</li>
+</ol>
+
+<div class="piccenter">
+<img src="spacetrusspics/trusswithaxes.png" width="564" height="397" alt="A Truss Struture with Axes"/>
+<div class="caption">
+Each member or section of this truss structure has six equilibrium equations that can be used to solve for internal or external forces.  In a space truss, it is assumed that all joints are ball and socket joints.
+</div>
+</div>
+
+<hr/>
+
+<h3>Worked Problems</h3><br/>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Calculate the force on member E in the diagram below.  Assume the members have negligible weights.  The links have been labeled in blue and the joints have been labeled in green.</p>
+
+<div class="piccenter">
+<img src="spacetrusspics/problemdig.png" width="553" height="473" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+		Since the question asks for the forces in a specific member, the method of sections will be a more efficient method.  The method of sections allows us to target specific members for analysis without having to analyze all the members in the truss structure.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_1.png" width="500" height="283" alt="Free Body Diagram"/>
+		</td>
+		<td>
+		The first step in the method of sections is to choose a cutting plane to divide the truss structure into two pieces.  The chosen plane cuts the top one foot of the truss structure off.  This cuts through member E which is the member we are interested in.  The chosen plane is parallel to the X-Z plane, positive nine feet along the Y axis.  To the right is the free body diagram of the top one foot of the truss structure.  There is one external force exerted on the section (the 300lb load) and five forces exerted by members that go through the cutting plane.   It was assumed that all members were in compression.  If this assumption is incorrect and a member is in tension, we will get a negative number as an answer for the member force.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_2.png" width="446" height="306" alt="Equilibrium Equations"/>
+		</td>
+		<td>
+		Once we have the free body diagram of the section we can come up with the equations of equilibrium for the section that is drawn.  There are six possible equations, three sums of forces and three sums of moments.  The equilibrium equation for the sum of moments about the X axis is unhelpful though since all forces travel through the defined X axis.  This equilibrium equation is discarded leaving us five equations and five unknowns, which should allow us to solve for all the member forces.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_3.png" width="459" height="140" alt="Equilibrium Equations in Matrix Form"/>
+		</td>
+		<td>
+		To solve the system of equations, we put the system of equations into matrix form.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_4.png" width="476" height="146" alt="Equilibrium Equations in Matrix Form"/>
+		</td>
+		<td>
+		We rearrange the matrix equation to solve for the member forces.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_5.png" width="165" height="127" alt="Matrix Solutions"/>
+		</td>
+		<td>
+		Simplifying the matrix equation gives us the five unknown member forces.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="spacetrusspics/P1_6.png" width="89" height="45" alt="Solution"/>
+		</td>
+		<td>
+		The answer reveals that member E is a <b>zero force member</b>.  It has no tensile or compressive force being exerted on it.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

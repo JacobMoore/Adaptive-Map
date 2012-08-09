@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Degrees of Freedom</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Degrees of Freedom</h1>
+<hr/>
+
+<p>The degrees of freedom of a single body, is the minimum number of separate measurements needed to completely describe the position and orientation of that body in space.</p>
+
+<h4>A Particle in 3-D space:</h4>
+
+<p>A particle is shown in the figure below.  Assume that this particle could exist anywhere in the 3-D space.  To provide directions to someone from the origin (O) to this particle (P) you would use a vector.  You would need three numbers to describe this vector.  These can be the X, Y and Z components of the vector from O to P (as shown in A), or they can be two angles and a magnitude that define the vector from O to P (as shown in B).  The point is that there is no way to give directions from O to P with less than three numbers.</p>
+
+<div class="piccenter">
+<img src="degreesoffreedompics/dig1.jpg" width="600" height="361" alt="A particle in 3-D space"/>
+<div class="caption">
+An unconstrained particle in 3-D space has three degrees of freedom.
+</div>
+</div>
+
+<h4>A Particle in 2-D space:</h4>
+
+<p>For planar systems the number of degrees of freedom is less because we are assuming that every object will lie in the given plane and it will not leave that plane.  Because we are assuming all objects are constrained to the given plane, we narrow the possible positions of the particle.  This constraint results in only two measurements being needed to describe the position of the particle.</p>
+
+<div class="piccenter">
+<img src="degreesoffreedompics/dig1.jpg" width="600" height="309" alt="A particle in 2-D space"/>
+<div class="caption">
+An unconstrained particle in 2-D space has two degrees of freedom.
+</div>
+</div>
+
+<h4>A Body in 3-D space:</h4>
+
+<p>Now if we change the particle to a rigid body, there is some additional information needed to describe the positioning of that body in space.  Like the particle in 3-D space, three measurements are needed to describe the position of the object relative to the origin.  Three additional measurements are needed to describe how the body is oriented at that point in space.  These three measurements are angles used to describe how to rotate the object from its original orientation into any arbitrary orientation.  For a body in 3-D space you need three angles to completely describe the orientation of any object.  A common system used to describe these angles is to use the roll, pitch and yaw angles to describe the orientation of an object in space.  An unconstrained body in 3-D space has six total degrees of freedom; three to describe the position of the object and three to describe the orientation of an object.</p>
+
+<div class="piccenter">
+<img src="degreesoffreedompics/dig3.png" width="400" height="300" alt="Roll, Pitch and Yaw"/>
+<div class="caption">
+The ideas of Roll, Pitch and Yaw illustrated on a model of a plane.
+</div>
+</div>
+
+<h4>A Body in 2-D space:</h4>
+
+<p>A body that is assumed to be constrained to a plane can rotate about only one axis.  This means that only one angle is needed to describe the orientation of a body in 2-D space.  Therefore there are three total degrees of freedom for an unconstrained body in 2-D space.</p>
+
+<h4>Degrees of Freedom for Constrained Bodies:</h4>
+
+<p>As bodies become constrained the degrees of freedom for that body are decreased.  A constraint will prevent a body from being able to move in a certain direction or rotating in a certain way.  Therefore we can use fewer measurements to describe the location and orientation of the body, filling in the details by assuming the body remains constrained.  As an example, see the two bodies below.  Body A is an unconstrained body in a 3-D space.  It has six degrees of freedom.  Body B is constrained by drilling a hole through the block and placing it on a pole.  This body has only two degrees of freedom.  If I know the position of the block along the pole and I know how much the block is rotated around the pole, then I can tell you the exact position of the block.  Knowing that the block constrained on the pole lets you figure out the X position, the Y position, the rotation about the X axis and the rotation about the Y axis.  These measurements do not need to be given to you.</p>
+
+<div class="piccenter">
+<img src="degreesoffreedompics/dig4.jpg" width="600" height="437" alt="A constrained and unconstrained box"/>
+<div class="caption">
+An unconstrained box (A) with six degrees of freedom, and a constrained box with 2 degrees of freedom (B).
+</div>
+</div>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Spring Force</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Spring Force</h1>
+<hr/>
+
+<p>A spring force is any force that results from the elastic deformation of an object.  The strength of a spring force is linearly dependent upon the amount of deformation.  Thus the spring force is:</p>
+
+\[ \mathrm{
+			F_{spring} = -k \times x
+}\]
+
+<p>Where k is a measure of the stiffness of the spring and x is the distance the spring is compressed (x is negative if you stretch the spring.)</p> 
+
+<p>In engineering statics, most bodies are assumed to be rigid, meaning that the bodies cannot deform.  If bodies cannot deform, x in the equation above is always zero and thus the spring force exerted by the body is zero.  In this course you can assume that bodies are rigid unless the body is labeled as a spring and the k value is given.   In later courses we will examine how removing the assumption of rigidity affects systems.</p>
+
+<h4>Types of Springs:</h4>
+
+<p>Looking more closely at springs, we can see that springs can either deform in a linear fashion or in an angular fashion.  Springs that deform in a linear way are called tension springs if they are primarily designed to be in tension, and compression springs if they are primarily designed to be in compression.  The springs that are designed to be deformed in an angular fashion are called torsion springs.</p>
+
+<div class="piccenter">
+<table width="750px" align="center">
+<tr>
+<td width="250px">
+<img src="springforcepics/tension.jpg" width="200" height="136" alt="A tension spring"/>
+<div class="caption">
+These tension springs have loops or hooks on the end so they can be stretched out by other bodies during use.</br>
+</div>
+</td>
+<td width="250px">
+<img src="springforcepics/compression.jpg" width="200" height="149" alt="A compression spring"/>
+<div class="caption">
+This compression springs have flat ends so they can be compressed by other bodies during use.</br>
+</div>
+</td>
+<td width="250px">
+<img src="springforcepics/torsion.jpg" width="200" height="149" alt="A torsion spring"/>
+<div class="caption">
+This torsion spring shown here on a cloths pin is deformed by rotating the two halves of the clothes pin relative to one another.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<h4>Tension and Compression Springs:</h4>
+
+<p>Tension and compression springs will exert forces on the bodies in contact with the ends of the springs along the length of the spring.  A spring will always attempt to return to its original undeformed state.  This means that springs that are stretched will pull on the objects connected to the spring, trying to return to its original shorter length.  Springs that are compressed will push on the objects connected to the spring, trying to return to its original longer length.</p>
+
+<div class="piccenter">
+<img src="springforcepics/dig1.jpg" width="700" height="480" alt="Linear Spring Force"/>
+<div class="caption">
+A spring at rest is shown on the left, in the center is a spring being extended and on the right is a spring being compressed.  The forces shown are the forces the spring exerts on the bodies it is attached to.
+</div>
+</div>
+
+\[ \mathrm{
+			F_{spring} = -k \times x
+}\]
+
+<p>The magnitude of the spring force is equal to the stiffness of the spring (k) times the distance the spring is compressed by (x).  If the spring is stretched, the value of x is negative.  Positive magnitudes for the spring force indicate the spring is pushing on the objects it is connected to while negative magnitudes indicate the spring is pulling on the objects it is connected to. </p>
+
+<h4>Torsion Springs</h4>
+
+<p>Torsion springs are designed to be twisted along a particular axis. Torsion springs will exert moments on the bodies in contact with the ends of the spring that are twisting the torsion string.  The torsion spring will also always attempt to return to its original undeformed state.  This means that the torsion spring will exert a moment opposing forces compressing or extending the spring.</p>
+
+<div class="piccenter">
+<img src="springforcepics/dig2.jpg" width="700" height="540" alt="Torsion Spring Force"/>
+<div class="caption">
+The spring on top is at rest.  The springs on the bottom are being deformed and exert moments (marked in red) on the bodies in contact with the arms of the spring.
+</div>
+</div>
+
+\[ \mathrm{
+			M_{spring} = -\kappa \times \Phi
+}\]
+
+<p>The magnitude of the spring moment is equal to the torsional stiffness of the spring \(\Kappa\) times the angle the spring is twisted by (\phi). The spring will always exert moments on the bodies it is connected to that oppose the twist exerted in the spring.</p>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

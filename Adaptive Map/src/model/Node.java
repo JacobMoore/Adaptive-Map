@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.Translucent;
+import fr.inria.zvtm.glyphs.VRectangle;
 import fr.inria.zvtm.glyphs.VRoundRect;
 import fr.inria.zvtm.glyphs.VText;
 
@@ -40,6 +42,7 @@ public class Node {
 
 		public NodeText(long x, long y, int z, Color textColor, String text) {
 			super(x, y, z, textColor, text);
+			this.setType("NodeText");
 		}
 
 		@Override
@@ -57,26 +60,15 @@ public class Node {
 	public enum ViewType {
 		FULL_DESCRIPTION, HIDDEN, TITLE_ONLY;
 	}
-
-	// Map of chapter names to chapter properties
-	private static Map<String, ChapterProperties> chapterTypes;
 	
-	// List of special 'subnodes' that represent multiple firstlevel nodes
+	// List of special 'multinodes' that represent multiple firstlevel nodes
 	// with the same link type
+	private List<Node> multiNodes;
+	
+	// List used in multi-nodes, for the selection rectangles
+	private List<VRectangle> subNodeRectangles;
+	// List used in multi-nodes, references to the "connected" nodes
 	private List<Node> subNodes;
-
-	/**
-	 * Adds a chapter with its associated properties to the map.
-	 * @param chapterName The name of the chapter.
-	 * @param chapterProperties The properties of the chapter.
-	 */
-	public static void addChapterType(String chapterName,
-			ChapterProperties chapterProperties) {
-		if (chapterTypes == null) {
-			chapterTypes = new HashMap<String, ChapterProperties>();
-		}
-		chapterTypes.put(chapterName, chapterProperties);
-	}
 
 	private static final int NODE_NOT_CONNECTED = -999;
 
@@ -85,9 +77,17 @@ public class Node {
 	/**
 	 * @return The list of links between all nodes.
 	 */
-	public final static List<Link> getAllLinks()
+	public static final List<Link> getAllLinks()
 	{
 		return nodeLinks;
+	}
+	
+	/**
+	 * Clears the list of all links.
+	 */
+	public static void destroyAllLinks()
+	{
+		nodeLinks.clear();
 	}
 	
 	// Fixed positions used in overview
@@ -246,8 +246,8 @@ public class Node {
                     ? firstNodeLink.getToNode()
                     : firstNodeLink.getFromNode();
             if (!firstLevelNode.getNodeChapter().equals(
-                selectedNode.getNodeChapter()) && ( selectedNode.subNodes == null ||
-                !selectedNode.subNodes.contains(firstLevelNode)))
+                selectedNode.getNodeChapter()) && ( selectedNode.multiNodes == null ||
+                !selectedNode.multiNodes.contains(firstLevelNode)))
                 nodesToShow.add(firstLevelNode);
         }
         return nodesToShow;
@@ -275,7 +275,7 @@ public class Node {
 	        link.setZindex(link.getZindex()-1);
 	    }
 	    else
-	        nodeLinks.add( new Link(node1, node2, linkType, arrowSize) );
+	        nodeLinks.add( new Link(node1, node2, linkType, arrowSize, !isChapter) );
 	}
 	
 	private String nodeChapter;
@@ -298,21 +298,24 @@ public class Node {
 	 * @param nodeTitle The title for the node.
 	 * @param nodeDescription The description for the node.
 	 * @param nodeChapter The chapter that the node is in.
+	 * @param color The color of the node, generally set by the node's chapter.
+	 * @param fontSize The initial size of the node's font.
 	 */
-	public Node(String nodeTitle, String nodeDescription, String nodeChapter) {
+	public Node(String nodeTitle, String nodeDescription, String nodeChapter, Color color, int fontSize) {
 		// Important to create this before assigning title/description
 		nodeRectangle = new VRoundRect(0,
-				0, 1, 200, 11, chapterTypes.get(nodeChapter).getChapterColor(),
+				0, 1, 200, 11, color,
 				Color.BLACK, 1f, 15, 15);
 		nodeRectangle.setStroke( new BasicStroke( 1.0f ) );
 		nodeRectangle.setOwner(Node.class);
+		nodeRectangle.setType("Node");
 
 		setNodeTitle(nodeTitle);
-		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.NODE_FONT_SIZE));
+		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, fontSize));
 		setNodeDescription(nodeDescription);
-		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, Configuration.NODE_FONT_SIZE));
+		this.nodeDescription.setSpecialFont(new Font("Arial", Font.PLAIN, fontSize));
 		setNodeChapter(nodeChapter);
-		subNodes = null;
+		multiNodes = null;
 
 		showView(ViewType.TITLE_ONLY, this, false);
 		bindTextToRectangle();
@@ -324,18 +327,19 @@ public class Node {
 	 * @param nodeTitle The title of the node.
 	 * @param nodeDescription The description of the node.
 	 * @param nodeChapter The chapter the node is in.
+	 * @param color The color of the node, generally set by the node's chapter.
 	 * @param titleFontSize The font size for this node's title.
 	 * @param descriptionFontSize The font size for this node's description.
 	 * @param gradientAdjust The positioning of the gradient color of the node.
 	 */
-	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
+	public Node(String nodeTitle, String nodeDescription, String nodeChapter, Color color,
 	    int titleFontSize, int descriptionFontSize, float gradientAdjust)
 	{
-	    this(nodeTitle, nodeDescription, nodeChapter);
-	    nodeRectangle = new VRoundRect(0,
-				0, 1, 700, 200, chapterTypes.get(nodeChapter).getChapterColor(),
+	    this(nodeTitle, nodeDescription, nodeChapter, color, titleFontSize);
+	    nodeRectangle = new VRoundRect(0, 0, 1, 700, 200, color,
 				Color.BLACK, 1f, 15, 15, gradientAdjust);
 		nodeRectangle.setOwner(Node.class);
+		nodeRectangle.setType("Node");
 	    this.nodeTitle.setSpecialFont(  VText.getMainFont().
 	        deriveFont(titleFontSize * 1.0f) );
 	    this.nodeDescription.setSpecialFont(  VText.getMainFont().
@@ -354,6 +358,14 @@ public class Node {
 		virtualSpace.addGlyph(nodeRectangle);
 		virtualSpace.addGlyph(nodeTitle);
 		virtualSpace.addGlyph(nodeDescription);
+		if ( subNodeRectangles != null )
+		{
+			for ( VRectangle r : subNodeRectangles )
+			{
+				virtualSpace.addGlyph(r);
+				this.nodeRectangle.stick(r);
+			}
+		}
 	}
 
 	/**
@@ -398,7 +410,7 @@ public class Node {
 	 * @return The color of this node's chapter.
 	 */
 	public Color getNodeChapterColor() {
-	    return chapterTypes.get(nodeChapter).getChapterColor();
+	    return nodeRectangle.getColor();
 	}
 
 	/**
@@ -408,24 +420,6 @@ public class Node {
 	 */
 	public Glyph getGlyph() {
 		return nodeRectangle;
-	}
-
-	/**
-	 * Returns a list of all linked nodes
-	 * @return List of linked nodes
-	 */
-	public List<Node> getLinkedNodes() {
-		List<Node> linkedNodes = new ArrayList<Node>();
-		for (Link link : nodeLinks) {
-			if (link.contains(this)) {
-				Node fromNode = link.getFromNode();
-				Node linkedNode = fromNode.equals(this)
-						? link.getToNode()
-						: fromNode;
-				linkedNodes.add(linkedNode);
-			}
-		}
-		return linkedNodes;
 	}
 
 	/**
@@ -506,7 +500,7 @@ public class Node {
 	 * @return nodeTitle.textContainerWidth
 	 */
 	public long getNodeTitleWidth() {
-		return nodeTitle.textContainerWidth;
+		return nodeTitle.getTextContainerWidth();
 	}
 	
 	/**
@@ -514,7 +508,7 @@ public class Node {
 	 * @return nodeDescription.textContainerWidth
 	 */
 	public long getNodeDescriptionWidth() {
-		return nodeDescription.textContainerWidth;
+		return nodeDescription.getTextContainerWidth();
 	}
 	
 	/**
@@ -530,7 +524,7 @@ public class Node {
 	 * @return nodeTitle.textContainerHeight
 	 */
 	public long getNodeTitleHeight() {
-		return nodeTitle.textContainerHeight;
+		return nodeTitle.getTextContainerHeight();
 	}
 	
 	/**
@@ -538,7 +532,7 @@ public class Node {
 	 * @return nodeDescription.textContainerHeight
 	 */
 	public long getNodeDescriptionHeight() {
-		return nodeDescription.textContainerHeight;
+		return nodeDescription.getTextContainerHeight();
 	}
 
 	@Override
@@ -607,7 +601,6 @@ public class Node {
 						IdentityInterpolator.getInstance(), null);
 		VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(
 				nodeTranslation, true);
-		System.out.println("X: " + fixedXPos + ", Y: " + fixedYPos);
 		realignNodeText();
 		refreshLinks();
 	}
@@ -616,18 +609,19 @@ public class Node {
 	 * Aligns the full and short descriptions with the rectangle so both
 	 * descriptions are within the bounds of the rectangle. Needed because the
 	 * text and rectangle are not drawn in the same way
+	 * Also set's the positions of the sub-rectangles, if there are any.
 	 *
 	 */
 	public void realignNodeText() {
-		long titleWidth = nodeTitle.textContainerWidth;
-		long titleHeight = nodeTitle.textContainerHeight;
+		long titleWidth = nodeTitle.getTextContainerWidth();
+		long titleHeight = nodeTitle.getTextContainerHeight();
 		int NODE_PADDING = Configuration.NODE_PADDING;
 
 		// Center the node description text
 		switch (nodeView) {
 			case FULL_DESCRIPTION :
-				long descriptionWidth = nodeDescription.textContainerWidth;
-				long descriptionHeight = nodeDescription.textContainerHeight;
+				long descriptionWidth = nodeDescription.getTextContainerWidth();
+				long descriptionHeight = nodeDescription.getTextContainerHeight();
 				long nodeAdjustedWidth = Math.max(Math.max(titleWidth, 
 						descriptionWidth), Configuration.MIN_NODE_WIDTH) 
 						+ NODE_PADDING;
@@ -662,6 +656,21 @@ public class Node {
 				break;
 			default :
 				break;
+		}
+		
+		// If this is a multi-node, align the sub-rectangles
+		if ( subNodeRectangles != null )
+		{
+			int num = 1;
+			for ( VRectangle r : subNodeRectangles )
+			{
+				r.setWidth(nodeRectangle.vw-NODE_PADDING*2);
+				r.setHeight(nodeDescription.getFont().getSize()/2);
+				r.moveTo(nodeRectangle.vx, 
+						 nodeRectangle.vy - nodeRectangle.vh
+						 + num*(nodeDescription.getFont().getSize()+2) + (num-1)*2);
+				num++;
+			}
 		}
 	}
 
@@ -721,6 +730,11 @@ public class Node {
 	{
 		nodeRectangle.setBorderColor(Color.black);
 		nodeRectangle.setStrokeWidth(1);
+		if ( subNodeRectangles != null )
+		{
+			for ( VRectangle r : subNodeRectangles )
+				r.setBorderColor(r.getColor());
+		}
 	}
 	
 	/**
@@ -825,6 +839,11 @@ public class Node {
 							nodeRectangle.setTranslucencyValue(alpha1);
 							nodeTitle.setTranslucencyValue(alpha1);
 							nodeDescription.setTranslucencyValue(alpha1);
+							if ( subNodeRectangles != null )
+							{
+								for ( VRectangle r : subNodeRectangles )
+									r.setVisible(alpha>0);
+							}
 						}
 					}, alpha, false, IdentityInterpolator.getInstance(),
 							new EndAction() {
@@ -843,6 +862,11 @@ public class Node {
 			nodeRectangle.setTranslucencyValue(alpha);
 			nodeTitle.setTranslucencyValue(alpha);
 			nodeDescription.setTranslucencyValue(alpha);
+			if ( subNodeRectangles != null )
+			{
+				for ( VRectangle r : subNodeRectangles )
+					r.setVisible(alpha>0);
+			}
 		}
 	}
 
@@ -938,16 +962,16 @@ public class Node {
 	/**
 	 * @return The list of this node's subnodes.
 	 */
-	public List<Node> getSubNodeList()
+	public List<Node> getMultiNodeList()
 	{
-		return subNodes;
+		return multiNodes;
 	}
 	
 	/**
 	 * Goes through all links and creates a list of subnodes
 	 * that represent each type of link with 3 or more occurrences.
 	 */
-	public void initializeSubNodeList()
+	public void initializeMultiNodeList()
 	{
         // Initialize map of all link types.
     	Map<String, Integer> linkOccurrences = new HashMap<String, Integer>();
@@ -971,42 +995,74 @@ public class Node {
         }
         
         if ( !linkOccurrences.isEmpty() )
-            subNodes = new ArrayList<Node>();
+            multiNodes = new ArrayList<Node>();
         
         // Create the special nodes
         for ( Entry<String, Integer> entry : linkOccurrences.entrySet() )
         {
-        	String names = ". \n TOPICS: \n";
+        	Node newNode = new Node( entry.getValue() + " " + entry.getKey() 
+        			+ " Nodes in Other Chapters", "temp", nodeChapter, Color.white, nodeTitle.getFont().getSize());
+        	newNode. subNodeRectangles = new ArrayList<VRectangle>();
+    		newNode.subNodes = new ArrayList<Node>();
+        	
+        	String names = ". \n |TOPICS|:\n ";
             for ( Link l : getNodeLinks() )
             {
             	if ( l.getLinkType().equals(entry.getKey()) && 
             			!l.getToNode().getNodeChapter().equals(l.getFromNode().getNodeChapter()) ) {
-            		names += "\n ";
             		if ( l.getFromNode().getGlyph().equals(this.getGlyph()) )
+            		{
                 		names += l.getToNode().getNodeTitle().toUpperCase();
+                		Color chapterColor = l.getToNode().getNodeChapterColor();
+                		newNode.subNodes.add(l.getToNode());
+                		VRectangle rect =  new VRectangle(nodeRectangle.vx - nodeRectangle.vw, 
+        						nodeRectangle.vy-nodeRectangle.vh, 2,  
+        						nodeRectangle.vw, nodeRectangle.vh, 
+        						chapterColor, chapterColor, 0.5f);
+		        		rect.setType("MultiNodeRectangle");
+		        		newNode.subNodeRectangles.add(rect);
+            		}
             		else
+            		{
                 		names += l.getFromNode().getNodeTitle().toUpperCase();
+                		Color chapterColor = l.getFromNode().getNodeChapterColor();
+                		newNode.subNodes.add(l.getFromNode());
+                		VRectangle rect =  new VRectangle(nodeRectangle.vx - nodeRectangle.vw, 
+                						nodeRectangle.vy-nodeRectangle.vh, 2,  
+                						nodeRectangle.vw, nodeRectangle.vh, 
+                						chapterColor, chapterColor, 0.5f);
+                		rect.setType("MultiNodeRectangle");
+                		newNode.subNodeRectangles.add(rect);
+            		}
+            		names += "\n ";
             	}
             }
-        	Node newNode = new Node( entry.getValue() + " " + entry.getKey() 
-        			+ " Nodes in Other Chapters", Link.getLinkProperty(entry.getKey())
-        			.getDescription() + names, nodeChapter);
+            
+            // Reverse the order of the lists
+            Collections.reverse(newNode.subNodeRectangles);
+            Collections.reverse(newNode.subNodes);
+
+    		newNode.nodeDescription.setText(Link.getLinkProperty(entry.getKey())
+        			.getDescription() + names);
+    		
     		newNode.nodeRectangle.setStroke( new BasicStroke( 1.0f ) );
         	newNode.nodeRectangle.setBorderColor(Color.black);
         	newNode.nodeRectangle.setColor(Color.white);
+        	
         	newNode.addToVirtualSpace(virtualSpace);
+        		
         	Node.link(this, newNode, entry.getKey(), 20, false);
         	newNode.showView(ViewType.HIDDEN, this, false);
-        	subNodes.add(newNode);
-        }  
+        	multiNodes.add(newNode);
+        }
 	}
 	
 	/**
-	 * @return True if this node has any subnodes, false otherwise
+	 * @return True if this node has any multinodes, false otherwise
 	 */
-	public boolean hasSubNodes()
+	public boolean hasMultiNodes()
 	{
-		return subNodes != null;
+		return multiNodes != null;
 	}
 
 	/**
@@ -1091,6 +1147,52 @@ public class Node {
 		public String getDescription() {
 			return description;
 		}
+	}
+
+	/**
+	 * Returns the size of nodTitle's font.
+	 * @return  nodeTitle.getFont().getSize()
+	 */
+	public int getTitleFontSize() {
+		return nodeTitle.getFont().getSize();
+	}
+
+	/**
+	 * Given a sub-node selection rectangle, returns the related node.
+	 * @param glyph The VRectangle that was entered. 
+	 * @return The related node, or null if it is not in the subNodes list.
+	 */
+	public Node getSubNode(Glyph glyph) {
+		for ( VRectangle rect : subNodeRectangles )
+		{
+			if (rect.equals(glyph))
+				return subNodes.get(subNodeRectangles.indexOf(rect));
+		}
+		System.err.println("No subnodes");
+		return null;
+	}
+
+	/**
+	 * Returns if this node has a list of sub-nodes,
+	 * used to determine if this is a multi-node.
+	 * @return
+	 */
+	public boolean hasSubNodes() {
+		return subNodes !=  null;
+	}
+	
+	/**
+	 * Resets the borders of all sub-node rectangles.
+	 */
+	public void resetSubNodeRectangleBorders()
+	{
+		if ( subNodeRectangles != null )
+		{
+			for ( VRectangle r : subNodeRectangles )
+				r.setBorderColor(r.getColor());
+		}
+		else
+			System.err.println("No subnodes");
 	}
 
 }

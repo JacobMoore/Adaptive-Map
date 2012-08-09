@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Distributed Force</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Distributed Force</h1>
+<hr/>
+
+<p>A distributed force is any force where the <b>point of application</b> of the force is an <b>area</b> or a <b>volume</b>.  This means that the "point of application" is not really a point at all.  Though distributed forces are more difficult to analyze than point forces, distributed forces are quite common in real world systems so it is important to understand how to model them.</p>
+
+<p>Distributed forces can be broken down into <b>surface forces</b> and <b>body forces</b>.  Surface forces are distributed forces where the point of application is an area (a surface on the body).  Body forces are forces where the point of application is a volume (the force is exerted on all molecules throughout the body).   Below are some examples of surface and body forces.</p>
+
+<div class="piccenter">
+<table width="800px" align="center">
+<tr>
+<td><h4>Surface Forces</h4></td>
+<td><h4>Body Forces</h4></td>
+</tr>
+<tr>
+<td width="400px">
+<img src="distributedforcepics/surface1.jpg" width="350" height="256" alt="The concrete road deck on a bridge"/>
+<div class="caption">
+The concrete road deck on this bridge exerts a downward surface force on the structure supporting it.</br>
+</div>
+</td>
+<td width="400px">
+<img src="distributedforcepics/body1.jpg" width="350" height="232" alt="Gravity on a plane"/>
+<div class="caption">
+Gravity, which acts on everything with mass, is a body force.  It exerts a tiny pull on every molecule throughout a body.</br>
+</div>
+</td>
+</tr>
+<tr>
+<td width="400px">
+<img src="distributedforcepics/surface2.jpg" width="250" height="377" alt="Water pressing against a dam"/>
+<div class="caption">
+The water that is held back by this dam exerts a surface force on the dam.</br>
+</div>
+</td>
+<td width="400px">
+<img src="distributedforcepics/body2.jpg" width="350" height="233" alt="The magnetic force on this maglev train"/>
+<div class="caption">
+The magnetic force that allows this train to levitate is a body force.  A small upwards magnetic force is exerted on all molecules throughout the magnets inside the train.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<h4>Representation of Distributed Forces:</h4>
+
+<p>Distributed forces are represented in diagrams and drawings as fields of vectors all pointing in the same direction.  For surface forces, there is usually a line or a plane connecting the vectors letting you know the magnitude of the distributed force at any given point.  Often body forces are not shown since showing a force affecting every part of the body would clutter the display.  If a diagram is not shown (only a magnitude is given) you can assume that the distributed force affects all parts of the surface or body evenly.  Below are example representations of distributed forces.</p>
+
+<div class="piccenter">
+<img src="distributedforcepics/dig1.png" width="656" height="142" alt="A distributed force"/>
+<div class="caption">
+This diagram shows a beam with a distributed force.  On the left side, there is an evenly distributed force of 5 kilonewtons per meter of the beam.  On the right side, the load increases linearly from 5 kilonewtons per meter in the center of the beam to 10 kilonewtons per meter on the right end of the beam.
+</div>
+</div>
+
+<div class="piccenter">
+<img src="distributedforcepics/dig2.png" width="347" height="182" alt="A distributed force"/>
+<div class="caption">
+This diagram shows a force evenly distributed over an area.  There are 60 pounds of force for every square inch.
+</div>
+</div>
+
+<h4>Analysis of Distributed Forces:</h4>
+
+<p>Because a distributed force cannot be represented as a single vector, it cannot be mathematically modeled in the equations of static equilibrium in the same way that point loads can.   There are two methods you will learn in statics though to model distributed loads.  The first is to replace the distributed load with an equivalent point load, and then to continue with static analysis as if the load was a point load.  The second is to use derivatives and integrals to model the forces in the equations of static equilibrium.</p>
+
+<p>The equivalent point load is the point force that would cause the acceleration, exert the same moment, and cause the same reaction forces as the distributed force it is replacing.  It is possible to calculate the equivalent point loads for both surface and body forces.  To analyze a system using the equivalent point load, you would simply replace all distributed loads with their equivalent point loads and then analyze the system as if all forces were point forces.  The equivalent point load can be used interchangeably with the distributed load when examining external forces to the body, but the equivalent point load will cause different internal forces than the distributed load so it cannot be used to analyze internal forces in a body.  More information on equivalent point loads and how to find them can be found on the equivalent point load page.</p>
+
+<p>Analyzing systems with distributed loads without converting the distributed loads to point loads will introduce calculus into the equations of static equilibrium.  This makes solving the equations more difficult, but this is the only way to accurately model the internal forces in a body exerted by distributed loads.  In engineering statics, the method of analyzing distributed loads with calculus is discussed more in the internal forces and the flexible cables chapters.</p>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

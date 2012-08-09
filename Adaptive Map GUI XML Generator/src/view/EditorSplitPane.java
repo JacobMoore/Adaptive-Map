@@ -41,12 +41,12 @@ public class EditorSplitPane extends JSplitPane {
 	private JFrame mainFrame;
 	JPanel nodePanel, chapterPanel, linkPanel;
 	
-	private DefaultListModel<String> nodeListModel;
-	private JList<String> nodeInfoList;
-	private DefaultListModel<String> chapterListModel;
-	private JList<String> chapterInfoList;
-	private DefaultListModel<String> linkListModel;
-	private JList<String> linkInfoList;
+	private DefaultListModel nodeListModel;
+	private JList nodeInfoList;
+	private DefaultListModel chapterListModel;
+	private JList chapterInfoList;
+	private DefaultListModel linkListModel;
+	private JList linkInfoList;
 
 	public EditorSplitPane(int horizontalSplit, boolean b, JFrame frame)
 	{
@@ -90,7 +90,7 @@ public class EditorSplitPane extends JSplitPane {
 	
 	public void refreshNodes(LinkedList<NodeData> nodes)
 	{
-		nodeListModel = new DefaultListModel<String>();
+		nodeListModel = new DefaultListModel();
 		if ( nodes.isEmpty() )
 			nodeListModel.addElement("\tEmpty");
 		else
@@ -100,7 +100,7 @@ public class EditorSplitPane extends JSplitPane {
 		}
 		Object[] data = nodeListModel.toArray();
 		java.util.Arrays.sort(data);
-		nodeListModel = new DefaultListModel<String>();
+		nodeListModel = new DefaultListModel();
 		for ( int i=0; i < data.length; i++ )
 			nodeListModel.addElement((String)data[i]);
 		nodeInfoList.setModel(nodeListModel);
@@ -110,7 +110,7 @@ public class EditorSplitPane extends JSplitPane {
 
 	public void refreshChapters(LinkedList<ChapterData> chapters)
 	{
-		chapterListModel = new DefaultListModel<String>();
+		chapterListModel = new DefaultListModel();
 		if ( chapters.isEmpty() )
 			chapterListModel.addElement("\tEmpty");
 		else
@@ -125,7 +125,7 @@ public class EditorSplitPane extends JSplitPane {
 		}
 		Object[] data = chapterListModel.toArray();
 		java.util.Arrays.sort(data);
-		chapterListModel = new DefaultListModel<String>();
+		chapterListModel = new DefaultListModel();
 		for ( int i=0; i < data.length; i++ )
 			chapterListModel.addElement((String)data[i]);
 		chapterInfoList.setModel(chapterListModel);
@@ -133,7 +133,7 @@ public class EditorSplitPane extends JSplitPane {
 	
 	public void refreshLinks(LinkedList<LinkData> links)
 	{
-		linkListModel = new DefaultListModel<String>();
+		linkListModel = new DefaultListModel();
 		if ( links.isEmpty() )
 			linkListModel.addElement("\tEmpty");
 		else
@@ -143,7 +143,7 @@ public class EditorSplitPane extends JSplitPane {
 		}
 		Object[] data = linkListModel.toArray();
 		java.util.Arrays.sort(data);
-		linkListModel = new DefaultListModel<String>();
+		linkListModel = new DefaultListModel();
 		for ( int i=0; i < data.length; i++ )
 			linkListModel.addElement((String)data[i]);
 		linkInfoList.setModel(linkListModel);
@@ -155,9 +155,9 @@ public class EditorSplitPane extends JSplitPane {
 		
 		// Node
 		JPanel nodeInfoPanel = new JPanel();
-		nodeListModel = new DefaultListModel<String>();
+		nodeListModel = new DefaultListModel();
 		nodeListModel.addElement("\tEmpty");
-		nodeInfoList = new JList<String>(nodeListModel);
+		nodeInfoList = new JList(nodeListModel);
 		nodeInfoList.setBorder(new LineBorder(Color.BLACK));
 		nodeInfoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		nodeInfoList.setLayoutOrientation(JList.VERTICAL);
@@ -170,9 +170,9 @@ public class EditorSplitPane extends JSplitPane {
 		
 		// Chapter
 		JPanel chapterInfoPanel = new JPanel();
-		chapterListModel = new DefaultListModel<String>();
+		chapterListModel = new DefaultListModel();
 		chapterListModel.addElement("\tEmpty");
-		chapterInfoList = new JList<String>(chapterListModel);
+		chapterInfoList = new JList(chapterListModel);
 		chapterInfoList.setBorder(new LineBorder(Color.BLACK));
 		chapterInfoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		chapterInfoList.setLayoutOrientation(JList.VERTICAL);
@@ -185,9 +185,9 @@ public class EditorSplitPane extends JSplitPane {
 		
 		// Link
 		JPanel linkInfoPanel = new JPanel();
-		linkListModel = new DefaultListModel<String>();
+		linkListModel = new DefaultListModel();
 		linkListModel.addElement("\tEmpty");
-		linkInfoList = new JList<String>(linkListModel);
+		linkInfoList = new JList(linkListModel);
 		linkInfoList.setBorder(new LineBorder(Color.BLACK));
 		linkInfoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		linkInfoList.setLayoutOrientation(JList.VERTICAL);
@@ -205,7 +205,7 @@ public class EditorSplitPane extends JSplitPane {
 	{
 	    public void mouseClicked(MouseEvent evt) {
 	        if (evt.getClickCount() == 2) {
-	            String[] splitString = nodeListModel.get(nodeInfoList.getSelectedIndex())
+	            String[] splitString = ((String) nodeListModel.get(nodeInfoList.getSelectedIndex()))
 	            		.split(" \\| ");
 
 	            for( NodeData n : EditorXMLParser.nodeData )
@@ -322,7 +322,7 @@ public class EditorSplitPane extends JSplitPane {
 				linkTypeLabel.setName("linkType" + (nodeInfoLinksNumber+1));
 				linksPanel.add(linkTypeLabel);
 				
-				JComboBox<String> linkTypeIn = new JComboBox<String>();
+				JComboBox linkTypeIn = new JComboBox();
 				linkTypeIn.setName("linkTypeIn" + (nodeInfoLinksNumber+1));
 				for ( LinkData links : EditorXMLParser.linkData)
 					linkTypeIn.addItem(links.linkTitle);			
@@ -389,7 +389,7 @@ public class EditorSplitPane extends JSplitPane {
 			linkTypeLabel.setName("linkType" + (nodeInfoLinksNumber+1));
 			linksPanel.add(linkTypeLabel);
 			
-			JComboBox<String> linkTypeIn = new JComboBox<String>();
+			JComboBox linkTypeIn = new JComboBox();
 			linkTypeIn.setName("linkTypeIn" + (nodeInfoLinksNumber+1));
 			for ( LinkData links : EditorXMLParser.linkData)
 				linkTypeIn.addItem(links.linkTitle);
@@ -435,7 +435,7 @@ public class EditorSplitPane extends JSplitPane {
 			for ( JPanel i : nodeInfoLinksList )
 			{
 				String name = ((JTextField)i.getComponent(1)).getText();
-				String type = (String) ((JComboBox<String>)i.getComponent(3)).getSelectedItem();
+				String type = (String) ((JComboBox)i.getComponent(3)).getSelectedItem();
 				node.linkList.add(new Link(name, type));
 			}
         	refreshNodes(EditorXMLParser.nodeData);
@@ -460,7 +460,7 @@ public class EditorSplitPane extends JSplitPane {
 	{
 	    public void mouseClicked(MouseEvent evt) {
 	        if (evt.getClickCount() == 2) {
-	            String[] splitString = chapterListModel.get(chapterInfoList.getSelectedIndex())
+	            String[] splitString = ((String) chapterListModel.get(chapterInfoList.getSelectedIndex()))
 	            		.split(" \\| ");
 	            for( ChapterData c : EditorXMLParser.chapterData )
 	            {
@@ -502,7 +502,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
 		colorPanel.add(colorLabel);
-		JComboBox<String> chapterColorBoxIn = new JComboBox<String>();
+		JComboBox chapterColorBoxIn = new JComboBox();
 		for ( String color : EditorXMLParser.getChapterColors())
 			chapterColorBoxIn.addItem(color);
 		
@@ -513,7 +513,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel defaultPanel = new JPanel();
 		JLabel defaultN = new JLabel("Default Node");
 		defaultPanel.add(defaultN);
-		final JComboBox<String>  defaultIn = new JComboBox<String>();
+		final JComboBox  defaultIn = new JComboBox();
 		for ( NodeData n : EditorXMLParser.nodeData)
 		{
 			defaultIn.addItem(n.nodeTitle);
@@ -572,8 +572,8 @@ public class EditorSplitPane extends JSplitPane {
         	chapter.chapterTitle = chapterTitleIn.getText();
         	chapter.defaultNode = (String)defaultIn.getSelectedItem();
         	chapter.description = chapterDescriptionIn.getText();
-        	chapter.fixedXPosition = (int)xValueIn.getValue();
-        	chapter.fixedYPosition = (int)yValueIn.getValue();
+        	chapter.fixedXPosition = (Integer)xValueIn.getValue();
+        	chapter.fixedYPosition = (Integer)yValueIn.getValue();
         	chapter.isDefaultChapter = defaultChapterIn.isSelected();
         	refreshChapters(EditorXMLParser.chapterData);
         }
@@ -759,7 +759,7 @@ public class EditorSplitPane extends JSplitPane {
 					String name = ((JTextField)i.getComponent(1)).getText();
 					String type = "";
 					if ( i.getComponent(3) instanceof JComboBox )
-						type = (String) ((JComboBox<String>)i.getComponent(3)).getSelectedItem();
+						type = (String) ((JComboBox)i.getComponent(3)).getSelectedItem();
 					newNode.linkList.add(new Link(name, type));
 				}
 				EditorXMLParser.nodeData.add(newNode);
@@ -803,7 +803,7 @@ public class EditorSplitPane extends JSplitPane {
 				linkTypeLabel.setName("linkType" + (nodeLinksNumber+1));
 				linksPanel.add(linkTypeLabel);
 				
-				JComboBox<String> linkTypeIn = new JComboBox<String>();
+				JComboBox linkTypeIn = new JComboBox();
 				linkTypeIn.setName("linkTypeIn" + (nodeInfoLinksNumber+1));
 				for ( LinkData links : EditorXMLParser.linkData)
 					linkTypeIn.addItem(links.linkTitle);
@@ -874,7 +874,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
 		colorPanel.add(colorLabel);
-		final JComboBox<String> chapterColorBoxIn = new JComboBox<String>();
+		final JComboBox chapterColorBoxIn = new JComboBox();
 		for ( String color : EditorXMLParser.getChapterColors())
 			chapterColorBoxIn.addItem(color);
 		
@@ -884,7 +884,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel defaultPanel = new JPanel();
 		JLabel defaultN = new JLabel("Default Node");
 		defaultPanel.add(defaultN);
-		final JComboBox<String>  defaultIn = new JComboBox<String>();
+		final JComboBox  defaultIn = new JComboBox();
 		for ( NodeData n : EditorXMLParser.nodeData)
 		{
 			defaultIn.addItem(n.nodeTitle);
@@ -938,7 +938,7 @@ public class EditorSplitPane extends JSplitPane {
 				
 				ChapterData newChapter = new ChapterData(chapterTitleIn.getText(), 
 						(String)chapterColorBoxIn.getSelectedItem(), chapterDescriptionIn.getText(),
-						(int)xValueIn.getValue(), (int)yValueIn.getValue(), (String)defaultIn.getSelectedItem(), 
+						(Integer)xValueIn.getValue(), (Integer)yValueIn.getValue(), (String)defaultIn.getSelectedItem(), 
 						defaultChapterIn.isSelected());
 				EditorXMLParser.chapterData.add(newChapter);
 				refreshChapters(EditorXMLParser.chapterData);

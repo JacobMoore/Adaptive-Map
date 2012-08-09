@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Wrench</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Wrench</h1>
+<hr/>
+
+<div class="picright" style="width:200px">
+<img src="wrenchpics/dig1.png" width="200" height="310" alt="A wrench, a parallel force and moment vector"/>
+<div class="caption">
+A wrench consists of a single force vector and a single moment vector which are collinear or parallel.
+</div>
+</div>
+
+<p>A "wrench" in engineering statics is a special type of force/couple system where the force vector and the moment vector of the couple are <b>parallel</b>.  An example of a wrench on a real world system is the force and moment exerted by a screwdriver.  A person using the screwdriver both pushes down along the shaft of the screwdriver and exerts a moment (from a couple) about the axis of the screwdriver.  Any wrench where the force and moment vectors have the same direction is considered a <b>positive wrench</b>.  Conversely, a wrench where the force and moment vectors have opposite directions is considered a <b>negative wrench</b>.</p>
+
+<h4>Converting a Force Couple System into a Wrench</h4>
+
+<p>Any force couple system that is not already a wrench can be converted to a wrench by changing the point of application of the force.  If we think about the some equivalent force/couple system where the force and moment vectors are not parallel (as shown in A in the diagram below), there is a component of the moment vector that is parallel with the force vector and a component that is perpendicular to the force vector (as shown in B).  Now, if we choose a new point of application out along a line perpendicular to both components of the moment vectors, this force will exert a moment about the original point of application in the direction of the component that is perpendicular to the force (as shown in C).  By matching the moment vector this new moment (<b>d</b> cross <b>F</b>) and the perpendicular component of the old moment vector, <b>we can find the point at which there will be no perpendicular component of moment vector</b>.  At this new point of application, the force/couple system is a wrench (as shown in D) with a moment that is parallel to force.</p>
+
+<div class="piccenter">
+<img src="wrenchpics/dig2.png" width="691" height="499" alt="Converting an arbitrary force couple system into a wrench."/>
+<div class="caption">
+Converting an arbitrary force couple system into a wrench.
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Given the force couple system below acting on a plate of steel, find the equivalent wrench.</p>
+
+<img src="wrenchpics/probdig1.png" width="635" height="336" alt="The problem diagram"/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="wrenchpics/P1_1.png" width="400" height="246" alt="The components of the moment"/>
+			</div>
+		</td>
+		<td>
+		Since we already have the equivalent force couple system, the first step is to break the moment down into components that are parallel and perpendicular to the force vector.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="wrenchpics/P1_2.png" width="400" height="300" alt="The line perpendicular to both the moment and force vectors"/>
+			</div>
+		</td>
+		<td>
+		Now we need to move the point of application somewhere along the line perpendicular to both the force vector and the moment vector.  Since both of these vectors lie in the XY plane, the line perpendicular to both of them is in the Z direction.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="wrenchpics/P1_3.png" width="400" height="294" alt="Finding r"/>
+			</div>
+			\[ \mathrm{
+				\mathbf{M_{perp}} = \mathbf{r} \times \mathbf{F}
+			}\]
+			\[ \mathrm{
+				M_{perp} = r * F
+			}\]
+			\[ \mathrm{
+				30 \text{ Nm} = r \text{ m} * 60 \text{ N}
+			}\]
+			\[ \mathrm{
+				r = .5{ m}
+			}\]
+		</td>
+		<td>
+		Knowing that the moment exerted by the newly positioned force has to equal the perpendicular component of the original moment vector we can figure out the point of application of the wrench.  Knowing that the moment will be <b>r</b> cross <b>F</b> and using the right hand rule, we can figure out that the new point of application is upwards along the Z direction line.  Additionally, knowing the magnitude of the force and the magnitude of the perpendicular component of the moment vectors, we can find the magnitude of <b>r</b>.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="wrenchpics/P1_4.png" width="400" height="273" alt="The wrench"/>
+			</div>
+		</td>
+		<td>
+		The wrench is shown alone on the original diagram.  This is a negative wrench.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

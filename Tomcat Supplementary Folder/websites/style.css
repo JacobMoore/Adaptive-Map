@@ -1,0 +1,21 @@
+body {background: white; font-family: sans-serif; color: black}
+
+h1 {font-size: 28px; text-align: center; font-variant: small-caps}
+h3 {font-size: 18px}
+h4 {font-size: 14px}
+table,td {text-align: center}
+
+
+#maincontent{margin-left: 15%; margin-right: 15%}
+#links{text-align: left}
+#title{text-align: center}
+.caption{text-align: center; font-style: italic; width: 200}
+.picright{float: right; padding: 10px 10px 10px 10px}
+.picleft{float: left; padding: 10px 10px 10px 10px}
+.piccenter{text-align: center; clear: both; padding: 10px 10px 10px 10px}
+
+a:link {color: #2F4F4F}
+a:visited {color: #2F4F4F}
+a:focus {color: #2F4F4F}
+a:hover {color: #698B69}
+a:active {color: #2F4F4F}

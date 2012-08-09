@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Matrix Multiplication</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Matrix Multiplication</h1>
+<hr/>
+
+<p>Matrices are often used to solve systems of equations.  In order to do this matrices must be multiplied.  In order to multiply two matrices (<b>A</b> x <b>B</b>), the number of columns in <b>A</b> must be equal to the number of rows in <b>B</b>.  The result of matrix multiplication is another matrix where the resulting matrix will have the same number of rows as <b>A</b> and the same number of columns as <b>B</b>.</p>
+
+<div class="piccenter">
+<img src="matrixmultiplicationpics/dig1.png" width="173" height="245" alt="Two matricies"/>
+<div class="caption">
+Matrix <b>A</b> multiplied by matrix <b>B</b> equals matrix <b>C</b>
+</div>
+</div>
+
+<div class="picright" style="width:273px">
+<img src="matrixmultiplicationpics/dig2.png" width="273" height="266" alt="Use the rows from the first vector and the columns from the second."/>
+<div class="caption">
+Use the rows from the first vector and the columns from the second.
+</div>
+</div>
+
+<p>In order to multiply two matrices (such as <b>A</b> x <b>B</b> shown above) you will use the rows from <b>A</b> and the columns from <b>B</b>.   We first find that <b>C</b> will be a 4x3 matrix since <b>A</b> has 4 rows and <b>B</b> has 3 columns.   The element in each location of <b>C</b> will be the dot product of the corresponding row of <b>A</b> and the corresponding column of <b>B</b>.</p>
+
+<p>For example:</p>
+
+<div class="picleft" style="width:387px">
+<img src="matrixmultiplicationpics/dig3.png" width="409" height="451" alt="Examples of calculated elements."/>
+<div class="caption">
+Examples of calculated elements.
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3><br/>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find <b>C</b>.</p>
+
+<div class="piccenter">
+<img src="matrixmultiplicationpics/prob1dig.png" width="147" height="154" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+		We first check to make sure that the number of columns in <b>A</b> matches the number of rows in <b>B</b>.  It does so these matrices can be multiplied.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixmultiplicationpics/P1_1.png" width="109" height="59" alt="Matrix C"/>
+		</td>
+		<td>
+		Next, we determine that <b>C</b> is a 3x2 matrix because <b>A</b> has 3 rows and <b>B</b> has 2 columns.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixmultiplicationpics/P1_2.png" width="234" height="216" alt="Solving for the Elements of C"/>
+		</td>
+		<td>
+		We can then solve for each of the six elements in <b>C</b> by calculating the dot product of the corresponding row from <b>A</b> and the corresponding column from <b>B</b>.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixmultiplicationpics/P1_3.png" width="112" height="60" alt="The matrix C"/>
+		</td>
+		<td>
+		We then put these values back into matrix form for the answer.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

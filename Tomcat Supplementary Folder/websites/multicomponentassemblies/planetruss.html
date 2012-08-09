@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Plane Trusses</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Plane Trusses</h1>
+<hr/>
+
+<p>Plane trusses are truss structures that can be analyzed as <b>2-Dimensional systems</b>.  No real world structure is truly 2-Dimensional, but there are a few instances where 3-Dimensional structures can be approximated as 2-Dimensional structures.  The first case is where the all the members lie in the same plane.  In this case there are only forces in two dimensions so the third dimension is unnecessary in analyzing the problem.  The second case is where there are multiple flat truss structures (as with the first case) that are bound together by members called stringers.  The stringers hold the two or more flat truss structures together and are supported by a truss structure on each side.  The stringers only serve to transfer the load to the flat truss structures and therefore each of the flat trusses can be treated as a separate 2-Dimensional system.</p>
+
+<div class="piccenter">
+<table width="700px" align="center">
+<tr>
+<td width="350px">
+<img src="planetrusspics/rooftruss.jpg" width="300" height="225" alt="Roof Trusses"/>
+<div class="caption">
+These roof trusses has all members in the same plane and can be analyzed as a two dimensional system. </br>
+</div>
+</td>
+<td width="350px">
+<img src="planetrusspics/trussbridge.jpg" width="300" height="222" alt="Truss Bridges"/>
+<div class="caption">
+This picture shows two truss bridges side by side.  Each side of this truss bridge can be analyzed as a plane truss.  The red arrows in this picture are pointing to two of the stringers.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<p>In plane trusses, it is assumed that all members are connected by <b>pin joints</b>.  This means that the members exert forces on the connection points, but they do not exert moments on the connection points.  Even if the joints in the real life system are not pin joints, the moments exerted are usually negligible when compared to the forces exerted so it is reasonable to approximate the joints as pin joints.  </p>
+
+<p>Plane trusses can be analyzed using the method of joints or the method of sections.  Because plane trusses are 2-Dimensional systems, there are three possible equilibrium equations for each member or section of the truss.  These equations can be used to solve for both internal and external forces.</p>
+
+<ol>
+<li>The sum of the forces in the X direction is zero.</li>
+<li>The sum of the forces in the Y direction is zero.</li>
+<li>The sum of the moments about the Z axis is zero.</li>
+</ol>
+
+<div class="piccenter">
+<img src="planetrusspics/trusswithaxes.png" width="624" height="391" alt="A Truss Struture with Axes"/>
+<div class="caption">
+Each member or section of this truss structure has three equilibrium equations that can be used to solve for internal or external forces.  All connections are assumed to be pin joints in a plane truss structure.
+</div>
+</div>
+
+<hr/>
+
+<h3>Worked Problems</h3><br/>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Calculate the forces in each member of the loaded truss.  Assume the members have negligible weights.  The links have been labeled in blue and the joints have been labeled in green.</p>
+
+<div class="piccenter">
+<img src="planetrusspics/problem_diagram.png" width="669" height="442" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="planetrusspics/P1_1.png" width="390" height="237" alt="Free Body Diagram"/>
+		</td>
+		<td>
+		First we will solve for the reaction forces.  Treat the whole structure as a rigid body and draw a free body diagram of the entire body.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="planetrusspics/P1_2.png" width="401" height="283" alt="Equilibrium Equations"/>
+		</td>
+		<td>
+		There are three equilibrium equations we can use for the 2-D analysis and three unknown reaction forces so we can solve for all of the reaction forces.  The moment equation was taken around the point labeled joint 1 in the earlier diagram, but you could take the moment around any point and it would still be valid.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="planetrusspics/P1_3.png" width="317" height="506" alt="Method of Joints Free Body Diagrams"/>
+		</td>
+		<td>
+		To solve for the forces experienced by each member we will use the method of joints.  This starts by drawing a free body diagram for each of the six joints.  Each member will exert a force on the joint in line with the member so we know the direction of all the forces, just not the magnitudes.  It was assumed that all the members are in compression for the free body diagrams.  If the calculated force in a member is negative, we know that our assumption of a compressive force was incorrect and the member is in fact in tension.  Also, be sure to include the loads on the truss structure and the reaction forces in your free body diagrams.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="planetrusspics/P1_4.png" width="622" height="305" alt="Method of Joints Equilibrium Equations"/>
+		</td>
+		<td>
+		Each of the six free body diagrams gives us two equilibrium equations (sum of forces in both the X and Y direction), which gives us a total of twelve equations.  Because the joints are a single point that all forces act through, no moments are exerted on the joints and the moment equilibrium equations cannot be used.  The twelve equations we have through are more than enough to solve for the nine unknown forces though.  When writing out the equations, be careful to double check the signs and the trig functions since even one sign or trig error can cause very large errors in the calculated forces.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="planetrusspics/P1_5.png" width="163" height="340" alt="Answers"/>
+		</td>
+		<td>
+		By solving the system of equations, we can find the forces in each member.  This can be done with simple algebra (picking the equations with only one unknown to figure out the forces one at a time) or it can be done by combining all the equations into one matrix equation and solving for all the unknowns at once.  The answers here were solved for with simple algebra, but matrix equations would result in the same answers.  Since we assumed all member forces were compressive earlier, positive numbers indicate compressive forces on the member while negative numbers indicate tensile forces on the member.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

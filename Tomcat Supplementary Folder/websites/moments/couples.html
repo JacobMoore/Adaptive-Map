@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Couples</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Couples</h1>
+<hr/>
+
+<p>A couple in engineering mechanics is a set of <b>parallel forces</b> with <b>equal magnitudes</b> but <b>opposite directions</b> like the forces shown in the diagram below.  Each of these forces will exert a moment, just as in every system, but there is something special about the combination of these two forces.</p>
+
+<div class="piccenter">
+<img src="couplespics/dig1.png" width="483" height="419" alt="A Couple"/>
+<div class="caption">
+A couple.
+</div>
+</div>
+
+<p>We will start by finding the moment about point (P) using the process outlined on the "Moment about a Point" page.  The two forces in the couple (<b>F1</b> and <b>F2</b>) have the same magnitude (F), they have parallel but opposite directions separated by a distance d.  The scalar equations for the moment we get:</p>
+
+\[ \mathrm{
+	M_{F1}= -F * x
+}\]
+
+<p style="text-align:center">and</p>
+
+\[ \mathrm{
+	M_{F2}= F * (x + d)
+}\]
+
+<p style="text-align:center">if we add the two moments together to get the total moment exerted we get the following formula</p>
+
+\[ \mathrm{
+	M_{Total}= (-F * x) + (F * (x + d))
+}\]
+
+<p style="text-align:center">which we can simplify to</p>
+	
+\[ \mathrm{
+	M_{Total}= -F*x + F*x + F*d
+}\]	
+
+<br/>
+
+\[ \mathrm{
+	M_{Total}= F*d
+}\]
+
+<p>As you can see, we've eliminated the value x from the equation entirely.  If we choose another point P with a different value for "x" it doesn't matter; the moment exerted by the couple will still be (F * d).  This means that couples exert the same moment on all parts of a body.  This makes them different from non-couple forces where the moment exerted by the force or forces is dependent on the point the moment is being taken about.</p>
+
+<p>When representing the moment of a couple as a vector, the moment vector will have a magnitude, axis of rotation and direction of rotation like any other moment vector.  The magnitude of the vector is equal to F*d, the direction of the vector is perpendicular to the plane the two parallel forces are in.  You can use the right hand to determine which direction the moment takes.   The moment vector of a couple can be translated to any point (as long as direction and magnitude are preserved) without changing the system, unlike most moment vectors. </p>
+
+<div class="piccenter">
+<img src="couplespics/dig2.png" width="609" height="458" alt="A moment exerted by a single force as opposed to a moment exerted by a couple"/>
+<div class="caption">
+A moment exerted by a couple can be moved anywhere on the body, but a moment exerted by a force or set of forces that is not a couple cannot be moved from the point which was used to calculate the moments.
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find the moment this couple exerts on the body.</p>
+
+<div class="piccenter">
+<img src="couplespics/probdig1.png" width="505" height="273" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M = F * d
+			}\]
+			\[ \mathrm{
+				M = 600 \text{ N} * 7 \text{ m}
+			}\]
+		</td>
+		<td>
+		The magnitude of the couple is equal to the magnitude of the forces, times the perpendicular distance between the parallel forces.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M = 4200 \text{ Nm}
+			}\]
+			<div class="piccenter">
+				<img src="couplespics/P1_1.png" width="466" height="321" alt="The moment labeled on the original diagram"/>
+			</div>
+		</td>
+		<td>
+		Now we just solve the equation for the moment exerted by the couple.  Using the right hand rule we can determine that the moment vector points out of the diagram.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

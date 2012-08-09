@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Resolution of a Force into a Force and a Couple</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Resolution of a Force into a Force and a Couple</h1>
+<hr/>
+
+<p>As discussed on the "Moments" page, a single force acting on an extended body can often cause both a <b>linear acceleration and angular acceleration</b>.  Just as we can decompose a 2D force vector into a horizontal and vertical component, we can decompose any force into the component that causes just a linear acceleration (called the <b>translational</b> component) and a component that causes just angular acceleration (called the <b>rotational</b> component).</p>
+
+<p>Below is an example of a force acting on a box.  If there is no other forces acting on the body it would start to both translate and rotate.  To decompose this force into its translational and rotational components, we will need to find the force acting on the center of mass of the body that causes the same linear acceleration as the original force (this is the translational component), and we will need to find the couple that would cause the angular acceleration as the original force (this is the rotational component).</p>
+
+<div class="piccenter">
+<img src="resolutionpics/dig1.png" width="429" height="369" alt="A force causing both linear and angular accelerations."/>
+<div class="caption">
+The force shown would cause both a linear and angular acceleration.
+</div>
+</div>
+
+<p>To resolve a force into its translational and rotational component s we will add two forces to the system.  Each of these forces will be applied to the center of mass (or the center of rotation for constrained systems) and will have the same magnitude as the original force.  One will have the same direction as the original force and one will be in the opposite direction of the force.</p>
+
+<div class="piccenter">
+<img src="resolutionpics/dig2.png" width="451" height="504" alt="Adding two forces"/>
+</div>
+<div class="piccenter">
+<img src="resolutionpics/dig3.png" width="643" height="475" alt="The force and the couple"/>
+<div class="caption">
+The translational component (A) and the rotational component (B).
+</div>
+</div>
+
+<p>Since the two forces we have added to the system are equal and opposite, we have not added any net force and we have not changed the system.</p>
+
+<p>Now with the three forces acting on the box instead of one, we can break the forces down into two separate sets of forces.  The first, shown in A, is a force acting on the center of mass of the box with the same magnitude as the original force.  This force will cause the box to translate in the same direction and at the same rate as the original force, but it will not cause the body to rotate.  The second set of forces, shown in B, is a couple.  It consists of the original force and the force acting on the center of mass in the opposite direction.  This couple will cause the same angular acceleration on the body as the original force, but it will not translate the body at all.</p>
+
+<p>These two sets of forces, the force and the couple, are considered the translational and rotational components of the original force.  Breaking down forces into their translational and rotational components can be helpful in finding the combined effect of a number of forces.  Since all the translational components act on the center of mass, they can easily be added up to a single net force.  Since the moment of a couple can be moved around without changing the system, these couples can also be easily added together into a single net moment.  More on this is covered on the "Equivalent Force/Couple System" page.</p>
+
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Force <b>F</b> acts on a cam on a shaft that rotates around point P.  Find the translational and rotational components of force <b>F</b> that will be applied to the shaft (at point P).</p>
+
+<div class="piccenter">
+<img src="resolutionpics/probdig1.png" width="394" height="351" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="resolutionpics/P1_1.png" width="300" height="244" alt="Adding two equal and opposite forces"/>
+		</td>
+		<td>
+		First we draw in the two equal and opposite forces on the center of rotation of the system.  Since the net force added is zero, the system is unchanged.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="resolutionpics/P1_2.png" width="300" height="259" alt="The translational component"/>
+		</td>
+		<td>
+		The force acting on the center of rotation in the same direction as the original force is the translational component of the original force.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="resolutionpics/P1_3.png" width="300" height="221" alt="The couple"/>
+			<img src="resolutionpics/P1_4.png" width="300" height="278" alt="The moment of the couple"/>
+		</td>
+		<td>
+		The remaining two forces form a couple.  The moment exerted by this couple can be calculated and the direction of the moment vector can be determined through the right hand rule.  This moment is the rotational component of the original force.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="resolutionpics/P1_5.png" width="300" height="312" alt="The translational and rotational components of the original force"/>
+		</td>
+		<td>
+		A diagram of the translational and rotational components of the original force acting on the cam.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

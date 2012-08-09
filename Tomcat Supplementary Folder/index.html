@@ -1,23 +1,106 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
 <head>
-    <title>Virtual Textbook</title>
+<title>Adaptive Map Textbook</title>
+
+<style type="text/css">
+body {background: silver; font-family: sans-serif; color: black}
+
+h1 {font-size: 28px; text-align: center; font-variant: small-caps}
+h2 {font-size: 24px; text-align: center; font-variant: small-caps}
+h3 {font-size: 22px}
+h4 {font-size: 18px}
+h5 {font-size: 14px}
+table,td {text-align: center}
+
+#maincontent{margin-left: 15%; margin-right: 15%}
+#links{text-align: left}
+#title{text-align: center}
+.caption{text-align: center; font-style: italic; width: 200}
+.picright{float: right; padding: 10px 10px 10px 10px}
+.picleft{float: left; padding: 10px 10px 10px 10px}
+.piccenter{text-align: center; clear: both; padding: 10px 10px 10px 10px}
+
+a:link {color: #2F4F4F}
+a:visited {color: #2F4F4F}
+a:focus {color: #2F4F4F}
+a:hover {color: #698B69}
+a:active {color: #2F4F4F}
+</style>
 </head>
 
+<link rel="icon" type="image/ico" href="favicon.ico">
+
 <body>
-<div name="iframe" id="iframe" width="800" height="600" z-index="2" style="visibility:visible" src="http://www.vt.edu"/>
-<div align = "center" z-index="1">
-<applet code = 'controller.VirtualTextbookApplet' 
-    archive = 'VirtualTextbook.jar', 
-    width = 1000, 
-    height = 600 />
+
+<div align = "center">
+
+<img align="center" src="banner.png" alt="Virtual Textbook"/>
+
+<br/>
+
+<object>
+<embed type="application/x-java-applet" id='Adaptive Map' name='Adaptive Map' code='controller.VirtualTextbookApplet' align="center"
+    archive = 'adaptive-map.jar,commons-collections-3.2.1.jar,jcip-annotations-1.0.jar,junit-3.8.1.jar,timingframework-1.0.jar,xercesImpl-2.8.1.jar,xml-apis-1.3.03.jar,xmlParserAPIs-2.6.2.jar' width = "95%" height = "600" />
+</object>
+
+<script type="text/javascript">
+window.onload = function() {
+var applet = document.getElementById("Adaptive Map");
+    applet.onmouseover = function(e) {
+         window.onscroll = function(e) {
+         //scroll where you want to be (the top)
+           scroll(0,0) ;
+         }
+     }
+    applet.onmouseout = function(e) {
+          //replace with empty function
+          window.onscroll = function(e) {}
+    }
+};
+</script>
+
 </div>
 
+<div id="maincontent">
+	
+<h2><p>Welcome to the Adaptive Map Textbook for Engineering Statics</p>
+<p><a href="troubleshoot.html">Troubleshooting</a></p>
+<p style="color:red">NOTE: Testing is currently on-going, and the tool may not always be 100% functional.</p>
+</h2>
+
+
+<p>The idea behind this tool is to organize the information in a textbook the same way people organize knowledge in their heads, in a network of connected concepts.  By matching how the information is presented with the way people organize their knowledge, this tool should help users better retain the information that they learn.</p>
+
+<p>Navigating this textbook should feel less like navigating a traditional textbook, and more like plotting your course on a map.  To get from what you already know to understanding some concept you want to learn, you just need to follow the links in the map which will guide you through all the concepts you need to know that lead up to the concept you want to learn.  </p>
+
+<h4>Using the Tool:</h4>
+
+<p>The user interface of the adaptive map tool organizes the textbook content into three visual levels.  To navigate around in the level, you can pan by clicking on the nodes (which centers the screen on the selected node) or by clicking in an empty space, holding the mouse button and dragging to move the screen around manually.  To zoom in or out, use the scroll wheel on your mouse, or if you do not have a scroll wheel, use the “+” and “-“ buttons on the screen.</p>
+
+<p>The three views are from broadest to most detailed are…</p>
+
+<ol>
+<li>Overview – Where you will get a visual overview of all the information in the textbook, simplified into the major clusters of ideas (think chapters in a traditional textbook) with visual connections.  Each of the cluster nodes represents a number of highly related ideas in the book.</li>
+<li>Cluster View – If you zoom into one of the cluster nodes in the overview, you will transition to the cluster view.  In this view, the single cluster node will expand into a number of idea nodes (the cluster node represents all of these nodes) and the relationships between the idea nodes will appear.  Notice that all of the idea nodes match the cluster and the background color shifts to match the cluster you are in.  If you click on one of these idea nodes you will focus on it.  This will center the view on the selected idea node and will add any idea nodes from other clusters that are directly related to the idea selected.  If you click on one of these external idea nodes you will shift to another cluster.</li>
+<li>Page View – Double clicking on any of the idea nodes will open a webpage on the selected idea.  This is the page view.  In the page view you will find text and images explaining the idea and you will usually find worked problems.</li>
+</ol>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Authors: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> and Dr. Robert Scott Pierce have liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
 
 </body>
-<script type="javascript/text">
-	document.getElementById('iframe')style.visibility='visible';
-</script>
+
 </html>

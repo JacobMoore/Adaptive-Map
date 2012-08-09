@@ -267,16 +267,18 @@ public class XmlParser {
 
 	/**
 	 * Goes through the xml file and creates all nodes.
-	 * @return a nodeMap with th created node data.
+	 * @param map 
+	 * 		The nodeMap for these nodes.
+	 * @param fontSize 
+	 * 		The size of the node's font.
 	 */
-	public static NodeMap parseNodeInformation() {
+	public static void parseNodeInformation(NodeMap map, int fontSize) {
 		NodeList nodeList = getListOfAll(Tag.NODE);
 		if (nodeList == null) {
 			System.err.println("Could not import node list");
-			return new NodeMap();
+			return;
 		}
 		//List<Node> parsedNodeList = new ArrayList<Node>(nodeList.getLength());
-		NodeMap parsedNodeMap = new NodeMap();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
 			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter;
@@ -312,16 +314,16 @@ public class XmlParser {
 					default :
 				}
 			}
-			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter);
+			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter, 
+					map.getChapterType(nodeChapter).getChapterColor(), fontSize);
 			if ( nodeContentUrl.startsWith("http") )
 				nodeContentUrl.replaceAll("&amp;", "&");
 			
 			newNode.setNodeContentUrl(nodeContentUrl);
 			if (x != -99999 && y != -99999)
 				newNode.setFixedNodePosition(x, y);
-			parsedNodeMap.addNode(nodeChapter, newNode);
+			map.addNode(nodeChapter, newNode);
 		}
-		return parsedNodeMap;
 	}
 
 	/**

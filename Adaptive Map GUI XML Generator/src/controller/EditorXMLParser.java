@@ -316,7 +316,7 @@ public class EditorXMLParser {
 				output.write("\t\t<title>" + n.nodeTitle + "</title>\n");
 				output.write("\t\t<description>" + n.nodeDescription + "</description>\n");
 				output.write("\t\t<chapter>" + n.nodeChapter + "</chapter>\n");
-				output.write("\t\t<page>" + n.nodeWebpage + "</page>\n");
+				output.write("\t\t<page>" + n.nodeWebpage.replace("&", "&amp;") + "</page>\n");
 				for ( Link l : n.linkList )
 					output.write("\t\t<link type=\"" + l.linkType + "\">" + l.linkedNode
 							+ "</link>\n");
@@ -369,6 +369,7 @@ public class EditorXMLParser {
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();
+					Main.showXMLError();
 				}
 				return null;
 			}

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Moment of a Force about an Axis</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Moment of a Force about an Axis</h1>
+<hr/>
+
+<p>It is sometimes useful to be able to calculate the moment a force exerts about a certain set axis, an axis that you choose for some specific reason.  An example would be a force on the door shown in the diagram below.  If we took the moment about a point (say one of the hinges) we would find the axis of rotation of the moment does not line up with the axis the door actually rotates around.  This is because the hinges only allow the door to rotate in a certain way; the door is constrained by the hinges.  It would be useful in this case to determine the moment about the axis the door can rotate about.</p>
+
+<div class="piccenter">
+<img src="momentaboutanaxispics/dig1.png" width="459" height="430" alt="A force causing a moment with an axis of rotation that does not line up with the axis of rotation of the door."/>
+<div class="caption">
+This diagram shows a force (<b>F</b>) with components in the y and z directions.  If we calculate the moment about point P on the top door hinge we can see that the moment (<b>M</b>) has an axis of rotation that does not match the axis of the hinges.
+</div>
+</div>
+
+<p>To find the moment about a specific axis you can following two steps.</p>
+
+<div class="picright" style="width:450px">
+<img src="momentaboutanaxispics/dig2.png" width="450" height="434" alt="The moment of a force about a specified axis."/>
+<div class="caption">
+This diagram shows all the vectors involved in calculating the moment of force F about the axis shown as a dashed black line.
+</div>
+</div>
+
+<ol>
+<li>First solve for the moment the force exerts about some point on the desired axis of rotation.</li>
+
+<li>Next we will project this moment vector onto the axis of rotation.  This is equivalent to finding the component of the moment vector in the direction of the axis of rotation.  To project the vector onto the axis of rotation, we will use the dot product.  Specifically, the moment about the given axis is equal to the moment about the point dot a unit vector along the desired axis.</li>
+</ol>
+
+<p>If we reduce this all to a single equation we find the following formula.</p>
+
+\[ \mathrm{
+	M_I= \mathbf{u} \bullet (\mathbf{r} \times \mathbf{F})
+}\]
+
+<p>Where \( \mathrm{M_I} \) is the moment about the specified axis, <b>u</b> is a unit vector along the specified axis, <b>r</b> is the distance vector from a point along the desired axis to a point on the line of action of the force vector, and <b>F</b> is the force vector.</p>
+
+<p>The formula above will result in a single number, not a vector.  This number indicates the magnitude of the moment vector in the direction of the unit vector <b>u</b>.  If you end up with a negative value this means that the moment vector points in the opposite direction of <b>u</b>.</p>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find the moment force <b>F</b> exerts about the axis marked by the dashed black line.  (Note:  everything lies in the XY plane except for the force vector.)</p>
+
+<div class="piccenter">
+<img src="momentaboutanaxispics/probdig1.png" width="630" height="470" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M_I= \mathbf{u} \bullet (\mathbf{r} \times \mathbf{F})
+			}\]
+		</td>
+		<td>
+		To find the moment about the specified axis we will be using the formula to the left.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="momentaboutanaxispics/P1_1.png" width="500" height="365" alt="u and r labeled"/>
+			</div>
+			\[ \mathrm{
+				\mathbf{u} = \left[-\frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}, 0\right] = [-.707, .707, 0]
+			}\]
+			\[ \mathrm{
+				\mathbf{r} = \left[5*\frac{\sqrt{2}}{2}, 5*\frac{\sqrt{2}}{2}, 0\right] = [3.536, 3.536, 0]
+			}\]
+		</td>
+		<td>
+		Before we can use the formula above, we need to find both <b>u</b> and <b>r</b>.  The diagram to the left shows two possible <b>u</b> and <b>r</b> vectors.  Remember <b>u</b> is a unit vector along the desired axis (it has a magnitude of 1) and <b>r</b> is a vector from the desired axis to the line of action of the force vector.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M_I= [-.707, .707, 0] \bullet ([3.536, 3.536, 0] \times [5, -10, 10])
+			}\]
+			\[ \mathrm{
+				M_I= [-.707, .707, 0] \bullet [35.36, -35.36, -53.04]
+			}\]
+			\[ \mathrm{
+				M_I= -49.999 \text{ ft lbs}
+			}\]
+		</td>
+		<td>
+		Now that we have values for <b>u</b> and <b>r</b>, we can solve for the moment about the desired axis \( \mathrm{M_I} \).  We simply plug the values into the equation we had earlier and solve the equation for \( \mathrm{M_I} \).<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="momentaboutanaxispics/P1_2.png" width="500" height="374" alt="Mi labeled on the diagram"/>
+			</div>
+		</td>
+		<td>
+		The negative value for \( \mathrm{M_I} \) indicates that the moment vector points in the opposite direction from the unit vector that we chose (<b>u</b>).  To the left, the moment is shown on the original diagram of the part.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Constraints</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Constraints</h1>
+<hr/>
+
+<p>Constraints are forces that prevent a body from moving in a particular direction or rotating around a certain axis.  An unconstrained body can move in any direction and rotate around any axis.  A constrained body has some forces (usually a normal force exerted by another body) that are holding the body in place, preventing it from moving or rotating in a certain way.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig1.jpg" width="600" height="437" alt="Unconstrained and Constrainted Box"/>
+<div class="caption">
+An unconstrained box (A) and a constrained box (B).
+</div>
+</div>
+
+<p>The diagram above shows a box that is unconstrained (A) and a box that has been constrained by drilling a hole through the box and placing the box on a pole (B).  The unconstrained box can move in any direction and can rotate about any axis (indicated by the blue arrows).  The unconstrained box has six degrees of freedom and no constraints.  The constrained box on the other hand has only two degrees of freedom.  It can rotate around the pole and it can slide up and down the pole.  These motions are again indicated by the blue arrows.  The pole exerts normal forces on the box (indicated by the red arrows) which prevent the box from moving or rotating in the X or Y directions.  The box is constrained in these directions.</p>
+
+<p>There are several labels to indicate how constrained a body is.  Going form the least constrained to the most constrained, the labels are.</p>
+
+<p><b>Unconstrained:</b> The body has no forces that will prevent the body from being moved or rotated in any direction.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig2.jpg" width="400" height="177" alt="Unconstrained Body"/>
+<div class="caption">
+The above body has no forces acting on it and can be moved in the X and Y direction and can rotate about the Z axis.
+</div>
+</div>
+
+<div class="piccenter">
+<img src="constraintspics/dig3.jpg" width="400" height="191" alt="Unconstrained Body"/>
+<div class="caption">
+The above body has only a gravity force acting on it.  The gravity force will not prevent an external force from moving the body however.
+</div>
+</div>
+
+<p><b>Partially Constrained:</b> Some forces or moments are exerted on the body that will prevent the body from being moved or rotated some directions.  However, the body can still be moved freely in at least one direction or rotated freely about at least one axis.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig4.jpg" width="400" height="192" alt="Partially Constrained Body"/>
+<div class="caption">
+The above body resting on two rollers is partially constrained.  The normal forces from the rollers that act on the body prevent it from moving in the Y direction and from rotating (so long as the box is not lifted off the rollers) but the body can freely move in the X direction.
+</div>
+</div>
+
+<div class="piccenter">
+<img src="constraintspics/dig5.jpg" width="400" height="187" alt="Partially Constrained Body"/>
+<div class="caption">
+The above body anchored by a pin joint is partially constrained.  The normal forces exerted by the pin joint on the body prevent the body from moving in the X and Y directions, but the body is free to rotate about the pin joint.
+</div>
+</div>
+
+<p><b>Fully Constrained:</b> The body cannot move or rotate in any direction because of the constraint forces exerted on the body.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig6.jpg" width="400" height="179" alt="Fully Constrained Body"/>
+<div class="caption">
+The above body anchored by a pin joint and a roller is fully constrained.  The three forces exerted on the body prevent it from moving or rotating in any way.
+</div>
+</div>
+
+<div class="piccenter">
+<img src="constraintspics/dig7.jpg" width="400" height="201" alt="Fully Constrained Body"/>
+<div class="caption">
+The above body welded to an anchored and rigid beam is fully constrained.  The beam exerts forces in the X and Y direction which prevent it from moving and the beam also exerts a moment which prevents the body from rotating.
+</div>
+</div>
+
+<p><b>Overconstrained:</b> A body is overconstrained if there are redundant constraint forces in any direction of motion or in any axis of rotation.  If you can eliminate a force without increasing the degrees of freedom of the body, that force is overconstraining the body.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig8.jpg" width="400" height="155" alt="Overconstrained Body"/>
+<div class="caption">
+The above body is overconstrained against movement in the X direction.  The force F2X could be removed and the body would still be fully constrained.
+</div>
+</div>
+
+<p>Note that a system can be overconstrained in one direction but still move freely in another direction.  An overconstrained system is not necessarily fully constrained.</p>
+
+<div class="piccenter">
+<img src="constraintspics/dig9.jpg" width="400" height="221" alt="Overconstrained Body"/>
+<div class="caption">
+The above body is overconstrained against movement in the Y direction and against rotation.  Any one of the three forces could be removed and the body would still be constrained in the Y direction and against rotation.  There are no forces preventing body from moving in the X direction though so the body is also partially constrained.
+</div>
+</div>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

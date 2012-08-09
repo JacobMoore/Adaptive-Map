@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Equivalent Point Load (Distributed Forces)</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Equivalent Point Load (Distributed Forces)</h1>
+<hr/>
+
+<p>An equivalent point load is a <b>single point force</b> that will have the <b>same effect</b> on a body as the original loading condition, which is usually either 1) several point forces or 2) a distributed load.  The equivalent point load should always cause the same linear acceleration and angular acceleration as the original force or forces it is equivalent to.  Finding the equivalent point load for a number of other point forces or a distributed force often helps simplify the analysis of a system.  On this page we discuss the process of finding the equivalent point load for distributed forces.</p>
+
+<div class="piccenter">
+<table width="800px" align="center">
+<tr>
+<td width="400px">
+<img src="equivalentpointload_dfpics/dig1.png" width="350" height="216" alt="Equivalent Point Load of Multiple Point Loads"/>
+<div class="caption">
+F3 will have the same effect on the block as F1 and F2 together.  F3 is the equivalent point load for the system with F1 and F2.</br>
+</div>
+</td>
+<td width="400px">
+<img src="equivalentpointload_dfpics/dig2.png" width="350" height="225" alt="Equivalent Point Load of a Distributed Load"/>
+<div class="caption">
+F3 will have the same effect on the block as the distributed force F1.  F3 is the equivalent point load for the distributed force F1.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<h3>Finding the Equivalent Point Load for Distributed Forces</h3>
+
+<p>The method for finding the equivalent point load for a distributed force builds upon the process used for finding the equivalent point load for multiple parallel point forces.  A distributed force can just be thought of as an infinite number of point forces each with a very small magnitude.  To find the equivalent point load for a distributed force, we will modify the equations we used for parallel point forces so that they will use integration rather than summation.</p>
+
+<h4>2-D Distributed Forces with a Single Parallel Direction</h4>
+
+<p>We will start with the simplest example, a 2-D problem where the point of application can be described by a single number (x) and the direction of the distributed force is a single uniform direction.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/dig3.png" width="378" height="403" alt="The equivalent point load of a distributed load"/>
+<div class="caption">
+An example of a distributed load.  The magnitude of the force is given as a function of x.</br>
+</div>
+</div>
+
+<p><b>Magnitude:</b> To find the magnitude of the equivalent point load for a collection of parallel point loads we simply added up all the magnitudes.  To find the magnitude for a distributed force, we integrate the force function along the entire length that the force is exerted over.  The formula below is the formula for the magnitude of the equivalent point load of a 2-D distributed force with a single uniform direction.</p>
+
+\[ \mathrm{
+	F_{eq} = \int_{min}^{max} F(x) * d(x)
+}\]
+
+<p>where min is the minimum value of x (where the force begins) and X is the maximum value of x (where the force ends).</p>
+
+<p><b>Direction:</b> The direction of the equivalent point load is the same as the direction of the distributed force in this case since the distributed force has a single uniform direction.</p>
+
+<p><b>Point of Application:</b> To find the point of application for our equivalent point load, we modify the point of application formula for parallel point forces.  Similar the point forces formula, this equation ensures that the equivalent point load exerts the same moment on the body that the distributed force does.</p>
+
+\[ \mathrm{
+	x_{eq} = \frac{\int_{min}^{max} F(x) * x * d(x)}{F_{eq}}
+}\]
+
+<p>The formula for \( \mathrm{x_{eq}} \) shown above is also the formula for the x coordinate of the centroid of the area under the function F(x).  This means that all the tricks that can be used to find the centroid of an area (mainly using composite parts) can be used to find the point of application of the equivalent point load for a situation like the one above.</p>
+
+<h5>3-D Distributed Forces with a Single Parallel Direction</h5>
+
+<p>Next we will increase the complexity of the problem by adding another dimension.  Now instead of assuming we have a force distributed over a line, we have a force distributed over an area.  For this new distributed force, the magnitude will depend upon two dimensions F (x, y).  A force distributed over an area might look like the example below.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/dig4.png" width="566" height="363" alt="A force distributed over an area"/>
+<div class="caption">
+In this example of a force distributed over an area, the force is described by the function F (x, y) = (5x + 10y) \( \mathrm{\frac{N}{m^2}} \).  The area of interest (shown in blue) is a circular area one meter in diameter.  This problem represents the force on a circular hatch covered in an uneven layer of sand.</br>
+</div>
+</div>
+
+<p><b>Magnitude:</b> The magnitude of the equivalent point load is again found through integration.  For a 3-D problem like this though we are integrating for the volume under the surface F (x ,y) with respect to the area.</p>
+
+\[ \mathrm{
+	F_{eq} = \int F(x, y) * dA
+}\]
+
+<p>To evaluate this integral, we will have to perform a double integral evaluating the integral with respect to one variable at a time (integrating with respect to x and then y or vice versa).  Below is the formula integrating the function F(x, y) with respect to x and then with respect to y.</p>
+
+\[ \mathrm{
+	F_{eq} = \int F(x, y) dA = \int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}} F(x, y) * d(x)\right] d(y)
+}\]
+
+<p>The variables "ymin" and "ymax" represent the y extents of the area you are looking at (the min and max y values for the area of the circular porthole in the example).  The variables "xmin at y" and "xmax at y" represent the minimum and maximum x value of the area for each value of y.  These will be functions, giving the maximum or minimum value of x in terms of y.  Also remember that when integrating with respect to one variable (such as x) all other variables (such as y) should be treated as constants.</p>
+
+<p><b>Direction:</b> The direction is once again simple, the distributed force has a single uniform direction the equivalent point load will have that same direction.</p>
+
+<p><b>Point of Application:</b>  Now that we have an area, we need to solve for two coordinates for the point of application of the equivalent point load.  In the example above, we need to solve for an x and a y coordinate.  We use the following formulas to solve for the x and y coordinates of the equivalent point load.  Like in the 2-D case, we are ensuring that the distributed force and the equivalent point load exert the same moment on the body.</p>
+
+\[ \mathrm{
+	x_{eq} = \frac{\int\left( x *F(x, y) * dA\right)}{F_{eq}}
+}\]
+
+\[ \mathrm{
+	y_{eq} = \frac{\int\left( y *F(x, y) * dA\right)}{F_{eq}}
+}\]
+
+<p>Like with the magnitude, we need to transform the integrals to double integrals to solve the equations.</p>
+
+\[ \mathrm{
+	x_{eq} = \frac{\int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}}\left( x * F(x, y) * d(x)\right)\right] d(y)}{F_{eq}}
+}\]
+
+\[ \mathrm{
+	y_{eq} = \frac{\int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}}\left( y * F(x, y) * d(x)\right)\right] d(y)}{F_{eq}}
+}\]
+
+<h5>Distributed Forces without a Single Parallel Direction</h5>
+
+<p>To model systems with non-parallel distributed forces, it is necessary to break the force down into its components.  Below is an example of a non-parallel distributed force acting on a curved surface.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/dig5.png" width="634" height="255" alt="A force distributed over an area"/>
+<div class="caption">
+This image shows the pressure of water pressing up against a cross section of a dam that is ten meters wide and has a quarter circle cross section.</br>
+</div>
+</div>
+
+<p>If we think of the distributed force as a large collection of point forces, each one of those forces would have a horizontal component and a vertical component.  To analyze non-parallel distributed forces, we need to write out an equation for the magnitudes of each component of these vectors.  Below the horizontal and vertical components of the above example are separated.  Each component of the distributed force is then a set of parallel vectors.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/dig6.png" width="567" height="442" alt="The component functions of a distributed force"/>
+<div class="caption">
+The component functions of a distributed force.</br>
+</div>
+</div>
+
+<p>Once we have the functions for the magnitude of each component of the force, we can deal with each component separately.  In our example, which is a 2-D problem, we have two distributed forces each with a single uniform direction.  Each one of these can be analyzed as a parallel distributed force and an equivalent point load can be found for each.  After an equivalent point load is found for each component, an equivalent point load can be found for the collection of point forces.  Note that the process of the functions of the components and then integrating these components is not a trivial task and may require computer tools to solve all but the simplest of problems.</p>
+
+<p>3-D distributed non-parallel forces are similar in nature.  They can be broken down into 3 separate 3-D parallel distributed forces.  Each one of components can be analyzed as a separate 3-D parallel distributed force using the processes above and will have an equivalent point load.  These point loads can be combined find the overall equivalent point load.</p>
+
+<hr/>
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4>
+
+<p>Find the equivalent point load for the distributed force shown below.  Be sure to report the magnitude, direction and point of application of the equivalent point load.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/probdig1.jpg" width="500" height="398" alt="The Problem Diagram"/>
+</div>
+
+<br/><br/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				F_{eq} = \int_{min}^{max} F(x) * d(x)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \int_0^5  (x^2 - 10x +25) d(x)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \bigg|_0^5  \frac{x^3}{3} - \frac{10x^2}{2} +25x
+			}\]
+			\[ \mathrm{
+				F_{eq} =  \left(\frac{5^3}{3} - \frac{10*5^2}{2} +25*5\right) - \left(\frac{0^3}{3} - \frac{10*0^2}{2} +25*0\right) = 41.67 \text{ N}
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		The first step is to solve for the magnitude of the equivalent point load \( \mathrm{(F_{eq})} \).  To do this we are integrating the function F(x) from the start to the end of the beam (0 to 5 meters).  This is a definite integral, which means that there is no constant of integration (C)<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				x_{eq} = \frac{\int_{min}^{max} x * F(x) * d(x)}{F_{eq}}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_{0}^{5} (x^3 - 10x^2 +25x) * d(x)}{41.67}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{ \bigg|_0^5 \frac{x^4}{4} - \frac{10x^3}{3} + \frac{25x^2}{2}}{41.67}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{ ( \frac{5^4}{4} - \frac{10*5^3}{3} + \frac{25*5^2}{2} ) - ( \frac{0^4}{4} - \frac{10*0^3}{3} + \frac{25*0^2}{2} )} {41.67} = 1.25 \text{ m}
+			}\]
+		</td>
+		<td>
+		Next we solve for the point of application of the equivalent point load \( \mathrm{(x_{eq})} \).  To do this, we are integrating x * F(x) over the length of the beam and then dividing by the magnitude of the equivalent point load.  This ensures that the moment exerted by the equivalent point load is the same as the moment exerted by the distributed force.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentpointload_dfpics/P1_1.jpg" width="300" height="303" alt="Answer"/>
+			</div>
+		</td>
+		<td>
+		After we have calculated the magnitude and point of application (and knowing the direction is -Y) we can draw out a diagram of \( \mathrm{F_{eq}} \) acting on the beam.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+
+<h4>Worked Problem 2:</h4>
+
+<p>The wind has piled up sand into a corner on a building.  The building supervisor is worried about the weight of the sand pushing against the roof of the basement below.  The function describing force of the sand pushing down on the surface is given below.  Find the equivalent point load for the distributed force of the sand.  Be sure to report the magnitude, direction and point of application of the equivalent point load.</p>
+
+<div class="piccenter">
+<img src="equivalentpointload_dfpics/probdig2.png" width="628" height="368" alt="The Problem Diagram"/>
+</div>
+
+<br/><br/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				F_{eq} = \int F(x, y) dA = \int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}} F(x, y) * d(x)\right] d(y)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}} (30 - 5x - 10y) * d(x)\right] d(y)
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		The first step in solving for any equivalent point load is to solve for the magnitude of the equivalent point load.  In this case, we have a force distributed over an area with the force as function of both x and y.  We use the formula to the left to solve for the magnitude.  Knowing the formula, we can plug values into the formula.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentpointload_dfpics/P2_1.jpg" width="500" height="225" alt="xmin at y and xmax at y"/>
+			</div>
+			<br/><br/>
+			\[ \mathrm{
+				F_{eq} = \int_0^3 \left[\int_0^{x=6-2y} (30 - 5x - 10y) * d(x)\right] d(y)
+			}\]
+		</td>
+		<td>
+		Next we need to solve for "ymin", "ymax", "xmin at y" and "xmax at y".  The values for "ymin" and "ymax" will each be a single number indicating the y extents of the area the force is applied to.  The values for "xmin and y" and "xmax at y" will be functions outlining the area of application of the force.  After we find these values we plug them into our formula.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				F_{eq} = \int_0^3 \left[\bigg|_0^{x=6-2y} (30x - \frac{5}{2}x^2 - 10xy)\right] d(y)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \int_0^3 \left[\left[(30(6-2y) - \frac{5}{2}(6-2y)^2 - 10(6-2y)y)\right] - \left[ 0 \right]\right] d(y)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \int_0^3 \left[ 10y^2 - 60y + 90 \right] d(y)
+			}\]
+			\[ \mathrm{
+				F_{eq} = \bigg|_0^3 \frac{10}{3}y^3 - 30y^2 + 90y
+			}\]
+			\[ \mathrm{
+				F_{eq} = \left[\frac{10}{3}(3)^3 - 30(3)^2 + 90(3)\right] - \left[ 0 \right]
+			}\]
+			\[ \mathrm{
+				F_{eq} = 90 \text{ lbs}
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		Next we evaluate the integrals and solve for \( \mathrm{(F_{eq})} \).  Remember when we are intergrating with respect to x, we assume that y is simply a constant.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				x_{eq} = \frac{\int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}}\left( x * F(x, y) * d(x)\right)\right] d(y)}{F_{eq}}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_0^3 \left[\int_0^{6-2y}\left( x * (30 - 5x - 10y) * d(x)\right)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_0^3 \left[\int_0^{6-2y}(30x - 5x^2 - 10yx) * d(x)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_0^3 \left[\bigg|_0^{x=6-2y} \left( 15x^2 - \frac{5}{3}x^3 - 5yx^2 \right)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_0^3 \left[ \left( 15(6-2y)^2 - \frac{5}{3}(6-2y)^3 - 5y(6-2y)^2 \right)-(0)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{\int_0^3 \left[ -\frac{20}{3}y^3 + 60y^2 -180y +180 \right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{ \bigg|_0^3 \left[ -\frac{5}{3}y^4 + 20y^3 -90y^2 +180y \right]}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = \frac{ \left(-\frac{5}{3}(3)^4 + 20(3)^3 -90(3)^2 +180(3) \right)-(0)}{90}
+			}\]
+			\[ \mathrm{
+				x_{eq} = 1.5 \text{ ft}
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		Now that we have \( \mathrm{(F_{eq})} \), we can solve for the location of the point of application.  We will start with the x coordinate (\( \mathrm{x_{eq}} \)).  We've already solved for most of the values we need to plug in with the prior calculations, so the formula basically just needs to be solved.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				y_{eq} = \frac{\int_{ymin}^{ymax} \left[\int_{\text{xmin at y}}^{\text{xmax at y}}\left( y * F(x, y) * d(x)\right)\right] d(y)}{F_{eq}}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{\int_0^3 \left[\int_0^{6-2y}\left( y * (30 - 5x - 10y) * d(x)\right)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{\int_0^3 \left[\int_0^{6-2y}\left( 30y - 5xy - 10y^2 \right) * d(x)\right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{\int_0^3 \left[left[\bigg|_0^{x=6-2y}\left( 30yx - \frac{5}{2}yx^2 - 10y^2x \right) \right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{\int_0^3 \left[left[ \left( 30y(6-2y) - \frac{5}{2}y(6-2y)^2 - 10y^2(6-2y) \right)-(0) \right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{\int_0^3 \left[ 10y^3 -60y^2 + 90y \right] d(y)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{ \bigg|_0^3 \left[ \frac{5}{2}y^4 -20y^3 + 45y^2 \right]}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = \frac{ \left( \frac{5}{2}(3)^4 -20(3)^3 + 45(3)^2 \right) - (0)}{90}
+			}\]
+			\[ \mathrm{
+				y_{eq} = .75 \text{ ft}
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		Now we repeat the process for the y coordinate (\( \mathrm{y_{eq}} \)).<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentpointload_dfpics/P2_2.png" width="400" height="273" alt="The equivalent point load"/>
+			</div>
+			<br/><br/>
+		</td>
+		<td>
+		Now that we have solved for the magnitude and the point of application of the equivalent point load, we can draw a diagram showing the magnitude, direction and point of application of the equivalent point load for the sand accumulated in the corner.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

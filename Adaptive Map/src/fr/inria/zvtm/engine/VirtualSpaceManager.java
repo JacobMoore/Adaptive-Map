@@ -23,8 +23,6 @@
 
 package fr.inria.zvtm.engine;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
@@ -37,16 +35,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-import fr.inria.zvtm.animation.Animation;
 import fr.inria.zvtm.animation.AnimationManager;
-import fr.inria.zvtm.animation.EndAction;
-import fr.inria.zvtm.animation.interpolation.SlowInSlowOutInterpolator;
-import fr.inria.zvtm.engine.Location;
 import fr.inria.zvtm.engine.Portal;
 import fr.inria.zvtm.engine.RepaintListener;
-import fr.inria.zvtm.glyphs.CGlyph;
-import fr.inria.zvtm.lens.Lens;
-
 import fr.inria.zvtm.glyphs.Glyph;
 import fr.inria.zvtm.glyphs.VText;
 

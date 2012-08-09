@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Solving Systems of Equations with Matrices</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Solving Systems of Equations with Matrices</h1>
+<hr/>
+
+<p>Setting up the equations of static equilibrium for a problem often leads to many equations and many unknowns.  Solving for all of the unknowns by hand can be complicated and time consuming.  Converting a large system of equations into a single matrix equation and then solving the matrix equation for the unknowns often saves time and is easier to check for errors.</p>
+
+<p>In order to solve for all the unknowns algebraically the number of independent equations must be greater than or equal to the number of unknowns.  In solving systems of equations with matrices, the number of equations must be equal to the number of unknowns.   The method of solving systems of equations with matrices is also further limited to sets of linear equations.  This method cannot be used to solve sets of non-linear equations.</p>
+
+<div class="picright" style="width:254px">
+<img src="matrixequationpics/dig1.png" width="254" height="422" alt="Converting a system of equations to matrix form"/>
+<div class="caption">
+Converting a system of equations to matrix form
+</div>
+</div>
+
+<p>The first step in solving systems of equations with matrices is to put the system of equations into matrix form.  We will start with a generic set of equations shown to the right (part 1 of the diagram).  X, Y and Z are the three unknowns we are solving for, the lowercase letters represent constants that are known.</p>
+
+<p>The first step is to arrange the equations so that the known values are on the left and the unknowns are on the right.   It is also helpful to rearrange the equations so that the unknowns are listed in the same order in each of the equations.  The rearranged equations are shown in part 2 of the diagram to the right.</p>
+
+<p>After rearranging the equations, we can more easily convert them to matrix form.  The matrix form of the system of equations is shown in part 3 of the figure to the right.  To write a system of equations in matrix form, follow the procedure below.</p>
+
+<p>First, put the knowns on the left hand side of the equations into an N x 1 vector, were N is the number of equations.  We will call this the <b>B</b> vector.</p>
+
+<p>The left hand side of the equation will consist of an N x N matrix times an N x 1 vector.</p>
+
+<p>The N x 1 vector is the all the unknowns being solved for in the order that they are listed in your system of equations.</p>
+
+<div class="picleft" style="width:254px">
+<img src="matrixequationpics/dig2.png" width="219" height="296" alt="Solving the matrix equation for the unknowns"/>
+<div class="caption">
+Solving the matrix equation for the unknowns
+</div>
+</div>
+
+<p>The N x N matrix, which we will call the <b>A</b> matrix, contains all the coefficients for the unknowns.  Each row represents one equation from your system of equations, and each column corresponds to a specific unknown.  To write the first row of the matrix, use the first equation from your system of equations.  Write out the coefficients for each unknown in the order that they are listed for the M x 1 vector.  If a certain unknown does not appear in the equation, list the coefficient as zero.  Repeat with the second equation for the second row of the matrix, the third equation for the third row of the matrix and so on.</p>
+
+<p>Now that the system of equations is in matrix form, we can solve for the unknowns.  To solve for the unknowns (X, Y and Z), we simply need to "divide" both sides by matrix <b>A</b>.  Multiplying both sides of the equation by the inverse of <b>A</b> leaves us with <b>A</b> inverse time <b>B</b> on the left side of the equation, and just the unknowns on the right side of the equations.  Therefore, multiplying <b>A</b> inverse times <b>B</b> gives a vector of all the unknowns we are trying to solve for.</p>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3><br/>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Solve for all unknowns in the following system of equations.</p>
+
+<div class="piccenter">
+<img src="matrixequationpics/prob1dig.png" width="328" height="443" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixequationpics/P1_1.png" width="183" height="106" alt="Rearrange the equations"/>
+		</td>
+		<td>
+		The first step is to rearrange the equations so that all the knowns are on the left side of the equation, all unknowns are on the right side of the equation and all unknowns are listed in the same order for all equations.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixequationpics/P1_2.png" width="263" height="78" alt="Put the equations in matrix form"/>
+		</td>
+		<td>
+		Next, the system of equations is put into matrix form with the knowns in matrix <b>B</b> and the coefficient's for the unknowns in matrix <b>A</b>.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixequationpics/P1_3.png" width="345" height="80" alt="Solve for the vector of unknowns"/>
+		</td>
+		<td>
+		We multiply both sides of the matrix equation by <b>A</b> inverse in order to solve for the vector of unknowns.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="matrixequationpics/P1_4.png" width="133" height="106" alt="The unknowns"/>
+		</td>
+		<td>
+		Pulling the individual scalar values back out from the vector and adding units, we have the answers.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

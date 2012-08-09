@@ -151,6 +151,12 @@ public class Main {
 		mainFrame.add(splitPane);
 		mainFrame.pack();
 	}
+	
+	public static void showXMLError()
+	{
+		JOptionPane.showMessageDialog(mainFrame, "Error in the XML file.", "ERROR", JOptionPane.ERROR_MESSAGE);
+		mainFrame.dispose();
+	}
 
 	/**
 	 * Creates the main frame.

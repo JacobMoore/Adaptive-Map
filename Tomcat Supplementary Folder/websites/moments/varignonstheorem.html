@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Varignon's Theorem</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Varignon's Theorem</h1>
+<hr/>
+
+<p>Varignon's Theorem, also called the "principle of moments", states that the moment exerted about any point or axis by the resultant of a number of <b>concurrent forces</b> will be equal to the sum of the moments exerted by the each of the original forces individually.</p>
+
+<div class="piccenter">
+<img src="varignonstheorempics/dig1.png" width="518" height="425" alt="Varignon's Theorum"/>
+</div>
+
+\[ \mathrm{
+	\mathbf{M_{total}} = \mathbf{M_{F1}} + \mathbf{M_{F1}} + \mathbf{M_{F1}} + \dots
+}\]
+<p style="text-align:center">or</p>
+\[ \mathrm{
+	\mathbf{r} \times \mathbf{F_{total}} = \mathbf{r} \times \mathbf{F_1} + \mathbf{r} \times \mathbf{F_2} + \mathbf{r} \times \mathbf{F_3} + \dots
+}\]
+
+<p>This theorem can help simplify the process of finding the moment exerted on a body in two possible ways.</p>
+
+<ol>
+<li>If you have a number of concurrent forces acting on a body, you can first find the resultant of all of these forces and then calculate the moment this one force exerts on the body about the desired point or axis.</li>
+<br/>
+<li>If you have a single force, you can break this down into x, y and z components and calculate the moments exerted by each of the components individually about the desired point or axis.  If you add all of these moment vectors together, you will get the moment exerted by the original force.</li>
+</ol>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find the moment exerted by these forces about point P.</p>
+
+<div class="piccenter">
+<img src="varignonstheorempics/probdig1.png" width="644" height="355" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{F_{total}} = \mathbf{F_1} + \mathbf{F_2}
+			}\]
+			\[ \mathrm{
+				\mathbf{F_1} = [60 cos(70), 60 sin(70)]
+			}\]
+			\[ \mathrm{
+				\mathbf{F_2} = [20 , 0]
+			}\]
+			\[ \mathrm{
+				\mathbf{F_{total}} = [60 cos(70) + 20, 60 sin(70)] = [40.5, 56.4] N
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		Using Varignon's Theorem, we know that we can add these two concurrent forces into a single resultant  force and the moment exerted by the resultant about point P will be equal to the sum of the moments exerted by the forces individually.  To add the force vectors, we first put them in component form and then add the components.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{r} = [20, -2.5] cm
+			}\]
+			\[ \mathrm{
+				\mathbf{r} = [.2, -.025] m
+			}\]
+			<br/><br/>
+		</td>
+		<td>
+		Next we determine <b>r</b>, the vector from point P to the point of application of the forces.  I have converted the vector to meters, since a Newton meter is the standard metric unit for a moment.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				\mathbf{M}_P = \mathbf{r} \times \mathbf{F_{total}}
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_P = [.2, -.025] m \times [40.5, 56.4] N
+			}\]
+			\[ \mathrm{
+				\mathbf{M}_P = [0, 0, 12.3] Nm
+			}\]
+			<img src="varignonstheorempics/P1_1.png" width="400" height="202" alt="The moment about point P"/>
+			<br/><br/>
+		</td>
+		<td>
+		Now to find the moment vector about point P, we simply calculate <b>r</b> cross <b>F</b>.  Once we have the moment vector we draw on the original diagram.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<h4>Worked Problem 2:</h4><br/>
+
+<p>Find the moment force F exerts about point P.</p>
+
+<div class="piccenter">
+<img src="varignonstheorempics/probdig2.png" width="552" height="323" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<img src="varignonstheorempics/P2_1.png" width="500" height="233" alt="The components of force F"/>
+			<br/><br/>
+			<br/><br/>
+		</td>
+		<td>
+		Varignon's Theorem tells us that if we break the vector down into components, the sum of the moments exerted by all of the components will be equal to the moment exerted by the original force.  To solve this problem without using a cross product, we will first break the vector down into its components.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M_{FX} = -(F_X * 2.5) \text{ Ncm} = -75 \text{ Ncm}
+			}\]
+			\[ \mathrm{
+				M_{FY} = F_Y * 20 \text{ Ncm} = 800 \text{ Ncm}
+			}\]
+			<br/><br/>
+			<br/><br/>
+		</td>
+		<td>
+		Since both of the forces are in the XY plane, we know the moment will be in the Z direction.  We multiply the magnitude of each component by the perpendicular distance between the point and the line of action of the force.  Using the right hand rule we know that counterclockwise is rotation gives us a positive moment and clockwise rotation gives us a negative moment.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			\[ \mathrm{
+				M_P = M_{FX} + M_{FY}
+			}\]
+			\[ \mathrm{
+				M_P = 725 \text{ Ncm} = 7.25 \text{ Nm}
+			}\]
+			<img src="varignonstheorempics/P2_2.png" width="400" height="245" alt="The moment about point P"/>
+			<br/><br/>
+			<br/><br/>
+		</td>
+		<td>
+		We then add up the moments to find the moment exerted by the original force.  We've put the moment back on the original diagram.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

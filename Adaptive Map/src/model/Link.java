@@ -90,6 +90,7 @@ public class Link
     private EndTriangle      endTriangle;
     private VRoundRect	 	 selectionRectangle;
     private boolean			 highlighted;
+    private boolean			 showLinkText;
     
     // Number of next link color, used to give all new links different colors
     //private static int 		 colorNum = 0;
@@ -105,8 +106,10 @@ public class Link
      *            the type of link connecting the two given nodes
      * @param aSize 
      * 			  the size of the arrowhead
+     * @param showText
+     * 			  if this link's text should be shown
      */
-    public Link(Node fromNode, Node toNode, String linkType, int aSize)
+    public Link(Node fromNode, Node toNode, String linkType, int aSize, boolean showText)
     {
         // Create link glyph
         super(
@@ -118,11 +121,12 @@ public class Link
             toNode.getCenterPoint().y);
         
         arrowSize = aSize;
+        showLinkText = showText;
 
         this.fromNode = fromNode;
         this.toNode = toNode;
         this.linkType = linkType;
-        if (AppCanvas.appletContext == null)
+        if (!Configuration.RUN_AS_APPLET)
         	return;
         else if (fromNode.virtualSpace.equals(toNode.virtualSpace))
             this.virtualSpace = fromNode.virtualSpace;
@@ -157,6 +161,9 @@ public class Link
         		5, 5, Color.LIGHT_GRAY, Color.black, 10, 10);
         selectionRectangle.setFillNum(0);
         selectionRectangle.setOwner(Link.class);
+        selectionRectangle.setType("LinkSelectionBox");
+        if (!showText)
+        	selectionRectangle.setVisible(false);
         virtualSpace.addGlyph(selectionRectangle);
         virtualSpace.above(selectionRectangle, this);
         
@@ -171,8 +178,8 @@ public class Link
     	if ( linkType.equals("STANDARD") )
     	{
         	float altitude = VirtualSpaceManager.INSTANCE.getActiveCamera().getAltitude();
-	    	float minHeight = Configuration.ZOOM_CHAPTER_HEIGHT;
-	    	float maxHeight = Configuration.ZOOM_OVERVIEW_MAX;
+	    	float minHeight = AppCanvas.ZOOM_CHAPTER_HEIGHT;
+	    	float maxHeight = AppCanvas.ZOOM_OVERVIEW_MAX;
 	    	float adjustedWeight = linkWeight / Math.abs((altitude - minHeight) / (maxHeight-minHeight));
 	    	if ( adjustedWeight > Configuration.MAX_LINK_WIDTH)
 	    		adjustedWeight = Configuration.MAX_LINK_WIDTH;
@@ -197,8 +204,11 @@ public class Link
      */
     public void showLinkInfo()
     {
-    	linkText.setText(getLinkProperty(linkType).description);
-        linkText.setVisible(true);
+        if (showLinkText)
+        {
+        	linkText.setText(getLinkProperty(linkType).description);
+        	linkText.setVisible(true);
+        }
     }
     
     /**
@@ -215,7 +225,8 @@ public class Link
     {
         super.setVisible(b);
         endTriangle.setVisible(b);
-        selectionRectangle.setVisible(b);
+        if (showLinkText)
+        	selectionRectangle.setVisible(b);
     }
     
     /**
@@ -228,7 +239,8 @@ public class Link
         super.setVisible(b);
         setTranslucencyValue(alpha);
         endTriangle.setVisible(b);
-        selectionRectangle.setVisible(b);
+        if (showLinkText)
+        	selectionRectangle.setVisible(b);
     }
 
 
@@ -260,8 +272,9 @@ public class Link
         
         // Center the text on the link
         Point linkCenter = getPointAlongLink(0.6f);
-        linkText.vx = linkCenter.x - (long)linkText.textContainerWidth/2;
-        linkText.vy = linkCenter.y;
+        linkText.vx = linkCenter.x - (long)linkText.getTextContainerWidth()/2;
+        //vtext origin is at bottom left of first line
+        linkText.vy = linkCenter.y + (long)linkText.getTextContainerHeight()/2 - linkText.getFont().getSize();
         virtualSpace.onTop(linkText);
 
         // Remove, then re-add triangle, as it will have moved
@@ -274,13 +287,11 @@ public class Link
         endTriangle.setVisible(this.isVisible());
         
         // Center the selection rectangle
-        if ( linkText.isVisible())
-        {
-	        selectionRectangle.setWidth(linkText.textContainerWidth/2+6);
-	        selectionRectangle.setHeight(linkText.textContainerHeight/2+6);
+        if ( linkText.isVisible()) {
+	        selectionRectangle.setWidth(linkText.getTextContainerWidth()/2+6);
+	        selectionRectangle.setHeight(linkText.getTextContainerHeight()/2+6);
         }
-        else
-        {
+        else {
         	selectionRectangle.setWidth(5);
         	selectionRectangle.setHeight(5);
         }

@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Point Force</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Point Force</h1>
+<hr/>
+
+<p>A point force is any force where the <b>point of application</b> is considered to be a <b>single point</b>.  Most forces are technically surface forces, where the force is applied over an area, but when the area is small enough (in comparison to the bodies being analyzed) it can be approximated as a point force.  Point forces simplify static analysis so approximations are usually made wherever they are valid.  Below are some examples of point forces acting on a body.</p>
+
+<div class="piccenter">
+<table width="800px" align="center">
+<tr>
+<td width="400px">
+<img src="pointforcepics/force1.png" width="279" height="351" alt="A Table"/>
+<div class="caption">
+The normal forces exerted by the ground that supports each leg of this table are point forces.</br>
+</div>
+</td>
+<td width="400px">
+<img src="pointforcepics/force2.png" width="300" height="179" alt="A Man Pushing a Car"/>
+<div class="caption">
+This man is exerting a point force on this car by pushing it.</br>
+</div>
+</td>
+</tr>
+<tr>
+<td width="400px">
+<img src="pointforcepics/force3.png" width="350" height="288" alt="A Bow on a Cello"/>
+<div class="caption">
+The friction force exerted by pulling the bow across this cello is point force.</br>
+</div>
+</td>
+<td width="400px">
+<img src="pointforcepics/force4.png" width="350" height="260" alt="A Crane Lifting a Box"/>
+<div class="caption">
+The force each cable exerts to support this cargo container is a point force.</br>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<div class="picright">
+<img src="pointforcepics/dig1.png" width="501" height="288" alt="A force with the line of action"/>
+</div>
+
+<p>Point forces are usually represented with a single vector.  As with all forces, the force has a magnitude, a direction and a point of contact.  The magnitude of the force will often be denoted explicitly in a diagram and is often linked to the length of the vector for a point force.  The direction of the point force is the direction of the vector.  The point of application (which will always be a single point for a point force) is at either the head or the tail of the vector.</p>
+
+<p>Another important feature of a point force is the <b>line of action</b>.  The line of action of a force is the line on which the vector representing the force lies.  By knowing the direction and the point of application of a force, the line of action can be deduced.  The line of action of a force is an important concept for understanding concurrent forces and the principle of transmissibility which are discussed later.</p>
+
+<h4>Resolution of a Force into Components</h4>
+
+<p>As with all vectors, a force can be resolved into components to simplify analysis.  The net effect of all components together on the body will be the same as the original force.  The component along any axis can be found by projecting the force vector onto the given axis.  The magnitude of the projected vector is the magnitude of that component of the force.</p>
+
+<p>More details on decomposing vectors into components can be found on the "decomposing vectors" page.</p>
+
+<div class="piccenter">
+<img src="pointforcepics/dig2.png" width="452" height="370" alt="A force resolved into its components"/>
+<div class="caption">
+The force each cable exerts to support this cargo container is a point force.</br>
+</div>
+</div>
+
+<h4>Adding Forces:</h4>
+
+<p>Under certain circumstances, forces can be added together into a single net force that will have the same effect on the system as the combination of all the original forces.  By combining forces, we can often simplify systems for analysis and be better able to solve for unknown forces.</p>
+
+<p>Forces can be combined, or added into a single force, only if the forces are <b>concurrent</b>.  Concurrent forces have lines of action that intersect at a single point.  If forces are not concurrent, moments will be induced and the net effect of the forces is a force and a couple.  Simplifying systems to a force and a couple is discussed in the moments chapter.  For now we will only be examining concurrent force systems.</p>
+
+<p>To add concurrent forces, one needs to add the vectors.  The magnitude of the net force will not just be the sum of the magnitudes of the forces being summed.  Vector addition can be done with either the parallelogram rule or by adding the components of the vectors (more details on the "vector addition" page).  Adding the vectors will give magnitude and direction of the net force, or the sum of all the forces.  The point of application of the net force will be the intersection point of all the lines of action.</p>
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4>
+
+<p>Give the x and y components of the point force D.</p>
+
+<div class="piccenter">
+<img src="pointforcepics/probdig1.png" width="323" height="190" alt="The Problem Diagram"/>
+</div>
+
+<br/><br/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="pointforcepics/P1_1.png" width="363" height="149" alt="Drawing in a right traingle"/>
+		</td>
+		<td>
+		The first step in decomposing the vector is to draw in a right triangle as a diagram.  The original force is the hypotenuse, horizontal leg is the X component and the vertical leg is the Y component.  The magnitudes of the two components correspond to the lengths of the legs of the right triangle.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		\[ \mathrm{
+			X component = -50 \text{ lbs}\times\cos(20^o) = -17.1 \text{ lbs}
+		}\]
+		\[ \mathrm{
+			Y component = 50 \text{ lbs}\times\sin(20^o) = 47.0 \text{ lbs}
+		}\]
+		</td>
+		<td>
+		Solving for the lengths of the legs gives us the magnitudes of the components.  Notice that the X component is negative because it is in the direction of the negative X axis.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<h4>Worked Problem 2:</h4>
+
+<p>Find the magnitude and direction of the sum of these two forces.</p>
+
+<div class="piccenter">
+<img src="pointforcepics/probdig2.png" width="415" height="274" alt="The Problem Diagram"/>
+</div>
+
+<br/><br/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		</td>
+		<td>
+		Because these two forces are concurrent, they can be added into a single resultant force vector.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="pointforcepics/P2_1.png" width="379" height="278" alt="Breaking vectors into components"/>
+		</td>
+		<td>
+		We will add these two vectors by adding their components rather than using the parallelogram rule.  To do this we first need to break the vectors down into their X and Y components.  Force F<sub>B</sub> is vertically oriented so it has no X component.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		\[ \mathrm{
+			Sum X = 300 - 600 \times cos(60^o) = 0 \text{ N}
+		}\]
+		\[ \mathrm{
+			Sum Y = - 600 \times sin(60^o) = - 519.6 \text{ N}
+		}\]
+		</td>
+		<td>
+		We can then sum together all the X components and all of the Y components.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>Magnitude of the Resultant is 519.6 N.<br/>
+		Direction of the resultant is in the -X direction.</p>
+		</td>
+		<td>
+		From the components we can directly infer the magnitude and direction of the resultant force (since there is no Y component to the resultant force vector.)<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>

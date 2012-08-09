@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Dot Product</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Dot Product</h1>
+<hr/>
+
+<div class="picright" style="width:500px">
+<img src="dotproductpics/dotproduct.png" width="500" height="400" alt="Vector A projected onto vector B"/>
+<div class="caption">
+The projection of <b>A</b> onto <b>B</b> is equal to |<b>A</b>|*cos(theta) which is the same as <b>A &middot B</b> / |<b>B</b>|
+</div>
+</div>
+
+<p>The dot product is a mathematical operation that can be performed on any two vectors that have the same number of elements.  The mathematical operation is represented by a <b>"&middot"</b> between the two vectors (hence the name dot product).  The dot product of two vectors is a scalar no matter how many elements the vectors have.  In statics, the dot product is often used to find the projection of one vector onto another vector.</p>
+
+<p>To find the projection of one vector onto another, you first calculate the dot product of the two vectors and then you divide the dot product by the magnitude vector you are projecting onto.  A more detailed procedure is provided below.</p>
+
+<ol>
+<li>First calculate the dot product of the two vectors.  This is done with the formula below.  The corresponding elements from the two vectors are multiplied and then all of these values are summed up.   The value you get from this calculation is the dot product.</li>
+
+<div class="piccenter">
+<img src="dotproductpics/dig1.png" width="600" height="107" alt="The general dot product formula"/>
+<div class="caption">
+The general dot product formula.
+</div>
+</div>
+
+<li>To find the magnitude of the first vector projected onto the second, simply divide the dot product by the magnitude of the second vector.  To find the magnitude of the second vector projected onto the first, simply divide the dot product by the magnitude of the first vector.</li>
+
+<div class="piccenter">
+<img src="dotproductpics/dig2.png" width="603" height="349" alt="Vector Projections"/>
+<div class="caption">
+Vector <b>A</b> projected on <b>B</b> and vector <b>B</b> projected on <b>A</b>
+</div>
+</div>
+
+</ol>
+
+<p>Dot products are particularly useful for changing coordinate systems.  If a vector is defined in one coordinate system and you need to define it in terms of another coordinate system, you simply calculate the dot product of vector with a unit vector in each of the new coordinate axes.  This will give you the components of the vector in terms of your new coordinate system. </p>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3><br/>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<div class="piccenter">
+<img src="dotproductpics/prob1dig.png" width="305" height="173" alt="The Problem Diagram"/>
+</div>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="dotproductpics/P1_1.png" width="388" height="51" alt="The dot product"/>
+		</td>
+		<td>
+		The first step is to calculate the dot product.  To do this you multiply all the corresponding elements of the vectors and add all these values together.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img src="dotproductpics/P1_2.png" width="226" height="54" alt="The projection of F1 onto V"/>
+		</td>
+		<td>
+		We would next divide by the magnitude of V to find the length of the projection, but since the length of the any unit vector is one, this is not necessary.  This means that the projection calculations are complete.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

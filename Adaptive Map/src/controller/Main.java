@@ -13,9 +13,9 @@ import model.Node.ChapterProperties;
 
 import controller.xml.XmlParser;
 /**
- *
- * @author John Nein
- * @version Sep 28, 2011
+ * Main file, used for generating graphviz data for the applet.
+ * @author Michel Pascale
+ * @version Jul 25, 2012
  */
 public class Main {
 	/**
@@ -23,16 +23,17 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
+		Configuration.RUN_AS_APPLET = false;
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		NodeMap nodeMap = new NodeMap();
     	System.out.println("Loading data from: " + Configuration.getXMLFilePath(false));
 		
         for (Entry<String, ChapterProperties> chapterProperty : XmlParser
                 .parseChapterProperties().entrySet()) {
-            Node.addChapterType(chapterProperty.getKey(), chapterProperty
+            nodeMap.addChapterType(chapterProperty.getKey(), chapterProperty
                     .getValue());
         }
-		nodeMap = XmlParser.parseNodeInformation();
+		XmlParser.parseNodeInformation(nodeMap, 10);
 		nodeList.addAll(nodeMap.getNodes());
 		
         // IMPORTANT: parse node properties before linking the nodes
@@ -61,8 +62,8 @@ public class Main {
 			Node newChapter = new Node(chapterProperty.getKey(),
 					chapterProperty.getValue().getDescription(),
 					chapterProperty.getKey(),
-					Configuration.CHAPTER_TITLE_FONT_SIZE,
-					Configuration.CHAPTER_DESCRIPTION_FONT_SIZE, 1.0f);
+					java.awt.Color.white,
+					10,	10, 1.0f);
 			if (Configuration.USE_FIXED_NODE_POSITIONS) {
 				newChapter.setFixedNodePosition(chapterProperty.getValue()
 						.getChapterXPos(), chapterProperty.getValue()

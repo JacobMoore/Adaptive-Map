@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Connections and Supports (Planar Systems)</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Connections and Supports (Planar Systems)</h1>
+<hr/>
+
+<p>There are a variety of ways that bodies can be connected to or in contact with one another.  Each type of connection will allow motion or rotation in some directions but it will constrain the bodies from rotating or moving in other directions.  This page outlines some standard engineering connections and supports for planar systems (Systems approximated as two-dimensional systems).</p>
+
+<p>For each connection type: a definition is given, an example is shown, the schematic representation is shown, and constraints the joints place on the body is shown.</p>
+
+<table width="885px" align="center" border="1px">
+<colgroup width="127px"></colgroup>
+<colgroup width="197px"></colgroup>
+<colgroup width="197px"></colgroup>
+<colgroup width="297px"></colgroup>
+<colgroup width="67px"></colgroup>
+	<tr>
+		<td>
+		<b>Connection Type</b>
+		</td>
+		<td>
+		<b>Example</b>
+		</td>
+		<td>
+		<b>Schematic</b>
+		</td>
+		<td>
+		<b>Free Body Diagram with Contraints<br/>(Constraint forces in <FONT COLOR ="red">red</FONT>, allowed motion in <FONT COLOR ="blue">blue</FONT>)</b>
+		</td>
+		<td>
+		<b># of Unknown Forces or Moments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Roller</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/roller.png" width="150" height="120" alt="A Roller"/>
+				<div class="caption">
+				The wheels on objects such as shopping carts are examples of rollers.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/sroller.jpg" width="150" height="163" alt="A Roller"/>
+			</div>
+		</td>
+		<td rowspan="2">
+			<div class="piccenter">
+				<img src="connections_2Dpics/froller.jpg" width="200" height="192" alt="A Roller"/>
+			</div>
+			<div class="piccenter">
+				<img src="connections_2Dpics/ffrictionlesspoint.jpg" width="200" height="190" alt="A Frictionless Point "/>
+				<div class="caption">
+				Both of these connections result in a single unknown force.  This force is always normal to the surface where the two objects meet.  This connection type exerts no force parallel to the surface and no moment so the objects are free to slide and rotate relative to one another.
+				</div>
+			</div>
+		</td>
+		<td rowspan="5">
+		<b>1</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Point Contact with Frictionless Surface</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/pointfrictionless.png" width="150" height="128" alt="A Point Contact with a Frictionless Surface"/>
+				<div class="caption">
+				Small points of contact between two smooth bodies, such as the table legs and the smooth floor shown here, can be approximated as point contact with a frictionless surface.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/spoint.jpg" width="150" height="143" alt="Point Contact on a Frictionless Surface"/>
+			</div>
+	</tr>
+	<tr>
+		<td>
+		<b>Flexible Cable</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/cable.png" width="150" height="96" alt="A Cable Connection"/>
+				<div class="caption">
+				The chains holding this tire swing up are examples of flexible cable connections.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/scable.jpg" width="150" height="133" alt="A Cable Connection"/>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/fcable.jpg" width="200" height="193" alt="A Cable Connection"/>
+				<div class="caption">
+				A cable can only exert a tensile force in the direction of the cable.  A cable cannot "push" an object.  It also cannot exert a force perpendicular to the direction of the cable and it cannot exert a moment on object.
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Collar on a Frictionless Rod</b>
+		</td>
+		<td>
+		Example
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/srodcollar.jpg" width="150" height="141" alt="A Collar on a Frictionless Rod"/>
+			</div>
+		</td>
+		<td rowspan="2">
+			<div class="piccenter">
+				<img src="connections_2Dpics/fslider.jpg" width="200" height="180" alt="A pin in a slider or a shaft on a collar"/>
+				<div class="caption">
+				Both of these connection types allow only a force perpendicular to the rod or slot.  There is no force exerted parallel to the rod or slot and there is no moment exerted between the two objects. 
+				</div>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Frictionless Pin in a Slot</b>
+		</td>
+		<td>
+		Example
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/spinslot.jpg" width="150" height="141" alt="A pin in a Frictionless Slot"/>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+		<b>Pin Joint (Hinge)</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/pinjoint.png" width="150" height="80" alt="A Pin Joint"/>
+				<div class="caption">
+				The hinge on this door is an example of a pin joint.  It allows the door to rotate around this point, but it does not allow for translation.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/spin.jpg" width="150" height="153" alt="A Pin Joint"/>
+			</div>
+		</td>
+		<td rowspan="2">
+			<div class="piccenter">
+				<img src="connections_2Dpics/fpin.jpg" width="200" height="181" alt="A Pin Joint"/>
+			</div>
+			<div class="piccenter">
+				<img src="connections_2Dpics/fpointrough.jpg" width="200" height="168" alt="Point Contact on a Rough Surface"/>
+				<div class="caption">
+				Both of these connections allow for rotation but no motion either parallel or perpendicular to the surface.  The pin joint constrains motion with normal forces, and the point contact with rough surfaces constrains motion with normal forces and friction forces.
+				</div>
+			</div>
+		</td>
+		<td rowspan="3">
+		<b>2</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Point Contact on a Rough Surface</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/pointrough.png" width="150" height="121" alt="Point Contact on a Rough Surface"/>
+				<div class="caption">
+				The back support of this wheelbarrow is an example of point contact with a rough surface.  The area of contact is fairly small, but friction between the ground and the support cannot be neglected.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/spoint.jpg" width="150" height="163" alt="Point Contact with a Rough Surface"/>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Area Contact on a Frictionless Surface</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/areafrictionless.png" width="150" height="151" alt="Area Contact on a Frictionless Surface"/>
+				<div class="caption">
+				The contact between this hockey puck and the ice is an example of area contact with a frictionless surface.  The puck can slide, but it will remain on the surface and it cannot rotate.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/sarea.jpg" width="150" height="143" alt="Area Contact with a Frictionless Surface"/>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/fareafrictionless.jpg" width="200" height="173" alt="Area Contact with a Frictionless Surface"/>
+				<div class="caption">
+				Area contact with a frictionless surface exerts only a distributed normal force.  The profile of this normal force however will change to prevent the body from rotating.
+				</div>
+			</div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+		<b>Fixed Support</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/fixedsupport.png" width="150" height="158" alt="A Fixed Support"/>
+				<div class="caption">
+				This lamppost is anchored to the ground and is an example of a fixed support.  The connection allows for no motion or rotation.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/sfixed.jpg" width="150" height="151" alt="A Fixed Support"/>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/ffixed.jpg" width="200" height="188" alt="A Fixed Connection"/>
+				<div class="caption">
+				A fixed connection can exert forces both perpendicular to the connection and parallel to the connection which prevent motion and it can exert a moment to prevent rotation.
+				</div>
+			</div>
+		</td>
+		<td rowspan="2">
+		<b>3</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<b>Area Contact on a Rough Surface</b>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/arearough.png" width="150" height="150" alt="Area Contact with a Rough Surface"/>
+				<div class="caption">
+				This crate has a large area of contact with the ground and the friction between the ground and the crate cannot be neglected.
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/sarea.jpg" width="150" height="143" alt="Area Contact with a Rough Surface"/>
+			</div>
+		</td>
+		<td>
+			<div class="piccenter">
+				<img src="connections_2Dpics/farearough.jpg" width="200" height="170" alt="Area Contact with a Rough Surface"/>
+				<div class="caption">
+				Area contact with a rough surface exerts a distributed normal force that prevents motion perpendicular to the surface and prevents rotation like the frictionless area contact.  Friction exerts a force parallel to surface that prevents sliding. 
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</div>
+</body>
+
+</html>

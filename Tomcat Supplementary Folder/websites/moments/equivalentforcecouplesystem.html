@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Equivalent Force Couple System</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+
+<script type="text/javascript"
+  src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+</head>
+
+<body>
+
+<div id="maincontent">
+
+<hr/>
+<h1>Equivalent Force Couple System</h1>
+<hr/>
+
+<p>If we have some set of forces and/or couples acting on a body (like in the diagram below) we learned how to resolve each of those forces into a force and a couple (the translational and rotational components respectively).  If all of these resolved forces are concurrent (which happens if we resolve all the forces with respect to the same point) we can simply add them up to find a single equivalent force.  Similarly, the point of application of couples can be moved without changing the system.  We can therefore simply add up all the couple vectors to find a single equivalent couple.  <b>This means that any set of forces and/or couples acting on a body can be reduced to a single equivalent force and a single equivalent couple.</b>  With only a single force and a single couple, this system is the simplest statically equivalent system to the original system.</p>
+
+<div class="piccenter">
+<img src="equivalentforcecouplesystempics/dig1.png" width="578" height="388" alt="Some forces and couples acting on a body."/>
+<div class="caption">
+Some forces and couples acting on a body.
+</div>
+</div>
+
+<p>To find the equivalent force couple system for any set of forces, you can use the following steps.</p>
+
+<ol>
+<li>First decompose all the forces into forces and couples.  Choose a common point (usually the center of mass or some anchored point) and have all the decomposed forces act on that point.</li>
+<div class="piccenter">
+<img src="equivalentforcecouplesystempics/dig2.png" width="561" height="398" alt="The each force is decomposed into a force and a couple."/>
+<div class="caption">
+The each force is decomposed into a force and a couple.
+</div>
+</div>
+<li>Now with all the forces acting on a single point, you can add all of these forces by adding the force vectors.  The sum of all the force vectors is the 'force' in the 'equivalent force couple system.</li>
+\[ \mathrm{
+	\mathbf{F_{EQ}} = \mathbf{F_1} + \mathbf{F_2} + \mathbf{F_3} + \dots
+}\]
+<li>All of the couples can also be added up by adding the moment vectors of the couples.  This includes the couples originally exerted on the system and the couple components of the forces.  Since the point of application of couples can be moved without changing the system the point of application of the couples is unimportant.  The sum of all the moment vectors of the couples is the 'couple' of the 'equivalent force couple system'.  Traditionally, the couple vector is drawn acting on the same point as the force vector.</li>
+\[ \mathrm{
+	\mathbf{M_{EQ}} = \mathbf{M_1} + \mathbf{M_2} + \mathbf{M_3} + \dots
+}\]
+</ol>
+
+<div class="piccenter">
+<img src="equivalentforcecouplesystempics/dig3.png" width="533" height="408" alt="The equivalent force couple system for the original set of forces and couples."/>
+<div class="caption">
+The equivalent force couple system for the original set of forces and couples.
+</div>
+</div>
+
+<hr/ style="clear:both">
+
+<h3>Worked Problems</h3>
+
+<h4>Worked Problem 1:</h4><br/>
+
+<p>Find a single force and a single couple (the equivalent force couple system) for the collection of forces and moments acting on the body shown below.  Have this force and couple act on point P.</p>
+
+<img src="equivalentforcecouplesystempics/probdig1.png" width="578" height="392" alt="The problem diagram"/>
+
+<table width="900px" align="center">
+<colgroup width="600px"></colgroup>
+<colgroup width="300px"></colgroup>
+	<tr>
+		<td>
+		<b>Work</b>
+		<br/><br/>
+		</td>
+		<td>
+		<b>Comments</b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentforcecouplesystempics/P1_1.png" width="300" height="291" alt="The moment exerted by F1"/>
+			</div>
+			\[ \mathrm{
+				M_{F1} = F * d = 5 \text{ lbs} * 1.5 \text{ ft} = 7.5 \text{ ft lbs}
+			}\]
+			<div class="piccenter">
+				<img src="equivalentforcecouplesystempics/P1_2.png" width="300" height="190" alt="The moment exerted by F2"/>
+			</div>
+			\[ \mathrm{
+				M_{F2} = F * d = 3 \text{ lbs} * (.5 * sin(45^o)) \text{ ft} = 1.06 \text{ ft lbs}
+			}\]
+			<div class="piccenter">
+				<img src="equivalentforcecouplesystempics/P1_3.png" width="300" height="121" alt="The moment exerted by F3"/>
+			</div>
+			\[ \mathrm{
+				M_{F3} = F * d = 4 \text{ lbs} * .5 \text{ ft} = 2 \text{ ft lbs}
+			}\]
+		</td>
+		<td>
+		The first step is to decompose each of the forces into a force acting on the point P and a couple.  We do this one force at a time.  Remember to pay attention to the units.  Since we already have one moment in foot pounds, we converted all of the distances to feet.  Also remember to use the right hand rule to find the direction of all the moment vectors.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentforcecouplesystempics/P1_4.png" width="400" height="286" alt="The decomposed forces and moments"/>
+			</div>
+			\[ \mathrm{
+				\mathbf{F_{EQ}} = \mathbf{F_1} + \mathbf{F_2} + \mathbf{F_3}
+			}\]
+			\[ \mathrm{
+				\mathbf{F_{EQ}} = [0,5,0] + [3*cos(45^o), 3*sin(45^o),0] + [-4,0,0] = [-1.88,7.12,0]
+			}\]
+			<br/>
+			\[ \mathrm{
+				\mathbf{M_{EQ}} = \mathbf{M_1} + \mathbf{M_{F1}} + \mathbf{M_{F2}} + \mathbf{M_{F3}}
+			}\]
+			\[ \mathrm{
+				\mathbf{M_{EQ}} = [0,0,-40] + [0,0,-7.5] + [0,0,-1.06] + [0,0,2] = [0,0,-46.56]
+			}\]
+		</td>
+		<td>
+		We can now solve for the equivalent force and the equivalent couple by adding up the force vectors and the moment vectors respectively.<br/><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div class="piccenter">
+				<img src="equivalentforcecouplesystempics/P1_5.png" width="483" height="381" alt="The decomposed forces and moments"/>
+			</div>
+		</td>
+		<td>
+		The equivalent force and couple acting on the body.<br/><br/>
+		</td>
+	</tr>
+</table>
+
+<hr/ style="clear:both">
+
+<div class="piccenter">
+<table width="400px" align="center">
+<tr>
+<td><a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br/></td>
+</tr>
+<tr>
+<td>Author: <a href="http://filebox.vt.edu/users/moorej7/">Jacob Moore</a> has liscenced this work under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.</td>
+</tr>
+</table>
+</div>
+
+</body>
+
+</html>
