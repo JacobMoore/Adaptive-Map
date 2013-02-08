@@ -904,6 +904,10 @@ public class AppCanvas extends JPanel {
                    	selectedNode.highlight(Color.yellow, 3);
                		//selectedNode.highlightLinks(false);
                 }
+                else
+                {
+                	JOptionPane.showMessageDialog(null, "There are no relevant nodes found with the phrase \'" + searchBar.getText() + "\'", "No entries found!", JOptionPane.ERROR_MESSAGE);
+                }
                 initial = true;
             }
         }
@@ -1065,6 +1069,11 @@ public class AppCanvas extends JPanel {
         activeCamera.moveTo(selectedNode.getGlyph().vx, selectedNode.getGlyph().vy);
         
         selectedNode.highlight(Color.yellow, 3);
+        for ( Link l : Node.getAllLinks())
+        {
+        	l.highlight(true);
+        	l.unhighlight();
+        }
         //selectedNode.highlightLinks(false);
 
         vSpaceManager.getActiveView().centerOnGlyph(

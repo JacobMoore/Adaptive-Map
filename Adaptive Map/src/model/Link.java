@@ -146,7 +146,7 @@ public class Link
         linkText.setVisible(false);
         linkWeight = 1;
         
-    	linkColor = Color.gray;
+    	linkColor = Color.gray.brighter();
     	this.setColor(Color.gray);
 
         // Adding end-of-link triangle
