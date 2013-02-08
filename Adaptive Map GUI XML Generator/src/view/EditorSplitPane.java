@@ -235,7 +235,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel titlePanel = new JPanel();
 		JLabel title = new JLabel("Node Title");
 		titlePanel.add(title);
-		JTextField titleIn = new JTextField(30);
+		JTextField titleIn = new JTextField(25);
 		titleIn.setText(node.nodeTitle);
 		titlePanel.add(titleIn);
 		dialogPanel.add(titlePanel);
@@ -278,11 +278,20 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel pagePanel = new JPanel();
 		JLabel page = new JLabel("Node Webpage");
 		pagePanel.add(page);
-		JTextField pageIn = new JTextField(27);
+		JTextField pageIn = new JTextField(25);
 		pageIn.setText(node.nodeWebpage);
 		pageIn.setToolTipText("Address should be in the form: \"websites/chapterfolder/page.html\".");
 		pagePanel.add(pageIn);
 		dialogPanel.add(pagePanel);
+		
+		JPanel keywordsPanel = new JPanel();
+		JLabel keywords = new JLabel("Node Keywords");
+		keywordsPanel.add(keywords);
+		JTextField keywordsIn = new JTextField(25);
+		keywordsIn.setText(node.nodeKeywords);
+		keywordsIn.setToolTipText("Node Keywords");
+		keywordsPanel.add(keywordsIn);
+		dialogPanel.add(keywordsPanel);
 		
 		JPanel toolsPanel = new JPanel();
 
@@ -431,6 +440,7 @@ public class EditorSplitPane extends JSplitPane {
         	node.nodeChapter = chapterIn.getText();
         	node.nodeDescription = descriptionIn.getText();
         	node.nodeWebpage = pageIn.getText();
+        	node.nodeKeywords = keywordsIn.getText();
         	node.linkList.clear();
 			for ( JPanel i : nodeInfoLinksList )
 			{
@@ -498,6 +508,14 @@ public class EditorSplitPane extends JSplitPane {
 		chapterDescriptionIn.setText(chapter.description);
 		descriptionPanel.add(chapterDescriptionIn);
 		dialogPanel.add(descriptionPanel);
+		
+		JPanel keywordsPanel = new JPanel();
+		JLabel keywords = new JLabel("Chapter Keywords");
+		keywordsPanel.add(keywords);
+		JTextField chapterKeywordsIn = new JTextField(25);
+		chapterKeywordsIn.setText(chapter.keywords);
+		keywordsPanel.add(chapterKeywordsIn);
+		dialogPanel.add(keywordsPanel);
 		
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
@@ -705,7 +723,7 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel descriptionPanel = new JPanel();
 		JLabel description = new JLabel("Node Description");
 		descriptionPanel.add(description);
-		final JTextField descriptionIn = new JTextField(20);
+		final JTextField descriptionIn = new JTextField(19);
 		descriptionPanel.add(descriptionIn);
 		nodePanel.add(descriptionPanel);
 		
@@ -743,6 +761,14 @@ public class EditorSplitPane extends JSplitPane {
 		pagePanel.add(pageIn);
 		nodePanel.add(pagePanel);
 		
+		JPanel keywordsPanel = new JPanel();
+		JLabel keywords = new JLabel("Node Keywords");
+		keywordsPanel.add(keywords);
+		final JTextField keywordsIn = new JTextField(19);
+		keywordsIn.setToolTipText("Node Keywords");
+		keywordsPanel.add(keywordsIn);
+		nodePanel.add(keywordsPanel);
+		
 		JPanel toolsPanel = new JPanel();
 		JButton nodeCreateButton = new JButton("Create!");
 		nodeCreateButton.addActionListener(new ActionListener(){
@@ -753,7 +779,7 @@ public class EditorSplitPane extends JSplitPane {
 					return;
 				
 				NodeData newNode = new NodeData(titleIn.getText(), chapterIn.getText(), 
-						descriptionIn.getText(), pageIn.getText());
+						descriptionIn.getText(), pageIn.getText(), keywordsIn.getText());
 				for ( JPanel i : nodeLinksList )
 				{
 					String name = ((JTextField)i.getComponent(1)).getText();
@@ -871,6 +897,14 @@ public class EditorSplitPane extends JSplitPane {
 		descriptionPanel.add(chapterDescriptionIn);
 		chapterPanel.add(descriptionPanel);
 		
+		JPanel keywordsPanel = new JPanel();
+		JLabel keywords = new JLabel("Chapter Keywords");
+		keywordsPanel.add(keywords);
+		final JTextField chapterKeywordsIn = new JTextField(20);
+		keywordsPanel.add(chapterKeywordsIn);
+		chapterPanel.add(keywordsPanel);
+		
+		
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
 		colorPanel.add(colorLabel);
@@ -937,7 +971,7 @@ public class EditorSplitPane extends JSplitPane {
 					return;
 				
 				ChapterData newChapter = new ChapterData(chapterTitleIn.getText(), 
-						(String)chapterColorBoxIn.getSelectedItem(), chapterDescriptionIn.getText(),
+						(String)chapterColorBoxIn.getSelectedItem(), chapterDescriptionIn.getText(), chapterKeywordsIn.getText(),
 						(Integer)xValueIn.getValue(), (Integer)yValueIn.getValue(), (String)defaultIn.getSelectedItem(), 
 						defaultChapterIn.isSelected());
 				EditorXMLParser.chapterData.add(newChapter);

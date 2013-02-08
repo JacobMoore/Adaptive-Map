@@ -19,10 +19,9 @@ enum Tag {
 	// Node XML tags
 	TEXTBOOK("textbook"), NODE("node"), TITLE("title"), DESCRIPTION(
 			"description"), CHAPTER("chapter"), PAGE("page"), LINK("link"), LINK_TYPE(
-			"linktype"),
-			LINE_TYPE("linetype"), COLOR("color"), CHAPTER_TYPE("chaptertype"), XPOS(
-			"xvalue"), YPOS("yvalue"), DEFAULT("default"), DEFAULTCHAPTER(
-			"defaultChapter"),
+			"linktype"), LINE_TYPE("linetype"), COLOR("color"), CHAPTER_TYPE(
+			"chaptertype"), XPOS("xvalue"), YPOS("yvalue"), DEFAULT("default"), DEFAULTCHAPTER(
+			"defaultChapter"), KEYWORDS("keywords"),
 	// Grid Tags
 	GRIDS("grids");
 
@@ -78,22 +77,20 @@ enum TagAttribute {
 /**
  * 
  * @author Michel Pascale
- *
+ * 
  */
 public class EditorXMLParser {
 	public static LinkedList<ChapterData> chapterData;
 	public static LinkedList<LinkData> linkData;
 	public static LinkedList<NodeData> nodeData;
-	
-	public static void initializeLists()
-	{
+
+	public static void initializeLists() {
 		nodeData = new LinkedList<NodeData>();
 		chapterData = new LinkedList<ChapterData>();
 		linkData = new LinkedList<LinkData>();
 	}
-	
-	public static LinkedList<String> getChapterColors()
-	{
+
+	public static LinkedList<String> getChapterColors() {
 		LinkedList<String> names = new LinkedList<String>();
 		names.add("Pink");
 		names.add("Tan");
@@ -119,7 +116,7 @@ public class EditorXMLParser {
 		}
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String chapterTitle, chapterDescription, defaultNode = "EMPTY";
+			String chapterTitle, chapterDescription, defaultNode, chapterKeywords = "EMPTY";
 			int x = -99999, y = -99999;
 			String chapterColor = null;
 			boolean defaultChapter = false;
@@ -138,6 +135,9 @@ public class EditorXMLParser {
 					break;
 				case DESCRIPTION:
 					chapterDescription = nodeChild.getTextContent();
+					break;
+				case KEYWORDS:
+					chapterKeywords = nodeChild.getTextContent();
 					break;
 				case COLOR:
 					try {
@@ -165,9 +165,8 @@ public class EditorXMLParser {
 					break;
 				}
 			}
-			chapterData.add(new ChapterData( chapterTitle,
-					chapterColor, chapterDescription, x, y, defaultNode,
-					defaultChapter));
+			chapterData.add(new ChapterData(chapterTitle, chapterColor,
+					chapterDescription, chapterKeywords, x, y, defaultNode, defaultChapter));
 		}
 	}
 
@@ -198,7 +197,7 @@ public class EditorXMLParser {
 				case DESCRIPTION:
 					linkDescription = nodeChild.getTextContent();
 					break;
-				case LINE_TYPE :
+				case LINE_TYPE:
 					linkLineType = nodeChild.getTextContent();
 					break;
 				case COLOR:
@@ -232,7 +231,7 @@ public class EditorXMLParser {
 		nodeData = new LinkedList<NodeData>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter;
+			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter, nodeKeywords = "EMPTY";
 			LinkedList<Link> linkList = new LinkedList<Link>();
 			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = null;
 
@@ -256,25 +255,32 @@ public class EditorXMLParser {
 				case DESCRIPTION:
 					nodeDescription = nodeChild.getTextContent();
 					break;
-				case LINK :
+				case KEYWORDS:
+					nodeKeywords = nodeChild.getTextContent();
+					break;
+				case LINK:
 					// If the title has been found, link the nodes
 					if (nodeTitle != null) {
-						String linkType = nodeChild.getAttributes()
-							.getNamedItem(TagAttribute.LINK_TYPE.getTagLabel()).getNodeValue();
-								linkList.add(new Link(nodeChild.getTextContent(), linkType));
-								break;
+						String linkType = nodeChild
+								.getAttributes()
+								.getNamedItem(
+										TagAttribute.LINK_TYPE.getTagLabel())
+								.getNodeValue();
+						linkList.add(new Link(nodeChild.getTextContent(),
+								linkType));
+						break;
 					}
 					break;
 				default:
 				}
 			}
-			nodeData.add( new NodeData(nodeTitle,  nodeChapter, nodeDescription, nodeContentUrl) );
+			nodeData.add(new NodeData(nodeTitle, nodeChapter, nodeDescription,
+					nodeContentUrl, nodeKeywords));
 			nodeData.getLast().linkList.addAll(linkList);
 		}
 	}
-	
-	public static void save(File location)
-	{
+
+	public static void save(File location) {
 		try {
 			if (location.exists())
 				location.delete();
@@ -283,43 +289,49 @@ public class EditorXMLParser {
 			output.write("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
 			output.write("<textbook>\n\n");
 			output.write("\t<!-- Links -->\n\n");
-			for ( LinkData l : linkData )
-			{
+			for (LinkData l : linkData) {
 				output.write("\t<linktype>\n");
 				output.write("\t\t<title>" + l.linkTitle + "</title>\n");
-				output.write("\t\t<description>" + l.description + "</description>\n");
-				output.write("\t\t<linetype>" + l.linkLineType + "</linetype>\n");
+				output.write("\t\t<description>" + l.description
+						+ "</description>\n");
+				output.write("\t\t<linetype>" + l.linkLineType
+						+ "</linetype>\n");
 				output.write("\t\t<color>" + "black" + "</color>\n");
 				output.write("\t</linktype>\n\n");
 				output.flush();
 			}
-			
+
 			output.write("\t<!-- Chapters -->\n\n");
-			for ( ChapterData c : chapterData)
-			{
+			for (ChapterData c : chapterData) {
 				output.write("\t<chaptertype>\n");
 				output.write("\t\t<title>" + c.chapterTitle + "</title>\n");
-				output.write("\t\t<description>" + c.description + "</description>\n");
+				output.write("\t\t<description>" + c.description
+						+ "</description>\n");
+				output.write("\t\t<keywords>" + c.keywords + "</keywords>\n");
 				output.write("\t\t<color>" + c.chapterColor + "</color>\n");
 				output.write("\t\t<default>" + c.defaultNode + "</default>\n");
-				output.write("\t\t<defaultChapter>" + String.valueOf(c.isDefaultChapter) + "</defaultChapter>\n");
+				output.write("\t\t<defaultChapter>"
+						+ String.valueOf(c.isDefaultChapter)
+						+ "</defaultChapter>\n");
 				output.write("\t\t<xvalue>" + c.fixedXPosition + "</xvalue>\n");
 				output.write("\t\t<yvalue>" + c.fixedYPosition + "</yvalue>\n");
 				output.write("\t</chaptertype>\n\n");
 				output.flush();
 			}
-			
+
 			output.write("\t<!-- Nodes -->\n\n");
-			for ( NodeData n : nodeData )
-			{
+			for (NodeData n : nodeData) {
 				output.write("\t<node>\n");
 				output.write("\t\t<title>" + n.nodeTitle + "</title>\n");
-				output.write("\t\t<description>" + n.nodeDescription + "</description>\n");
+				output.write("\t\t<description>" + n.nodeDescription
+						+ "</description>\n");
 				output.write("\t\t<chapter>" + n.nodeChapter + "</chapter>\n");
-				output.write("\t\t<page>" + n.nodeWebpage.replace("&", "&amp;") + "</page>\n");
-				for ( Link l : n.linkList )
-					output.write("\t\t<link type=\"" + l.linkType + "\">" + l.linkedNode
-							+ "</link>\n");
+				output.write("\t\t<page>" + n.nodeWebpage.replace("&", "&amp;")
+						+ "</page>\n");
+				output.write("\t\t<keywords>" + n.nodeKeywords + "</keywords>\n");
+				for (Link l : n.linkList)
+					output.write("\t\t<link type=\"" + l.linkType + "\">"
+							+ l.linkedNode + "</link>\n");
 				output.write("\t</node>\n\n");
 				output.flush();
 			}
@@ -383,6 +395,7 @@ public class EditorXMLParser {
 		public String chapterTitle;
 		public String chapterColor;
 		public String description;
+		public String keywords;
 		public int fixedXPosition;
 		public int fixedYPosition;
 		public String defaultNode;
@@ -396,11 +409,12 @@ public class EditorXMLParser {
 		 * @param description
 		 *            The description of the chapter.
 		 */
-		public ChapterData(String chapterTitle, String chapterColor, String description, 
-				int x, int y, String node, boolean isDefault) {
+		public ChapterData(String chapterTitle, String chapterColor,
+				String description, String keywords, int x, int y, String node, boolean isDefault) {
 			this.chapterTitle = chapterTitle;
 			this.chapterColor = chapterColor;
 			this.description = description;
+			this.keywords = keywords;
 			fixedXPosition = x;
 			fixedYPosition = y;
 			defaultNode = node;
@@ -425,39 +439,39 @@ public class EditorXMLParser {
 		 * @param description
 		 *            The description for this link.
 		 */
-		public LinkData(String linkTitle, Color linkColor, String description, String linkLineType) {
+		public LinkData(String linkTitle, Color linkColor, String description,
+				String linkLineType) {
 			this.linkTitle = linkTitle;
 			this.linkColor = linkColor;
 			this.description = description;
 			this.linkLineType = linkLineType;
 		}
 	}
-	
-	public static class NodeData
-	{
+
+	public static class NodeData {
 		public String nodeTitle;
 		public String nodeChapter;
 		public String nodeDescription;
 		public String nodeWebpage;
+		public String nodeKeywords;
 		public LinkedList<Link> linkList;
-		
-		public NodeData(String nodeTitle, String nodeChapter, String nodeDescription, String nodeWebpage)
-		{
+
+		public NodeData(String nodeTitle, String nodeChapter,
+				String nodeDescription, String nodeWebpage, String nodeKeywords) {
 			this.nodeTitle = nodeTitle;
 			this.nodeChapter = nodeChapter;
 			this.nodeDescription = nodeDescription;
 			this.nodeWebpage = nodeWebpage;
+			this.nodeKeywords = nodeKeywords;
 			this.linkList = new LinkedList<Link>();
 		}
 	}
-	
-	public static class Link
-	{
+
+	public static class Link {
 		public String linkedNode;
 		public String linkType;
-		
-		public Link(String linkedNode, String linkType)
-		{
+
+		public Link(String linkedNode, String linkType) {
 			this.linkedNode = linkedNode;
 			this.linkType = linkType;
 		}
