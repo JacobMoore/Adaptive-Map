@@ -26,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -906,6 +907,7 @@ public class AppCanvas extends JPanel {
                 }
                 else
                 {
+                	Color background = JColorChooser.showDialog(null, "JColorChooser Sample", null);
                 	JOptionPane.showMessageDialog(null, "There are no relevant nodes found with the phrase \'" + searchBar.getText() + "\'", "No entries found!", JOptionPane.ERROR_MESSAGE);
                 }
                 initial = true;

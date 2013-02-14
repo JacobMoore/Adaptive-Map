@@ -100,18 +100,18 @@ enum TagAttribute {
  */
 public class XmlParser {
 
-	private static Color c1 = new Color(45, 180, 255);
-	private static Color c2 = new Color(232, 164, 74);
-	private static Color c3 = new Color(255, 215, 65);
-	private static Color c4 = new Color(255, 120, 55);
-	private static Color c5 = new Color(232, 67, 59);
-	private static Color c6 = new Color(84, 153, 181);
-	private static Color c7 = new Color(60, 181, 181);
-	private static Color c8 = new Color(93, 52, 181);
-	private static Color c9 = new Color(188, 92, 181);
-	private static Color c10 = new Color(90, 232, 152);
-	private static Color c11 = new Color(76, 181, 36);
-	private static Color c12 = new Color(255, 181, 62);
+	private static Color c1 = new Color(255, 192, 203);
+	private static Color c2 = new Color(210, 180, 140);
+	private static Color c3 = new Color(255, 255, 0);
+	private static Color c4 = new Color(255, 165, 0);
+	private static Color c5 = new Color(255, 0, 0);
+	private static Color c6 = new Color(173, 216, 230);
+	private static Color c7 = new Color(0, 128, 128);
+	private static Color c8 = new Color( 0, 0, 139);
+	private static Color c9 = new Color(128, 0, 128);
+	private static Color c10 = new Color(161, 218, 199);
+	private static Color c11 = new Color( 0, 128, 0);
+	private static Color c12 = new Color(255, 215, 0);
 
 	/**
 	 * Goes through the xml file and creates a map of chapter titles to chapter properties.
