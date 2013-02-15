@@ -33,6 +33,7 @@ enum Tag {
 	TITLE("title"),
 	DESCRIPTION("description"),
 	CHAPTER("chapter"),
+	KEYWORDS("keywords"),
 	PAGE("page"),
 	LINK("link"),
 	LINK_TYPE("linktype"),
@@ -126,11 +127,11 @@ public class XmlParser {
 		}
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String chapterTitle, chapterDescription, defaultNode = "EMPTY";
+			String chapterTitle, chapterDescription, defaultNode, chapterKeywords = "EMPTY";
 			int x = -99999, y = -99999;
 			Color chapterColor = null;
 			boolean defaultChapter = false;
-			chapterTitle = chapterDescription = defaultNode = null;
+			chapterTitle = chapterDescription = defaultNode = chapterKeywords = null;
 
 			NodeList nodeChildList = nodeList.item(i).getChildNodes();
 			for (int p = 0; p < nodeChildList.getLength(); p++) {
@@ -145,6 +146,9 @@ public class XmlParser {
 					break;
 				case DESCRIPTION:
 					chapterDescription = nodeChild.getTextContent();
+					break;
+				case KEYWORDS:
+					chapterKeywords = nodeChild.getTextContent();
 					break;
 				case COLOR:
 					try {
@@ -199,10 +203,10 @@ public class XmlParser {
 			}
 			if (Configuration.USE_FIXED_NODE_POSITIONS) {
 				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, x, y, defaultNode, defaultChapter));
+						chapterColor, chapterDescription, chapterKeywords, x, y, defaultNode, defaultChapter));
 			} else {
 				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, 0, 0, defaultNode, defaultChapter));
+						chapterColor, chapterDescription, chapterKeywords, 0, 0, defaultNode, defaultChapter));
 			}
 		}
 
@@ -281,8 +285,8 @@ public class XmlParser {
 		//List<Node> parsedNodeList = new ArrayList<Node>(nodeList.getLength());
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter;
-			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = null;
+			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter, nodeKeywords;
+			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = nodeKeywords = null;
 			int x = -99999, y = -99999;
 
 			// Get all tagged information within each NODE element
@@ -305,6 +309,9 @@ public class XmlParser {
 					case DESCRIPTION :
 						nodeDescription = nodeChild.getTextContent();
 						break;
+					case KEYWORDS:
+						nodeKeywords = nodeChild.getTextContent();
+						break;
 					case XPOS:
 						x = Integer.parseInt(nodeChild.getTextContent());
 						break;
@@ -315,7 +322,7 @@ public class XmlParser {
 				}
 			}
 			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter, 
-					map.getChapterType(nodeChapter).getChapterColor(), fontSize);
+					nodeKeywords, map.getChapterType(nodeChapter).getChapterColor(), fontSize);
 			if ( nodeContentUrl.startsWith("http") )
 				nodeContentUrl.replaceAll("&amp;", "&");
 			

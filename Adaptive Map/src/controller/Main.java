@@ -12,58 +12,63 @@ import model.Link.LinkProperties;
 import model.Node.ChapterProperties;
 
 import controller.xml.XmlParser;
+
 /**
  * Main file, used for generating graphviz data for the applet.
+ * 
  * @author Michel Pascale
  * @version Jul 25, 2012
  */
 public class Main {
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
 		Configuration.RUN_AS_APPLET = false;
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		NodeMap nodeMap = new NodeMap();
-    	System.out.println("Loading data from: " + Configuration.getXMLFilePath(false));
-		
-        for (Entry<String, ChapterProperties> chapterProperty : XmlParser
-                .parseChapterProperties().entrySet()) {
-            nodeMap.addChapterType(chapterProperty.getKey(), chapterProperty
-                    .getValue());
-        }
+		System.out.println("Loading data from: "
+				+ Configuration.getXMLFilePath(false));
+
+		for (Entry<String, ChapterProperties> chapterProperty : XmlParser
+				.parseChapterProperties().entrySet()) {
+			nodeMap.addChapterType(chapterProperty.getKey(),
+					chapterProperty.getValue());
+		}
 		XmlParser.parseNodeInformation(nodeMap, 10);
 		nodeList.addAll(nodeMap.getNodes());
-		
-        // IMPORTANT: parse node properties before linking the nodes
-        for (Entry<String, LinkProperties> linkProperty : XmlParser
-                .parseLinkProperties().entrySet()) {
-            Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
-        }
-        XmlParser.parseNodeLinks(nodeList);
-        
-        for ( String chapter : nodeMap.getChapters() )
-        {
-        	String location = String.format("%s-%s", Configuration.getDataFilePath(true), 
-        			chapter.replace(" ", "_"));
-        	System.out.println("Creating file: " + location);
-            File out = new File(location);
-            out.createNewFile();
-        	GraphViz gv = nodeMap.generateGraphFromNodes(nodeMap.getChapterNodes(chapter));
-        	if (gv.writeGraphToFile(gv.getGraph( gv.getDotSource(),	"plain" ), out, false) != 1)
-        		System.out.println("Error writing graphViz data. Check that the folder C:\temp exists.");
-        }
-        
-        // Parse chapter nodes
+
+		// IMPORTANT: parse node properties before linking the nodes
+		for (Entry<String, LinkProperties> linkProperty : XmlParser
+				.parseLinkProperties().entrySet()) {
+			Link.addLinkType(linkProperty.getKey(), linkProperty.getValue());
+		}
+		XmlParser.parseNodeLinks(nodeList);
+
+		for (String chapter : nodeMap.getChapters()) {
+			String location = String.format("%s-%s",
+					Configuration.getDataFilePath(true),
+					chapter.replace(" ", "_"));
+			System.out.println("Creating file: " + location);
+			File out = new File(location);
+			out.createNewFile();
+			GraphViz gv = nodeMap.generateGraphFromNodes(nodeMap
+					.getChapterNodes(chapter));
+			if (gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), "plain"),
+					out, false) != 1)
+				System.out
+						.println("Error writing graphViz data. Check that the folder C:\temp exists.");
+		}
+
+		// Parse chapter nodes
 		ArrayList<Node> chapterList = new ArrayList<Node>();
 		for (Entry<String, ChapterProperties> chapterProperty : XmlParser
 				.parseChapterProperties().entrySet()) {
 			Node newChapter = new Node(chapterProperty.getKey(),
 					chapterProperty.getValue().getDescription(),
-					chapterProperty.getKey(),
-					java.awt.Color.white,
-					10,	10, 1.0f);
+					chapterProperty.getKey(), chapterProperty.getValue()
+							.getKeywords(), java.awt.Color.white, 10, 10, 1.0f);
 			if (Configuration.USE_FIXED_NODE_POSITIONS) {
 				newChapter.setFixedNodePosition(chapterProperty.getValue()
 						.getChapterXPos(), chapterProperty.getValue()
@@ -95,13 +100,15 @@ public class Main {
 				}
 			}
 		}
-    	String location = String.format("%s-%s", Configuration.getDataFilePath(true), 
-    			"OVERVIEW");
-        File out = new File(location);
-        out.createNewFile();
+		String location = String.format("%s-%s",
+				Configuration.getDataFilePath(true), "OVERVIEW");
+		File out = new File(location);
+		out.createNewFile();
 		GraphViz gv = nodeMap.generateGraphFromNodes(chapterList);
-    	if (gv.writeGraphToFile(gv.getGraph( gv.getDotSource(),	"plain" ), out, false) != 1)
-    		System.out.println("Error writing graphViz data. Check that the folder C:\temp exists.");
+		if (gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), "plain"), out,
+				false) != 1)
+			System.out
+					.println("Error writing graphViz data. Check that the folder C:\temp exists.");
 
 		System.out.println("Complete.");
 	}
