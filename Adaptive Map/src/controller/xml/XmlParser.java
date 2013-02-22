@@ -131,7 +131,7 @@ public class XmlParser {
 			int x = -99999, y = -99999;
 			Color chapterColor = null;
 			boolean defaultChapter = false;
-			chapterTitle = chapterDescription = defaultNode = chapterKeywords = null;
+			chapterTitle = chapterDescription = defaultNode = null;
 
 			NodeList nodeChildList = nodeList.item(i).getChildNodes();
 			for (int p = 0; p < nodeChildList.getLength(); p++) {
@@ -285,8 +285,8 @@ public class XmlParser {
 		//List<Node> parsedNodeList = new ArrayList<Node>(nodeList.getLength());
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			// Declare temp variables to store parsed information
-			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter, nodeKeywords;
-			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = nodeKeywords = null;
+			String nodeTitle, nodeDescription, nodeContentUrl, nodeChapter, nodeKeywords = "EMPTY";
+			nodeTitle = nodeDescription = nodeChapter = nodeContentUrl = null;
 			int x = -99999, y = -99999;
 
 			// Get all tagged information within each NODE element

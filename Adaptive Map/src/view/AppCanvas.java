@@ -26,7 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
+//import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -792,6 +792,7 @@ public class AppCanvas extends JPanel {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		String str = searchString.toLowerCase();
 		for (Node n : nodeList) {
+			//System.out.println(n.getNodeKeywords());
 			if (n.getNodeTitle().toLowerCase().contains(str)
 					|| n.getNodeDescription().toLowerCase().contains(str)
 					|| n.getNodeChapter().toLowerCase().contains(str)
@@ -901,8 +902,8 @@ public class AppCanvas extends JPanel {
 					selectedNode.highlight(Color.yellow, 3);
 					// selectedNode.highlightLinks(false);
 				} else {
-					Color background = JColorChooser.showDialog(null,
-							"JColorChooser Sample", null);
+					//Color background = JColorChooser.showDialog(null,
+					//		"JColorChooser Sample", null);
 					JOptionPane.showMessageDialog(null,
 							"There are no relevant nodes found with the phrase \'"
 									+ searchBar.getText() + "\'",

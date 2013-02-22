@@ -26,7 +26,7 @@ public class Configuration {
 	public static final int GRID_ROW_HEIGHT = 150;
     
     public static final boolean USE_FIXED_NODE_POSITIONS = true;
-    public static final boolean USE_LOCAL_PATH = false;
+    public static final boolean USE_LOCAL_PATH = true;
 	public static final int GRAPHVIZ_BUFFER_LIMIT = 4096;
 	
 	public static boolean RUN_AS_APPLET = true;
@@ -46,8 +46,9 @@ public class Configuration {
 			 .length() - 1);
 			 return String.format("%scontent/nodes.xml", currentDirPath);
 		 }
-		 else
+		 else {
 			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
+		 }
 	}
 	
 	public static final String getServerFolder()
