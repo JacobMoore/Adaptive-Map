@@ -44,7 +44,7 @@ public class Configuration {
 			 String currentDirPath = (new File(".")).getAbsolutePath();
 			 currentDirPath = currentDirPath.substring(0, currentDirPath
 			 .length() - 1);
-			 return String.format("%scontent/nodes.xml", currentDirPath);
+			 return String.format("%ssrc/content/nodes.xml", currentDirPath);
 		 }
 		 else {
 			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
