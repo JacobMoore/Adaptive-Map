@@ -271,7 +271,7 @@ public class Link
             toCenterPoint.y);
         
         // Center the text on the link
-        Point linkCenter = getPointAlongLink(0.6f);
+        Point linkCenter = getPointAlongLink(0.45f);
         linkText.vx = linkCenter.x - (long)linkText.getTextContainerWidth()/2;
         //vtext origin is at bottom left of first line
         linkText.vy = linkCenter.y + (long)linkText.getTextContainerHeight()/2 - linkText.getFont().getSize();
