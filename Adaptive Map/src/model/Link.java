@@ -137,7 +137,7 @@ public class Link
         }
         virtualSpace.addGlyph(this);
 
-        Point linkCenter = getPointAlongLink(0.6f);
+        Point linkCenter = getPointAlongLink(0.45f);
         linkText =
             new VText(linkCenter.x, linkCenter.y, 0, Color.black, linkType);
         linkText.setSpecialFont(new Font("Arial", Font.BOLD, Configuration.LINK_FONT_SIZE));

@@ -429,7 +429,7 @@ public class XmlParser {
 					DocumentBuilder db;
 					db = dbf.newDocumentBuilder();
 					Document xmlFile = db.parse(Configuration
-							.getXMLFilePath(Configuration.USE_LOCAL_PATH));
+							.getXMLFilePath(!Configuration.USE_LOCAL_PATH));
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();

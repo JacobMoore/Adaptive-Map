@@ -1106,6 +1106,7 @@ public class AppCanvas extends JPanel {
 								.getCenterPoint().y);
 		showSelectedChapter();
 
+		CameraMovementListener.enabled = false;
 		Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
 		activeCamera
 				.setAltitude(
@@ -1114,8 +1115,9 @@ public class AppCanvas extends JPanel {
 
 		selectedNode.highlight(Color.yellow, 3);
 
-		vSpaceManager.getActiveView().centerOnGlyph(selectedNode.getGlyph(),
-				vSpaceManager.getActiveCamera(), 1000, false);
+//		vSpaceManager.getActiveView().centerOnGlyph(selectedNode.getGlyph(),
+//				vSpaceManager.getActiveCamera(), 1000, false);
+		CameraMovementListener.enabled = true;
 	}
 
 	private void selectMedButton() {

@@ -25,6 +25,9 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	// Wheel speed factor
 	static final float WSF = 5f;
+	
+	// Are mouse events enabled
+	static boolean enabled = true;
 
 	private AppCanvas canvas;
 	private VirtualSpaceManager vSpaceManager = VirtualSpaceManager.INSTANCE;
@@ -55,67 +58,66 @@ public class CameraMovementListener implements ViewEventHandler {
 	 * 			The glyph the user entered.
 	 */
 	public void enterGlyph(Glyph glyph) {
-		// Link text
-		if ( highlightedLink == null && highlightedNode == null && glyph.getOwner().equals(model.Link.class))
-		{
-			for (Link l : Node.getAllLinks())
-			{
-				if ( glyph.equals(l.getGlyph()) && l.isVisible())
-				{
-					highlightedLink = l;
-					l.showLinkInfo();
-					l.highlight(true);
+		if (enabled) {
+			// Link text
+			if (highlightedLink == null && highlightedNode == null
+					&& glyph.getOwner().equals(model.Link.class)) {
+				for (Link l : Node.getAllLinks()) {
+					if (glyph.equals(l.getGlyph()) && l.isVisible()) {
+						highlightedLink = l;
+						l.showLinkInfo();
+						l.highlight(true);
+					}
 				}
-			}
-			return;
-		}
-		if (!ignoreGlyph(glyph)) {
-			// Glyph is a multi-node highlight rectangle
-			if (glyph.getType() != null && glyph.getType().equals("MultiNodeRectangle"))
-			{
-				glyph.setBorderColor(Color.black);
-				/* Determine if previous highlighted node was a highlight rectangle
-				 * or the parent multi-node. */
-				if ( highlightedNode.hasSubNodes() )
-				{
-					multiNode = highlightedNode;
-					highlightedNode = highlightedNode.getSubNode(glyph);
-				}
-				else
-					highlightedNode = multiNode.getSubNode(glyph);
 				return;
 			}
-			
-		    // Determine if the chapter or node list should be searched.
-		    List<Node> targetList;
-		    if ( canvas.isSelectedAChapterNode() )
-		        targetList = canvas.getChapterList();
-		    else
-		        targetList = canvas.getNodeList();
-
-            // If the glyph entered is a node in targetList, set it as highlighted
-            // and show its full description
-		    boolean isMultiNode = true;
-			for (Node node : targetList) {
-				if (glyph.equals(node.getGlyph())) {
-					if (highlightedNode == null ) {
-						node.showView(ViewType.FULL_DESCRIPTION, node, true);
-						node.highlight(node.getNodeChapterColor(), 4);
-						node.highlightLinks(!canvas.isSelectedAChapterNode());
-					}
-					isMultiNode = false;
-					highlightedNode = node;
-					break;
+			if (!ignoreGlyph(glyph)) {
+				// Glyph is a multi-node highlight rectangle
+				if (glyph.getType() != null
+						&& glyph.getType().equals("MultiNodeRectangle")) {
+					glyph.setBorderColor(Color.black);
+					/* Determine if previous highlighted node was a highlight rectangle
+					 * or the parent multi-node. */
+					if (highlightedNode.hasSubNodes()) {
+						multiNode = highlightedNode;
+						highlightedNode = highlightedNode.getSubNode(glyph);
+					} else
+						highlightedNode = multiNode.getSubNode(glyph);
+					return;
 				}
-			}
-			// Node is a multi-node
-			if (isMultiNode)
-			{
-				for (Node node : canvas.getSelectedNode().getMultiNodeList()) {
+
+				// Determine if the chapter or node list should be searched.
+				List<Node> targetList;
+				if (canvas.isSelectedAChapterNode())
+					targetList = canvas.getChapterList();
+				else
+					targetList = canvas.getNodeList();
+
+				// If the glyph entered is a node in targetList, set it as highlighted
+				// and show its full description
+				boolean isMultiNode = true;
+				for (Node node : targetList) {
 					if (glyph.equals(node.getGlyph())) {
+						if (highlightedNode == null) {
+							node.showView(ViewType.FULL_DESCRIPTION, node, true);
+							node.highlight(node.getNodeChapterColor(), 4);
+							node.highlightLinks(!canvas
+									.isSelectedAChapterNode());
+						}
+						isMultiNode = false;
 						highlightedNode = node;
-						node.highlight(Color.black, 2);
 						break;
+					}
+				}
+				// Node is a multi-node
+				if (isMultiNode) {
+					for (Node node : canvas.getSelectedNode()
+							.getMultiNodeList()) {
+						if (glyph.equals(node.getGlyph())) {
+							highlightedNode = node;
+							node.highlight(Color.black, 2);
+							break;
+						}
 					}
 				}
 			}
@@ -131,57 +133,60 @@ public class CameraMovementListener implements ViewEventHandler {
 	 * 			The glyph the user exited.
 	 */
 	public void exitGlyph(Glyph glyph) {
-		// Link text
-		if ( highlightedLink != null &&  glyph.equals(highlightedLink.getGlyph()))
-		{
-			highlightedLink.hideLinkInfo();
-			highlightedLink.unhighlight();
-			highlightedLink = null;
-			return;
-		}
-		if (!ignoreGlyph(glyph)) {
-			// Glyph is a multi-node highlight rectangle
-			if (glyph.getType() != null && glyph.getType().equals("MultiNodeRectangle"))
-			{
-				glyph.setBorderColor(glyph.getColor());
-				// Did not enter a new highlight rectangle.
-				if ( highlightedNode.equals(multiNode.getSubNode(glyph)))
-				{
-					highlightedNode = multiNode;
-					multiNode = null;
-				}
+		if (enabled) {
+			// Link text
+			if (highlightedLink != null
+					&& glyph.equals(highlightedLink.getGlyph())) {
+				highlightedLink.hideLinkInfo();
+				highlightedLink.unhighlight();
+				highlightedLink = null;
 				return;
 			}
-			
-		    // Determine if the chapter or node list should be searched.
-		    List<Node> targetList;
-            if ( canvas.isSelectedAChapterNode() )
-                targetList = canvas.getChapterList();
-            else
-                targetList = canvas.getNodeList();
-
-            boolean isSubNode = true;
-			for (Node node : targetList) {
-				if (glyph.equals(node.getGlyph())) {
-					// Show title only if the highlighted node is not the
-					// selected node
-					node.unhighlight();
-					if (node != canvas.getSelectedNode() && !canvas.isSelectedAChapterNode()) {
-						node.showView(ViewType.TITLE_ONLY, canvas.getSelectedNode(), true);
+			if (!ignoreGlyph(glyph)) {
+				// Glyph is a multi-node highlight rectangle
+				if (glyph.getType() != null
+						&& glyph.getType().equals("MultiNodeRectangle")) {
+					glyph.setBorderColor(glyph.getColor());
+					// Did not enter a new highlight rectangle.
+					if (highlightedNode.equals(multiNode.getSubNode(glyph))) {
+						highlightedNode = multiNode;
+						multiNode = null;
 					}
-					else if ( node == canvas.getSelectedNode() )
-						node.highlight(Color.yellow, 2);
-					highlightedNode = null;
-					node.unhighlightLinks(node);
-					isSubNode = false;
-					break;
+					return;
 				}
-			}
-			if (isSubNode) {
-				for (Node node : canvas.getSelectedNode().getMultiNodeList()) {
+
+				// Determine if the chapter or node list should be searched.
+				List<Node> targetList;
+				if (canvas.isSelectedAChapterNode())
+					targetList = canvas.getChapterList();
+				else
+					targetList = canvas.getNodeList();
+
+				boolean isSubNode = true;
+				for (Node node : targetList) {
+					if (glyph.equals(node.getGlyph())) {
+						// Show title only if the highlighted node is not the
+						// selected node
+						node.unhighlight();
+						if (node != canvas.getSelectedNode()
+								&& !canvas.isSelectedAChapterNode()) {
+							node.showView(ViewType.TITLE_ONLY,
+									canvas.getSelectedNode(), true);
+						} else if (node == canvas.getSelectedNode())
+							node.highlight(Color.yellow, 2);
+						highlightedNode = null;
+						node.unhighlightLinks(node);
+						isSubNode = false;
+						break;
+					}
+				}
+				if (isSubNode) {
+					for (Node node : canvas.getSelectedNode()
+							.getMultiNodeList()) {
 						highlightedNode = null;
 						node.unhighlight();
 						break;
+					}
 				}
 			}
 		}
@@ -189,127 +194,144 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void click1(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
-		// If a node was clicked on...
-		if (highlightedNode != null) {
-		    boolean centerOnNode = true;
-		    if ( mod == ViewEventHandler.SHIFT_MOD ) {
-		    	System.out.println("<xvalue>" + highlightedNode.getGlyph().vx + "</xvalue>\t<yvalue>"
-		    			+ highlightedNode.getGlyph().vy + "</yvalue>" );
-		    	highlightedNode.printDebugInfo();
-		    	return;
-		    }
-		    
-		    Node selectedNode = canvas.getSelectedNode();
-
-		    // If the node clicked on is the selected node...
-			if (highlightedNode.equals(selectedNode)) {
-			    // and is a chapter node, move to the correct chapter view
-			    if ( canvas.isSelectedAChapterNode() ) {
-			    	if (multiNode == null)
-			    		canvas.addNodeToBackList(selectedNode);
-			    	else
-			    	{
-						multiNode.resetSubNodeRectangleBorders();
-			    		canvas.addNodeToBackList(multiNode);
-			    	}
-			        centerOnNode = !canvas.updateZoomLevel(AppCanvas.ZOOM_CHAPTER_HEIGHT);
-			        highlightedNode = null;
-					multiNode = null;
-			    }
-			    // and is a page node, navigate to its content url and return
-			    else {
-    				canvas.navigateTo(selectedNode.getNodeContentUrl());
-                    return;
-			    }
-			}
-			// If the node is a multi-node
-			else if (selectedNode.hasMultiNodes() && 
-					selectedNode.getMultiNodeList().contains(highlightedNode))
-			{
-			    vSpaceManager.getActiveView().centerOnGlyph(
-				        highlightedNode.getGlyph(),
-				        vSpaceManager.getActiveCamera(), 1000, true);
-				canvas.showMultiNodeList();
-				highlightedNode = null;
-				return;
-			}
-			// If the node clicked on isn't the selected node, isn't a multi-node,
-			//  and not in overview, then show just the title of the currently selected node
-			else if (selectedNode != null && !canvas.isSelectedAChapterNode()) {
-				selectedNode.showView(ViewType.TITLE_ONLY, selectedNode, true);
-			}
-
+		if (enabled) {
+			// If a node was clicked on...
 			if (highlightedNode != null) {
-				selectedNode.unhighlight();
-				selectedNode.unhighlightLinks(highlightedNode);
-	            if ( selectedNode.hasMultiNodes() ) {
-	            	for ( Node n : selectedNode.getMultiNodeList())
-	            		n.showView(ViewType.HIDDEN, selectedNode, true);
-	            }
-	            
-	            canvas.addNodeToBackList(selectedNode);
-    			canvas.setSelectedNode( highlightedNode );
+				boolean centerOnNode = true;
+				if (mod == ViewEventHandler.SHIFT_MOD) {
+					System.out.println("<xvalue>"
+							+ highlightedNode.getGlyph().vx
+							+ "</xvalue>\t<yvalue>"
+							+ highlightedNode.getGlyph().vy + "</yvalue>");
+					highlightedNode.printDebugInfo();
+					return;
+				}
 
-    			// Show the full description of the newly selected node
-    			if(!canvas.isSelectedAChapterNode())
-    			{
-    				highlightedNode.showView(ViewType.FULL_DESCRIPTION, selectedNode, true);
-    			    canvas.showSelectedChapter();
-    			}
-    			
-    			highlightedNode.highlight(Color.yellow, 3);
-    			highlightedNode.highlightLinks(false);
-			}
+				Node selectedNode = canvas.getSelectedNode();
 
-	         // Center the camera on the newly selected node
-			if (centerOnNode) {
-			    vSpaceManager.getActiveView().centerOnGlyph(
-			        canvas.getSelectedNode().getGlyph(),
-			        vSpaceManager.getActiveCamera(), 1000, false );
-			    if ( !canvas.isSelectedAChapterNode() )
-			    {
-			    	vSpaceManager.getActiveCamera().setAltitude(
-			    		canvas.getZoomOverviewHeight()-300 > AppCanvas.ZOOM_OVERVIEW_MIN ? 
-			    				AppCanvas.ZOOM_OVERVIEW_MIN - 10 : canvas.getZoomOverviewHeight()-300, 
-			    		true);
-			    }
+				// If the node clicked on is the selected node...
+				if (highlightedNode.equals(selectedNode)) {
+					// and is a chapter node, move to the correct chapter view
+					if (canvas.isSelectedAChapterNode()) {
+						if (multiNode == null)
+							canvas.addNodeToBackList(selectedNode);
+						else {
+							multiNode.resetSubNodeRectangleBorders();
+							canvas.addNodeToBackList(multiNode);
+						}
+						centerOnNode = !canvas
+								.updateZoomLevel(AppCanvas.ZOOM_CHAPTER_HEIGHT);
+						highlightedNode = null;
+						multiNode = null;
+					}
+					// and is a page node, navigate to its content url and return
+					else {
+						canvas.navigateTo(selectedNode.getNodeContentUrl());
+						return;
+					}
+				}
+				// If the node is a multi-node
+				else if (selectedNode.hasMultiNodes()
+						&& selectedNode.getMultiNodeList().contains(
+								highlightedNode)) {
+					vSpaceManager.getActiveView().centerOnGlyph(
+							highlightedNode.getGlyph(),
+							vSpaceManager.getActiveCamera(), 1000, true);
+					canvas.showMultiNodeList();
+					highlightedNode = null;
+					return;
+				}
+				// If the node clicked on isn't the selected node, isn't a multi-node,
+				//  and not in overview, then show just the title of the currently selected node
+				else if (selectedNode != null
+						&& !canvas.isSelectedAChapterNode()) {
+					selectedNode.showView(ViewType.TITLE_ONLY, selectedNode,
+							true);
+				}
+
+				if (highlightedNode != null) {
+					selectedNode.unhighlight();
+					selectedNode.unhighlightLinks(highlightedNode);
+					if (selectedNode.hasMultiNodes()) {
+						for (Node n : selectedNode.getMultiNodeList())
+							n.showView(ViewType.HIDDEN, selectedNode, true);
+					}
+
+					canvas.addNodeToBackList(selectedNode);
+					canvas.setSelectedNode(highlightedNode);
+
+					// Show the full description of the newly selected node
+					if (!canvas.isSelectedAChapterNode()) {
+						highlightedNode.showView(ViewType.FULL_DESCRIPTION,
+								selectedNode, true);
+						canvas.showSelectedChapter();
+					}
+
+					highlightedNode.highlight(Color.yellow, 3);
+					highlightedNode.highlightLinks(false);
+				}
+
+				// Center the camera on the newly selected node
+				if (centerOnNode) {
+					vSpaceManager.getActiveView().centerOnGlyph(
+							canvas.getSelectedNode().getGlyph(),
+							vSpaceManager.getActiveCamera(), 1000, false);
+					if (!canvas.isSelectedAChapterNode()) {
+						vSpaceManager
+								.getActiveCamera()
+								.setAltitude(
+										canvas.getZoomOverviewHeight() - 300 > AppCanvas.ZOOM_OVERVIEW_MIN ? AppCanvas.ZOOM_OVERVIEW_MIN - 10
+												: canvas.getZoomOverviewHeight() - 300,
+										true);
+					}
+				}
 			}
 		}
 	}
 
 	public void press1(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		xLocation = jpx;
-		yLocation = jpy;
+		if (enabled) {
+			xLocation = jpx;
+			yLocation = jpy;
+		}
 	}
 
 	public void press2(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		xLocation = jpx;
-		yLocation = jpy;
+		if (enabled) {
+			xLocation = jpx;
+			yLocation = jpy;
+		}
 	}
 
 	public void press3(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		xLocation = jpx;
-		yLocation = jpy;
+		if (enabled) {
+			xLocation = jpx;
+			yLocation = jpy;
+		}
 	}
 
 	public void release2(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		xLocation = 0;
-		yLocation = 0;
+		if (enabled) {
+			xLocation = 0;
+			yLocation = 0;
+		}
 	}
 
 	public void release3(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		xLocation = 0;
-		yLocation = 0;
+		if (enabled) {
+			xLocation = 0;
+			yLocation = 0;
+		}
 	}
 
 	public void mouseDragged(ViewPanel pnl, int i, int buttonNumber, int jpx,
 			int jpy, MouseEvent me) {
-		switch (buttonNumber) {
-			case MouseEvent.BUTTON1 :
+		if (enabled) {
+			switch (buttonNumber) {
+			case MouseEvent.BUTTON1:
 				Camera activeCamera = vSpaceManager.getActiveCamera();
 				double altitude = (activeCamera.focal + Math
-						.abs(activeCamera.altitude))
-						/ activeCamera.focal;
+						.abs(activeCamera.altitude)) / activeCamera.focal;
 				dragging = true;
 				synchronized (activeCamera) {
 
@@ -320,19 +342,22 @@ public class CameraMovementListener implements ViewEventHandler {
 						xLocation = jpx;
 						yLocation = jpy;
 					}
-			        // Move the camera
-					activeCamera.move(altitude * (xLocation - jpx),
-							altitude * (jpy - yLocation));
+					// Move the camera
+					activeCamera.move(altitude * (xLocation - jpx), altitude
+							* (jpy - yLocation));
 					xLocation = jpx;
 					yLocation = jpy;
 				}
 				break;
 
+			}
 		}
 	}
 
 	public void release1(ViewPanel pnl, int mod, int jpx, int jpy, MouseEvent me) {
-		dragging = false;
+		if(enabled){
+			dragging = false;
+		}
 	}
 
 	/**
@@ -351,19 +376,22 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void click3(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
-	    /**
-		int count = 0;
-	    // Show all nodes and move them back to their starting positions
-		for (Node node : nodeList) {
-			node.showView(ViewType.TITLE_ONLY);
-			int nodeX = startingNodeCoords.get(count).x;
-			int nodeY = startingNodeCoords.get(count).y;
-			node.moveTo(nodeX, nodeY);
-			count++;
+	    if (enabled) {
+			/**
+				int count = 0;
+			    // Show all nodes and move them back to their starting positions
+				for (Node node : nodeList) {
+					node.showView(ViewType.TITLE_ONLY);
+					int nodeX = startingNodeCoords.get(count).x;
+					int nodeY = startingNodeCoords.get(count).y;
+					node.moveTo(nodeX, nodeY);
+					count++;
+				}
+			 */
+			VirtualSpaceManager.INSTANCE.getActiveCamera().altitude = canvas
+					.getZoomOverviewHeight();
+			canvas.updateZoomLevel(canvas.getZoomOverviewHeight());
 		}
-		*/
-	    VirtualSpaceManager.INSTANCE.getActiveCamera().altitude = canvas.getZoomOverviewHeight();
-	    canvas.updateZoomLevel(canvas.getZoomOverviewHeight());
 	}
 
 	public void click2(ViewPanel pnl, int mod, int jpx, int jpy,
@@ -375,18 +403,22 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void mouseWheelMoved(ViewPanel pnl, short wheelDirection, int i,
 			int i1, MouseWheelEvent mwe) {
-		Camera activeCamera = VirtualSpaceManager.INSTANCE.getActiveCamera();
-		double altitudeFactor = (activeCamera.focal + Math.abs(activeCamera.altitude)) / activeCamera.focal;
-		if (wheelDirection == WHEEL_DOWN) {
-			activeCamera.altitudeOffset((float) (-altitudeFactor * WSF));
-			VirtualSpaceManager.INSTANCE.repaintNow();
-		} else {
-			activeCamera.altitudeOffset((float) (altitudeFactor * WSF));
-			if ( activeCamera.altitude > AppCanvas.ZOOM_OVERVIEW_MAX )
-				activeCamera.altitude = AppCanvas.ZOOM_OVERVIEW_MAX;
-			VirtualSpaceManager.INSTANCE.repaintNow();
+		if (enabled) {
+			Camera activeCamera = VirtualSpaceManager.INSTANCE
+					.getActiveCamera();
+			double altitudeFactor = (activeCamera.focal + Math
+					.abs(activeCamera.altitude)) / activeCamera.focal;
+			if (wheelDirection == WHEEL_DOWN) {
+				activeCamera.altitudeOffset((float) (-altitudeFactor * WSF));
+				VirtualSpaceManager.INSTANCE.repaintNow();
+			} else {
+				activeCamera.altitudeOffset((float) (altitudeFactor * WSF));
+				if (activeCamera.altitude > AppCanvas.ZOOM_OVERVIEW_MAX)
+					activeCamera.altitude = AppCanvas.ZOOM_OVERVIEW_MAX;
+				VirtualSpaceManager.INSTANCE.repaintNow();
+			}
+			canvas.updateZoomLevel(activeCamera.altitude);
 		}
-		canvas.updateZoomLevel( activeCamera.altitude );
 	}
 
 	public void Ktype(ViewPanel pnl, char c, int i, int i1, KeyEvent ke) {
@@ -418,9 +450,11 @@ public class CameraMovementListener implements ViewEventHandler {
 	 */
 	public void deselectNodes()
     {
-        if (highlightedNode != null) {
-            highlightedNode.unhighlightLinks(canvas.getSelectedNode());
-            highlightedNode = null;
-        }
+        if (enabled) {
+			if (highlightedNode != null) {
+				highlightedNode.unhighlightLinks(canvas.getSelectedNode());
+				highlightedNode = null;
+			}
+		}
     }
 }
