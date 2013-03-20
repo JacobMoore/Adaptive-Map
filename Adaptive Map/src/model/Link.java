@@ -165,7 +165,7 @@ public class Link
         if (!showText)
         	selectionRectangle.setVisible(false);
         virtualSpace.addGlyph(selectionRectangle);
-        virtualSpace.above(selectionRectangle, this);
+        virtualSpace.below(selectionRectangle, linkText);
         
         highlighted = false;
         refresh();
@@ -274,7 +274,7 @@ public class Link
         Point linkCenter = getPointAlongLink(0.45f);
         linkText.vx = linkCenter.x - (long)linkText.getTextContainerWidth()/2;
         //vtext origin is at bottom left of first line
-        linkText.vy = linkCenter.y + (long)linkText.getTextContainerHeight()/2 - linkText.getFont().getSize();
+        linkText.vy = linkCenter.y + (long)linkText.getTextContainerHeight()/2 - linkText.getFont().getSize(); 
         virtualSpace.onTop(linkText);
 
         // Remove, then re-add triangle, as it will have moved
@@ -297,6 +297,7 @@ public class Link
         }
         selectionRectangle.vx = linkCenter.x;
         selectionRectangle.vy = linkCenter.y;
+        virtualSpace.below(selectionRectangle, linkText);
 
         if (highlighted)
         {
