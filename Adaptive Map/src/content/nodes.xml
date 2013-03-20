@@ -253,7 +253,7 @@
 		<description>The net upward hydrostatic force on submerged or floating objects.</description>
 		<chapter>Fluid Statics</chapter>
 		<page>websites/fluidstatics/buoyancy.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>Buoyant, Floating, Liquid, Fluid</keywords>
 	</node>
 
 	<node>
@@ -311,7 +311,7 @@
 		<description>This page describes the different ways two bodies can be connected to one another in 2-D or planar systems.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/connectionsandsupports_2D.html</page>
-		<keywords>Roller, Pin, Cable, Fixed Support, Point Contact</keywords>
+		<keywords>Roller, Pin, Cable, Fixed Support, Point Contact, Reactions</keywords>
 		<link type="MTH">Free Body Diagram</link>
 		<link type="APP">Trusses</link>
 	</node>
@@ -321,7 +321,7 @@
 		<description>This page describes the different ways two bodies can be connected to one another in 3-D systems.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/connectionsandsupports_3D.html</page>
-		<keywords>Joint, Ball and Socket, Cable, Journal Bearing, Thrust Bearing, Universal Joint, Hinge, Pin, Fixed Support</keywords>
+		<keywords>Joint, Ball and Socket, Cable, Journal Bearing, Thrust Bearing, Universal Joint, Hinge, Pin, Fixed Support, Reactions</keywords>
 		<link type="MTH">Free Body Diagram</link>
 		<link type="APP">Trusses</link>
 	</node>
@@ -331,7 +331,7 @@
 		<description>Ways in which bodies are prevented from moving or rotating.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/constraints.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>constrained, unconstrained, overconstrained</keywords>
 		<link type="CON">Connections (Planar)</link>
 		<link type="CON">Connections (3-D)</link>
 		<link type="DRV">Static Determinacy</link>
@@ -755,7 +755,7 @@
 		<description>A physical law that states that for every action (force) there is an equal and opposite reaction.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/newtonsthirdlaw.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>equal and opposite, bodies in contact</keywords>
 		<link type="APP">Normal Force</link>
 		<link type="APP">Multi-Component Assemblies</link>
 	</node>
@@ -765,7 +765,7 @@
 		<description>The force between two solid bodies in contact that prevents objects from occupying the same space at the same time.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/normalforce.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>Bodies in Contact, Reactions</keywords>
 		<link type="CON">Constraints</link>
 	</node>
 
@@ -924,7 +924,7 @@
 		<description>A measure of whether or not all forces in a system can be solved for using the equations of static equilibrium.</description>
 		<chapter>Constraints and DOF</chapter>
 		<page>websites/constraints/staticdeterminacy.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>Statically Determinate, Statically Indeterminate</keywords>
 		<link type="DRV">Static Determinacy in Trusses</link>
 	</node>
 
@@ -1112,7 +1112,7 @@
 		<description>The pressure a liquid in equilibrium exerts on any surface in contact with it.</description>
 		<chapter>Fluid Statics</chapter>
 		<page>websites/fluidstatics/hydrostaticpressure.html</page>
-		<keywords>EMPTY</keywords>
+		<keywords>Liquid, Fluid</keywords>
 		<link type="CON">Hydrostatic Pressure on a Flat Surface</link>
 		<link type="CON">Buoyancy</link>
 	</node>
