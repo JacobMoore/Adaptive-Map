@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -520,12 +521,28 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
 		colorPanel.add(colorLabel);
-		JComboBox chapterColorBoxIn = new JComboBox();
-		for ( String color : EditorXMLParser.getChapterColors())
-			chapterColorBoxIn.addItem(color);
+//		JComboBox chapterColorBoxIn = new JComboBox();
+//		for ( String color : EditorXMLParser.getChapterColors())
+//			chapterColorBoxIn.addItem(color);
+//		
+//		chapterColorBoxIn.setSelectedItem(chapter.chapterColor);
+//		colorPanel.add(chapterColorBoxIn);
 		
-		chapterColorBoxIn.setSelectedItem(chapter.chapterColor);
+		final JTextField chapterColorBoxIn = new JTextField(chapter.chapterColor);
 		colorPanel.add(chapterColorBoxIn);
+		
+		JButton chapterColorSelect = new JButton("Select Color");
+		chapterColorSelect.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Color color = JColorChooser.showDialog(null, "Choose Chapter Color", Color.white);
+				chapterColorBoxIn.setText(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
+			}
+			
+		});
+		colorPanel.add(chapterColorSelect);
+		
 		dialogPanel.add(colorPanel);
 		
 		JPanel defaultPanel = new JPanel();
@@ -586,7 +603,7 @@ public class EditorSplitPane extends JSplitPane {
             null, options, options[0] );
         
         if ( selection == 0 ) {
-        	chapter.chapterColor = (String)chapterColorBoxIn.getSelectedItem();
+        	chapter.chapterColor = (String)chapterColorBoxIn.getText();
         	chapter.chapterTitle = chapterTitleIn.getText();
         	chapter.defaultNode = (String)defaultIn.getSelectedItem();
         	chapter.description = chapterDescriptionIn.getText();
@@ -908,11 +925,27 @@ public class EditorSplitPane extends JSplitPane {
 		JPanel colorPanel = new JPanel();
 		JLabel colorLabel = new JLabel("Chapter Color");
 		colorPanel.add(colorLabel);
-		final JComboBox chapterColorBoxIn = new JComboBox();
-		for ( String color : EditorXMLParser.getChapterColors())
-			chapterColorBoxIn.addItem(color);
+//		final JComboBox chapterColorBoxIn = new JComboBox();
+//		for ( String color : EditorXMLParser.getChapterColors())
+//			chapterColorBoxIn.addItem(color);
+//		
+//		colorPanel.add(chapterColorBoxIn);
 		
+		final JTextField chapterColorBoxIn = new JTextField(10);
 		colorPanel.add(chapterColorBoxIn);
+		
+		JButton chapterColorSelect = new JButton("Select Color");
+		chapterColorSelect.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Color color = JColorChooser.showDialog(null, "Choose Chapter Color", Color.white);
+				chapterColorBoxIn.setText(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
+			}
+			
+		});
+		colorPanel.add(chapterColorSelect);
+		
 		chapterPanel.add(colorPanel);
 
 		JPanel defaultPanel = new JPanel();
@@ -971,7 +1004,7 @@ public class EditorSplitPane extends JSplitPane {
 					return;
 				
 				ChapterData newChapter = new ChapterData(chapterTitleIn.getText(), 
-						(String)chapterColorBoxIn.getSelectedItem(), chapterDescriptionIn.getText(), chapterKeywordsIn.getText(),
+						(String)chapterColorBoxIn.getText(), chapterDescriptionIn.getText(), chapterKeywordsIn.getText(),
 						(Integer)xValueIn.getValue(), (Integer)yValueIn.getValue(), (String)defaultIn.getSelectedItem(), 
 						defaultChapterIn.isSelected());
 				EditorXMLParser.chapterData.add(newChapter);

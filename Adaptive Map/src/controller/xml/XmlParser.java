@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -178,6 +179,14 @@ public class XmlParser {
 							chapterColor = c11;
 						else if (color.equalsIgnoreCase("gold"))
 							chapterColor = c12;
+						else{
+							Scanner in = new Scanner(color).useDelimiter(", ");
+							int red = Integer.parseInt(in.next());
+							int green = Integer.parseInt(in.next());
+							int blue = Integer.parseInt(in.next());
+							chapterColor = new Color(red, green, blue);
+							in.close();
+						}
 					} catch (Exception e) {
 						throw new IllegalArgumentException(String.format(
 								"Invalid color specified (%s)",
