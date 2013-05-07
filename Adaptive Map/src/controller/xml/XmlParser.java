@@ -210,12 +210,15 @@ public class XmlParser {
 					break;
 				}
 			}
-			if (Configuration.USE_FIXED_NODE_POSITIONS) {
-				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, chapterKeywords, x, y, defaultNode, defaultChapter));
-			} else {
-				chapterProperties.put(chapterTitle, new ChapterProperties(
-						chapterColor, chapterDescription, chapterKeywords, 0, 0, defaultNode, defaultChapter));
+			if(chapterTitle != null && chapterColor != null && chapterDescription != null
+					&& chapterKeywords != null && defaultNode != null) {
+				if (Configuration.USE_FIXED_NODE_POSITIONS) {
+					chapterProperties.put(chapterTitle, new ChapterProperties(
+							chapterColor, chapterDescription, chapterKeywords, x, y, defaultNode, defaultChapter));
+				} else {
+					chapterProperties.put(chapterTitle, new ChapterProperties(
+							chapterColor, chapterDescription, chapterKeywords, 0, 0, defaultNode, defaultChapter));
+				}
 			}
 		}
 
@@ -271,6 +274,7 @@ public class XmlParser {
 						break;
 				}
 			}
+			if(linkTitle != null && linkLineType != null && linkColor != null && linkDescription != null)
 			linkProperties.put(linkTitle, new LinkProperties(LinkLineType
 					.valueOf(linkLineType), linkColor, linkDescription));
 		}
@@ -330,15 +334,18 @@ public class XmlParser {
 					default :
 				}
 			}
-			Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter, 
-					nodeKeywords, map.getChapterType(nodeChapter).getChapterColor(), fontSize);
-			if ( nodeContentUrl.startsWith("http") )
-				nodeContentUrl.replaceAll("&amp;", "&");
-			
-			newNode.setNodeContentUrl(nodeContentUrl);
-			if (x != -99999 && y != -99999)
-				newNode.setFixedNodePosition(x, y);
-			map.addNode(nodeChapter, newNode);
+			if(nodeTitle != null && nodeDescription != null && nodeChapter != null && nodeKeywords != null
+					&& nodeContentUrl != null ) {
+				Node newNode = new Node(nodeTitle, nodeDescription, nodeChapter, 
+						nodeKeywords, map.getChapterType(nodeChapter).getChapterColor(), fontSize);
+				if ( nodeContentUrl.startsWith("http") )
+					nodeContentUrl.replaceAll("&amp;", "&");
+				
+				newNode.setNodeContentUrl(nodeContentUrl);
+				if (x != -99999 && y != -99999)
+					newNode.setFixedNodePosition(x, y);
+				map.addNode(nodeChapter, newNode);
+			}
 		}
 	}
 
@@ -438,7 +445,7 @@ public class XmlParser {
 					DocumentBuilder db;
 					db = dbf.newDocumentBuilder();
 					Document xmlFile = db.parse(Configuration
-							.getXMLFilePath(!Configuration.USE_LOCAL_PATH));
+							.getXMLFilePath(Configuration.USE_LOCAL_PATH));
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();
