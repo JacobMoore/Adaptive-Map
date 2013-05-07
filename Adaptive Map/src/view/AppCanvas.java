@@ -791,13 +791,15 @@ public class AppCanvas extends JPanel {
 	public ArrayList<Node> searchForNode(String searchString) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		String str = searchString.toLowerCase();
+		String[] toSearchFor = str.split(" ");
 		for (Node n : nodeList) {
-			//System.out.println(n.getNodeKeywords());
-			if (n.getNodeTitle().toLowerCase().contains(str)
-					|| n.getNodeDescription().toLowerCase().contains(str)
-					|| n.getNodeChapter().toLowerCase().contains(str)
-					|| n.getNodeKeywords().toLowerCase().contains(str)) {
-				nodes.add(n);
+			for (String s : toSearchFor) {
+				if (n.getNodeTitle().toLowerCase().contains(s)
+						|| n.getNodeDescription().toLowerCase().contains(s)
+						|| n.getNodeChapter().toLowerCase().contains(s)
+						|| n.getNodeKeywords().toLowerCase().contains(s)) {
+					nodes.add(n);
+				}
 			}
 		}
 		return nodes;
@@ -902,8 +904,8 @@ public class AppCanvas extends JPanel {
 					selectedNode.highlight(Color.yellow, 3);
 					// selectedNode.highlightLinks(false);
 				} else {
-					//Color background = JColorChooser.showDialog(null,
-					//		"JColorChooser Sample", null);
+					// Color background = JColorChooser.showDialog(null,
+					// "JColorChooser Sample", null);
 					JOptionPane.showMessageDialog(null,
 							"There are no relevant nodes found with the phrase \'"
 									+ searchBar.getText() + "\'",
@@ -1115,8 +1117,8 @@ public class AppCanvas extends JPanel {
 
 		selectedNode.highlight(Color.yellow, 3);
 
-//		vSpaceManager.getActiveView().centerOnGlyph(selectedNode.getGlyph(),
-//				vSpaceManager.getActiveCamera(), 1000, false);
+		// vSpaceManager.getActiveView().centerOnGlyph(selectedNode.getGlyph(),
+		// vSpaceManager.getActiveCamera(), 1000, false);
 		CameraMovementListener.enabled = true;
 	}
 
