@@ -29,3 +29,5 @@ local.properties
 # PDT-specific
 .buildpath
 /AdaptiveMap2/nbproject/private/
+/AdaptiveMap2/build/
+/AdaptiveMap2/dist/

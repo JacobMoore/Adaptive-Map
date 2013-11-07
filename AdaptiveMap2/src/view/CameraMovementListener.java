@@ -227,6 +227,7 @@ public class CameraMovementListener implements ViewEventHandler {
 					// and is a page node, navigate to its content url and return
 					else {
 						canvas.navigateTo(selectedNode.getNodeContentUrl());
+                                                highlightedNode = null;
 						return;
 					}
 				}

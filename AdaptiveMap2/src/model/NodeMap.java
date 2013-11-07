@@ -21,6 +21,9 @@ import java.util.Map.Entry;
 import model.Node.ChapterProperties;
 
 import fr.inria.zvtm.glyphs.VText;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 
 /**
  * // -------------------------------------------------------------------------
@@ -216,60 +219,70 @@ public class NodeMap
 		else if ( overview && nodeData.containsKey("OVERVIEW"))
 			return nodeData.get("OVERVIEW");
 		
+                boolean useLocal = Configuration.runLocally;
+                
 		byte[] graph = null;
 		try {
-        	String location = "";
-        	
-        	if (!overview )
-        	{
-        		location = String.format("%s-%s", 
-        			Configuration.getDataFilePath(false), 
-        			centerNode.getNodeChapter().replace(" ", "_"));
-        	}
-        	else
-        	{
-        		location = String.format("%s-%s", 
-	        			Configuration.getDataFilePath(false), 
-	        			"OVERVIEW");
-        	}
-        	URL target = null;
-        	try {
-			target = new URL(location);
-        	}	catch (MalformedURLException e)	{
-        		System.err.println("ERROR: Malformed URL");
-    			System.err.println(e.getLocalizedMessage());
-        	}
-			InputStream stream = target.openStream();
-			BufferedInputStream in = new BufferedInputStream(stream);
+                    String location = "";
 
-			// Code required to make eclipse load data
-	        graph = new byte[Configuration.GRAPHVIZ_BUFFER_LIMIT];
-	        in.mark(2);
-	        int next = in.read();
-	        if ( next != -1 ) {
-	        	in.reset();
-	        	next = in.read(graph);
-	        }
-	        /*
-	         * OLD code that works fine everywhere except eclipse
-	         * 	graph = new byte[in.available()];
-			 *  in.read(graph);
-	         */
+                    if (!overview )
+                    {
+                            location = String.format("%s-%s", 
+                                    Configuration.getDataFilePath(useLocal), 
+                                    centerNode.getNodeChapter().replace(" ", "_"));
+                            
+                    }
+                    else
+                    {
+                            location = String.format("%s-%s", 
+                                            Configuration.getDataFilePath(useLocal), 
+                                            "OVERVIEW");
+                    }
+                    BufferedInputStream in;
+                            
+                    if(!useLocal) {
+                        URL target = null;
 
-			if (in != null)
-				in.close();
-			
-			if (!overview)
-				nodeData.put(centerNode.getNodeChapter(), graph);
-			else
-				nodeData.put("OVERVIEW", graph);
-			return graph;
+                        try {
+                                target = new URL(location);
+                        }	catch (MalformedURLException e)	{
+                                System.err.println("ERROR: Malformed URL");
+                                System.err.println(e.getLocalizedMessage());
+                        }
+                        InputStream stream = target.openStream();
+                        in = new BufferedInputStream(stream);
+                    } else {
+                        FileInputStream fr = new FileInputStream(new File(location));
+                        in = new BufferedInputStream(fr);
+                    }
+                            // Code required to make eclipse load data
+                    graph = new byte[Configuration.GRAPHVIZ_BUFFER_LIMIT];
+                    in.mark(2);
+                    int next = in.read();
+                    if ( next != -1 ) {
+                            in.reset();
+                            next = in.read(graph);
+                    }
+                    /*
+                     * OLD code that works fine everywhere except eclipse
+                     * 	graph = new byte[in.available()];
+                             *  in.read(graph);
+                     */
+
+                            if (in != null)
+                                    in.close();
+
+                            if (!overview)
+                                    nodeData.put(centerNode.getNodeChapter(), graph);
+                            else
+                                    nodeData.put("OVERVIEW", graph);
+                            return graph;
 		} catch (FileNotFoundException e) {
-    		System.err.println("ERROR: File not found");
+                        System.err.println("ERROR: File not found");
 			System.err.println(e.getLocalizedMessage());
 			return null;
 		} catch (IOException e) {
-    		System.err.println("ERROR: IO Exception");
+                        System.err.println("ERROR: IO Exception");
 			System.err.println(e.getLocalizedMessage());
 			return null;
 		}

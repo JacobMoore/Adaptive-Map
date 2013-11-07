@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import model.Node;
 import view.AppCanvas;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
+import javax.swing.JFrame;
 
 /**
  *
@@ -21,6 +22,8 @@ import fr.inria.zvtm.engine.VirtualSpaceManager;
  */
 public class VirtualTextbookApplet extends JApplet {
 
+    
+    
 	private static final long serialVersionUID = 4637779516193337728L;
 	private VirtualSpaceManager vSpaceManager;
 	private AppCanvas canvas;
@@ -41,13 +44,13 @@ public class VirtualTextbookApplet extends JApplet {
 					startImage = null;
 					vSpaceManager = VirtualSpaceManager.INSTANCE;
 					vSpaceManager.getAnimationManager().start();
-					canvas = new AppCanvas(vSpaceManager, VirtualTextbookApplet.this,
-						    getAppletContext());
+					canvas = new AppCanvas(vSpaceManager, (JFrame) SwingUtilities.getWindowAncestor(VirtualTextbookApplet.this),
+						    null);
 					listener = new SizeChangedListener();
-			        addComponentListener(listener);
+                                        addComponentListener(listener);
 			        try {
-						startImage = 
-								ImageIO.read(new URL(Configuration.getServerFolder() + "startImage.jpg"));
+						//startImage = 
+						//		ImageIO.read(new URL(Configuration.getServerFolder() + "startImage.jpg"));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -58,6 +61,8 @@ public class VirtualTextbookApplet extends JApplet {
 			System.err.println("createGUI didn't complete successfully");
 			e.printStackTrace();
 		}
+                
+                System.out.println("Stuff" + canvas.getChapterList().toString());
 	}
 	
 	@Override
@@ -76,8 +81,8 @@ public class VirtualTextbookApplet extends JApplet {
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-		if (showStart)
-			g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
+		//if (showStart)
+		//	g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
 	}
 	
 	/**
@@ -94,10 +99,13 @@ public class VirtualTextbookApplet extends JApplet {
         @Override
         public void componentResized( ComponentEvent e ) {
             canvas.setToolSizes();
+            canvas.setActiveViewSize();
+            System.out.println("YO");
         }
         @Override
         public void componentShown( ComponentEvent e ) {
             canvas.setToolSizes();
+            canvas.setActiveViewSize();
         } 
     }
 }

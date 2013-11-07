@@ -31,6 +31,7 @@ public class Configuration {
 	
 	public static boolean RUN_AS_APPLET = true;
 
+        public static boolean runLocally = false;
     /**
      * Returns the path to the nodes.xml file.
      * @param useLocal
@@ -53,7 +54,7 @@ public class Configuration {
 	
 	public static final String getServerFolder()
 	{
-		return "http://adaptivemap.me.vt.edu/AdaptiveMap/";
+		return "http://adaptivemap.ma.psu.edu/";
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class Configuration {
 			 String currentDirPath = (new File(".")).getAbsolutePath();
 			 currentDirPath = currentDirPath.substring(0, currentDirPath
 			 .length() - 1);
-			 return String.format("%sgraphvizData", currentDirPath);
+			 return String.format("%ssrc/content/graphvizData", currentDirPath);
 		 }
 		 else
 			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/graphvizData";
