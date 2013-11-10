@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.4
+Created-By: 1.7.0_21-b12 (Oracle Corporation)
+Class-Path: lib/commons-collections-3.2.1.jar lib/jcip-annotations-1.0
+ .jar lib/junit-3.8.1.jar lib/timingframework-1.0.jar lib/xercesImpl-2
+ .8.1.jar lib/xml-apis-1.3.03.jar lib/xmlParserAPIs-2.6.2.jar
+X-COMMENT: Main-Class will be added automatically by build
+Main-Class: controller.VirtualTextbookJFrame
+
