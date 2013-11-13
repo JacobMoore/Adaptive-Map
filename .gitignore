@@ -31,3 +31,6 @@ local.properties
 /AdaptiveMap2/nbproject/private/
 /AdaptiveMap2/build/
 /AdaptiveMap2/dist/
+/AdaptiveMapServer/nbproject/private/
+/AdaptiveMapServer/build/
+/AdaptiveMapServer/dist/

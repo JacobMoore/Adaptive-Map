@@ -10,9 +10,13 @@ import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import network.DataRetriever;
 import view.AppCanvas;
 
 /**
@@ -24,10 +28,25 @@ public class VirtualTextbookJFrame extends JFrame {
     
     
     public static void main(String[] args) {
+        DataRetriever retriever = new DataRetriever("127.0.0.1", 10001);
+        try {
+            retriever.connect();
+        } catch (IOException ex) {
+            Logger.getLogger(VirtualTextbookJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
+        try {
+            retriever.downloadData();
+        } catch (IOException ex) {
+            Logger.getLogger(VirtualTextbookJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(2);
+        }
+        
+        System.out.println("downloaded files succesfully");
+        
         VirtualTextbookJFrame frame = new VirtualTextbookJFrame();
         
         frame.setVisible(true);
-        System.out.println("Hello");
     }
     
     private AppCanvas canvas;

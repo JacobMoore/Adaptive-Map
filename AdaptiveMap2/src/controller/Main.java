@@ -48,7 +48,7 @@ public class Main {
 
 		for (String chapter : nodeMap.getChapters()) {
 			String location = String.format("%s-%s",
-					Configuration.getDataFilePath(true),
+					Configuration.getGraphViz(),
 					chapter.replace(" ", "_"));
 			System.out.println("Creating file: " + location);
 			File out = new File(location);
@@ -101,7 +101,7 @@ public class Main {
 			}
 		}
 		String location = String.format("%s-%s",
-				Configuration.getDataFilePath(true), "OVERVIEW");
+                        Configuration.getGraphViz(), "OVERVIEW");
 		File out = new File(location);
 		out.createNewFile();
 		GraphViz gv = nodeMap.generateGraphFromNodes(chapterList);

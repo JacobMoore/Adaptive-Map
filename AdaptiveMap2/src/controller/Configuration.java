@@ -31,7 +31,7 @@ public class Configuration {
 	
 	public static boolean RUN_AS_APPLET = true;
 
-        public static boolean runLocally = false;
+        public static boolean runLocally = true;
     /**
      * Returns the path to the nodes.xml file.
      * @param useLocal
@@ -42,10 +42,7 @@ public class Configuration {
 	public static final String getXMLFilePath(final boolean useLocal) {
 		 if ( useLocal )
 		 {
-			 String currentDirPath = (new File(".")).getAbsolutePath();
-			 currentDirPath = currentDirPath.substring(0, currentDirPath
-			 .length() - 1);
-			 return String.format("%ssrc/content/nodes.xml", currentDirPath);
+			 return Configuration.getDataFilePath(runLocally) + "/nodes.xml";
 		 }
 		 else {
 			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
@@ -67,13 +64,17 @@ public class Configuration {
 	public static final String getDataFilePath(final boolean useLocal) {
 		 if ( useLocal )
 		 {
-			 String currentDirPath = (new File(".")).getAbsolutePath();
-			 currentDirPath = currentDirPath.substring(0, currentDirPath
-			 .length() - 1);
-			 return String.format("%ssrc/content/graphvizData", currentDirPath);
+			 return getApplicationDirectory() + "content/";
 		 }
 		 else
 			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/graphvizData";
 	}
+        
+        public static final String getApplicationDirectory() {
+            return System.getProperty("user.home") + "/VirtualTextbook/";
+        }
 
+        public static final String getGraphViz() {
+            return getDataFilePath(runLocally) + "graphVizData";
+        }
 }

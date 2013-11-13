@@ -228,14 +228,14 @@ public class NodeMap
                     if (!overview )
                     {
                             location = String.format("%s-%s", 
-                                    Configuration.getDataFilePath(useLocal), 
+                                    Configuration.getGraphViz(), 
                                     centerNode.getNodeChapter().replace(" ", "_"));
                             
                     }
                     else
                     {
                             location = String.format("%s-%s", 
-                                            Configuration.getDataFilePath(useLocal), 
+                                            Configuration.getGraphViz(), 
                                             "OVERVIEW");
                     }
                     BufferedInputStream in;
