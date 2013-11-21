@@ -52,6 +52,7 @@ public class Main {
 					chapter.replace(" ", "_"));
 			System.out.println("Creating file: " + location);
 			File out = new File(location);
+                        out.getParentFile().mkdirs();
 			out.createNewFile();
 			GraphViz gv = nodeMap.generateGraphFromNodes(nodeMap
 					.getChapterNodes(chapter));
@@ -103,6 +104,7 @@ public class Main {
 		String location = String.format("%s-%s",
                         Configuration.getGraphViz(), "OVERVIEW");
 		File out = new File(location);
+                out.getParentFile().mkdirs();
 		out.createNewFile();
 		GraphViz gv = nodeMap.generateGraphFromNodes(chapterList);
 		if (gv.writeGraphToFile(gv.getGraph(gv.getDotSource(), "plain"), out,
