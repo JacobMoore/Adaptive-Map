@@ -25,10 +25,11 @@ import view.AppCanvas;
  */
 public class VirtualTextbookJFrame extends JFrame {
     
-    
-    
+    private static final String HOST = "http://www.adaptivemap.ma.psu.edu";
+    private static final int PORT = 10001;    
+
     public static void main(String[] args) {
-        DataRetriever retriever = new DataRetriever("127.0.0.1", 10001);
+        DataRetriever retriever = new DataRetriever(HOST, PORT);
         try {
             retriever.connect();
         } catch (IOException ex) {
