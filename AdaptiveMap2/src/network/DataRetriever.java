@@ -49,7 +49,7 @@ public class DataRetriever {
         System.out.println("Key bad, retrieving files");
         
         File dir = new File(Configuration.getDataFilePath(Configuration.runLocally));
-        dir.delete();
+        delete(dir);
         downloadFiles();
     }
 
@@ -88,7 +88,7 @@ public class DataRetriever {
             os.println("OKAY");
             os.flush();
             File file = new File(Configuration.getDataFilePath(true) + readLine);
-            File dir = new File(file.getAbsolutePath().replace(file.getName(), ""));
+            File dir = file.getParentFile();
             dir.mkdirs();
             file.createNewFile();
             
@@ -107,6 +107,18 @@ public class DataRetriever {
             FileWriter fw = new FileWriter(file);
             fw.write(content);
             fw.close();
+        }
+    }
+    
+    private void delete(File toDelete) {
+        
+        if(toDelete.isDirectory()) {
+            for(File file: toDelete.listFiles()) {
+                delete(file);
+            }
+            toDelete.delete();
+        } else {
+            toDelete.delete();
         }
     }
 }

@@ -776,8 +776,15 @@ public class AppCanvas extends JPanel {
 	 * when tools are initialized, and the view is resized.
 	 */
 	public void setToolSizes() {
-		int parentWidth = searchBar.getParent().getWidth();
-		// int parentHeight = searchBar.getParent().getHeight();
+		int parentWidth = appFrame.getWidth();
+                int parentHeight = appFrame.getHeight();
+                int inset = 10;
+                
+                int buttonWidth = 150;
+                int buttonHeight = 25;
+                int x = parentWidth - buttonWidth - inset;
+                int y = inset;
+                /*
 		searchBar.setBounds(parentWidth - 155, 10, 150, 25);
 		pageButton.setBounds(parentWidth - 105, 100, 100, 25);
 		medViewRadioButton.setBounds(parentWidth - 105, 75, 100, 25);
@@ -788,7 +795,19 @@ public class AppCanvas extends JPanel {
 		zoomOutButton.setBounds(parentWidth - 55, 160, 45, 25);
 		// legendTextArea.setBounds( parentWidth - 255, parentHeight - 280, 250,
 		// 275 );
-		backButton.setBounds(10, 10, 100, 25);
+		backButton.setBounds(10, 10, 100, 25);*/
+                
+                searchBar.setBounds(x, 10, buttonWidth, buttonHeight);
+		pageButton.setBounds(x, 100, buttonWidth, buttonHeight);
+		medViewRadioButton.setBounds(x, 75, buttonWidth, buttonHeight);
+		highViewRadioButton.setBounds(x, 50, buttonWidth, buttonHeight);
+		// legendButton.setBounds( parentWidth - 105, 160, 100, 25 );
+		optionsButton.setBounds(x, 130, buttonWidth, buttonHeight);
+		zoomInButton.setBounds(x, 160, buttonWidth, buttonHeight);
+		zoomOutButton.setBounds(x, 160, buttonWidth, buttonHeight);
+		// legendTextArea.setBounds( parentWidth - 255, parentHeight - 280, 250,
+		// 275 );
+		backButton.setBounds(0, inset, buttonWidth, buttonHeight);
                 toolsPane.setBounds(0,0,appFrame.getWidth(), appFrame.getHeight());
 	}
 

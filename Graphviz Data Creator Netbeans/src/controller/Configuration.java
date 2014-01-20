@@ -42,7 +42,7 @@ public class Configuration {
 	public static final String getXMLFilePath(final boolean useLocal) {
 		 if ( useLocal )
 		 {
-			 return "nodes.xml";
+			 return getDataFilePath(useLocal) + "nodes.xml";
 		 }
 		 else {
 			 return "http://adaptivemap.ma.psu.edu/AdaptiveMap/content/nodes.xml";
@@ -71,7 +71,7 @@ public class Configuration {
 	}
         
         public static final String getApplicationDirectory() {
-            return System.getProperty("user.home") + "/VirtualTextbook/";
+            return System.getProperty("user.home") + "/VirtualTextbookServer/";
         }
 
         public static final String getGraphViz() {

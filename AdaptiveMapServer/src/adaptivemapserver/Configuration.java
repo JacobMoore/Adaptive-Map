@@ -11,11 +11,11 @@ package adaptivemapserver;
 public final class Configuration {
     
     public static String getApplicationDirectoryPath() {
-        return System.getProperty("user.home") + "/VirtualTextbookServer/";
+        return System.getProperty("user.home") + "\\VirtualTextbookServer\\";
     }
     
     public static String getContentFilePath() {
-        return getApplicationDirectoryPath() + "content/";
+        return getApplicationDirectoryPath() + "content\\";
     }
     
     public static int getServerPort() {

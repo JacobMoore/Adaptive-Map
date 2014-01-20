@@ -25,7 +25,7 @@ import view.AppCanvas;
  */
 public class VirtualTextbookJFrame extends JFrame {
     
-    private static final String HOST = "http://www.adaptivemap.ma.psu.edu";
+    private static final String HOST = "128.118.245.131";
     private static final int PORT = 10001;    
 
     public static void main(String[] args) {
@@ -108,23 +108,4 @@ public class VirtualTextbookJFrame extends JFrame {
 			g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
 	}
 */
-private class SizeChangedListener implements ComponentListener {
-        @Override public void componentHidden( ComponentEvent e ) {}
-        @Override public void componentMoved( ComponentEvent e ) {}
-        @Override
-        public void componentResized( ComponentEvent e ) {
-            canvas.setToolSizes();
-           VirtualTextbookJFrame.this.revalidate();
-           VirtualTextbookJFrame.this.repaint();
-           canvas.repaint();
-        }
-        @Override
-        public void componentShown( ComponentEvent e ) {
-            canvas.setToolSizes();
-            VirtualTextbookJFrame.this.revalidate();
-           VirtualTextbookJFrame.this.repaint();
-           canvas.repaint();
-
-        } 
-    }
 }

@@ -12,6 +12,11 @@ import model.Link.LinkProperties;
 import model.Node.ChapterProperties;
 
 import controller.xml.XmlParser;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JOptionPane;
 
 /**
  * Main file, used for generating graphviz data for the applet.
@@ -26,11 +31,26 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		Configuration.RUN_AS_APPLET = false;
+                File nodeXML = new File("nodes.xml");
+                
+                if(!nodeXML.exists()) {
+                    JOptionPane.showConfirmDialog(null, "Error", "No nodes.xml in dir", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+                    System.exit(1);
+                }
+                
+                File contentDir = new File(Configuration.getDataFilePath(true));
+                delete(contentDir);
+                contentDir.mkdirs();
+                
+                //nodeXML.renameTo(new File(contentDir.getPath() +  "/" + nodeXML.getName()));
+                Files.copy(nodeXML.toPath(), new File(Configuration.getXMLFilePath(true)).toPath());
+                
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		NodeMap nodeMap = new NodeMap();
 		System.out.println("Loading data from: "
 				+ Configuration.getXMLFilePath(true));
 
+                
 		for (Entry<String, ChapterProperties> chapterProperty : XmlParser
 				.parseChapterProperties().entrySet()) {
 			nodeMap.addChapterType(chapterProperty.getKey(),
@@ -114,4 +134,16 @@ public class Main {
 
 		System.out.println("Complete.");
 	}
+        
+        private static void delete(File toDelete) {
+            if(toDelete.isDirectory()) {
+                for(File file: toDelete.listFiles()) {
+                    delete(file);
+                }
+                
+                toDelete.delete();
+            } else {
+                toDelete.delete();
+            }
+        }
 }

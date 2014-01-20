@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -85,8 +86,23 @@ public class GraphViz
     * Where is your dot program located? It will be called externally.
     */
 //   private static String DOT = "/usr/bin/dot";	// Linux
-   private static String DOT = "C:/Program Files (x86)/Graphviz2.34/bin/dot.exe";	// Windows
-
+   //private static String DOT = "C:/Program Files (x86)/Graphviz2.34/bin/dot.exe";	// Windows
+   private static String DOT = findDot();
+   
+   
+   private static String findDot() {
+       File programFileDir = new File("C:/Program Files (x86)/");
+       File[] programFiles = programFileDir.listFiles();
+       for(File program: programFiles) {
+           if(program.getName().toUpperCase().contains("GRAPHVIZ")) {
+               File dot = new File(program.getAbsolutePath() + "/bin/dot.exe");
+               System.out.println("Found " + dot.getPath() + " Exists=" + dot.exists());
+               return dot.getAbsolutePath();
+           }
+       }
+       
+       throw new RuntimeException("GraphViz directory not found");
+   }
    /**
     * The source of the graph written in dot language.
     */
