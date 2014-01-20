@@ -111,7 +111,7 @@ public class DataRetriever {
     }
     
     private void delete(File toDelete) {
-        
+        System.out.println("Deleting " + toDelete.getPath());
         if(toDelete.isDirectory()) {
             for(File file: toDelete.listFiles()) {
                 delete(file);

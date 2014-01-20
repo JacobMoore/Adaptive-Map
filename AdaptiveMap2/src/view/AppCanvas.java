@@ -803,8 +803,8 @@ public class AppCanvas extends JPanel {
 		highViewRadioButton.setBounds(x, 50, buttonWidth, buttonHeight);
 		// legendButton.setBounds( parentWidth - 105, 160, 100, 25 );
 		optionsButton.setBounds(x, 130, buttonWidth, buttonHeight);
-		zoomInButton.setBounds(x, 160, buttonWidth, buttonHeight);
-		zoomOutButton.setBounds(x, 160, buttonWidth, buttonHeight);
+		zoomInButton.setBounds(x, 160, buttonWidth/2, buttonHeight);
+		zoomOutButton.setBounds(x + buttonWidth/2, 160, buttonWidth/2, buttonHeight);
 		// legendTextArea.setBounds( parentWidth - 255, parentHeight - 280, 250,
 		// 275 );
 		backButton.setBounds(0, inset, buttonWidth, buttonHeight);
