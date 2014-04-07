@@ -144,7 +144,7 @@ public class Camera {
 	posy = y;
 	updatePrecisePosition();
 	if (view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
 	}
 	notifyMoved();
     }
@@ -156,7 +156,7 @@ public class Camera {
 	updatePrecisePosition();
 	propagateMove(x, y);  //take care of sticked glyphs
 	if (view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
 	}
 	notifyMoved();
     }
@@ -169,7 +169,7 @@ public class Camera {
         posy = Math.round(dposy);
         propagateMove(posx, posy);  //take care of sticked glyphs
         if (view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
         }
 	notifyMoved();
     }
@@ -181,7 +181,7 @@ public class Camera {
 	updatePrecisePosition();
 	propagateMove(x-posx, y-posy);  //take care of sticked glyphs
 	if (view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
 	}
 	notifyMoved();
     }
@@ -216,7 +216,7 @@ public class Camera {
 	else {altitude=zoomFloor;}
 	propagateAltitudeChange(altitude - oldAlt);
 	if (repaint && view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
 	}
 	notifyMoved();
     }
@@ -249,7 +249,7 @@ public class Camera {
         altitude = l.alt;
         updatePrecisePosition();
         if (view != null){
-		VirtualSpaceManager.INSTANCE.repaintNow(view);
+		//VirtualSpaceManager.INSTANCE.repaintNow(view);
         }
 	notifyMoved();
     }
@@ -560,7 +560,7 @@ public class Camera {
     public void setEnabled(boolean b){
         if (b != enabled){
             enabled = b;
-	    VirtualSpaceManager.INSTANCE.repaintNow(view);
+	    //VirtualSpaceManager.INSTANCE.repaintNow(view);
         }
     }
 

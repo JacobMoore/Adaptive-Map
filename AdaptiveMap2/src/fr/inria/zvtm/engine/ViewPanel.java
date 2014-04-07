@@ -107,7 +107,7 @@ public abstract class ViewPanel extends JPanel implements MouseListener, MouseMo
     boolean computeListAtEachRepaint=false;
 
     /**minimum time in ms between two consecutive repaints (refresh rate)*/
-    int frameTime = 25;
+    int frameTime = 50;
 
     /**view's backgorund color (default is black)*/
     Color backColor = Color.BLACK;
@@ -168,6 +168,14 @@ public abstract class ViewPanel extends JPanel implements MouseListener, MouseMo
     /**Lens (fisheye, etc.)*/
     protected Lens lens;
 
+    public ViewPanel() {
+            this.addMouseListener(this);
+            this.addMouseMotionListener(this);
+            this.addMouseWheelListener(this);
+            this.addComponentListener(this);
+            this.setDoubleBuffered(false);
+    }
+    
     public abstract void stop();
     
     /** Set application class to which events are sent.
@@ -542,9 +550,10 @@ public abstract class ViewPanel extends JPanel implements MouseListener, MouseMo
                     if (parent.notifyMouseMoved){
                         evHs[activeLayer].mouseMoved(this, e.getX(), e.getY(), e);
                     }
+                    //System.out.println(parent.mouse.isSensitive());
                     if (parent.mouse.isSensitive()){
                         if (parent.mouse.computeCursorOverList(evHs[activeLayer], cams[activeLayer], this)){
-                            parent.repaintNow();
+                            VirtualSpaceManager.INSTANCE.repaintNow();
                         }
                     }
                 }

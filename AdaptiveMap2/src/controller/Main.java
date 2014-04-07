@@ -29,7 +29,7 @@ public class Main {
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		NodeMap nodeMap = new NodeMap();
 		System.out.println("Loading data from: "
-				+ Configuration.getXMLFilePath(false));
+				+ Configuration.getXMLFilePath());
 
 		for (Entry<String, ChapterProperties> chapterProperty : XmlParser
 				.parseChapterProperties().entrySet()) {

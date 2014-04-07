@@ -24,6 +24,7 @@ import fr.inria.zvtm.glyphs.VText;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import javax.swing.JOptionPane;
 
 /**
  * // -------------------------------------------------------------------------
@@ -341,7 +342,11 @@ public class NodeMap
         	System.err.println("ERROR!: Unable to parse Graphviz data.");
         	return null;
         }
-        
+        String text= "";
+        for(Node node: nodes) {
+            text += node.getNodeChapter() + " ";
+        }
+        //JOptionPane.showConfirmDialog(null, text);
         int centerIndex = nodes.indexOf(centerNode) + 10;
         int xDifference = (int) (centerNode.getGlyph().vx - coordMap.get(centerIndex).x);
         int yDifference = (int) (centerNode.getGlyph().vy - coordMap.get(centerIndex).y);

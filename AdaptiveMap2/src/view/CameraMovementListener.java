@@ -10,6 +10,7 @@ import model.Link;
 import model.Node;
 import model.Node.ViewType;
 import fr.inria.zvtm.engine.Camera;
+import fr.inria.zvtm.engine.StdViewPanel;
 import fr.inria.zvtm.engine.View;
 import fr.inria.zvtm.engine.ViewEventHandler;
 import fr.inria.zvtm.engine.ViewPanel;
@@ -50,6 +51,7 @@ public class CameraMovementListener implements ViewEventHandler {
 	public CameraMovementListener(AppCanvas canvas) {
 	    this.canvas = canvas;
 	    dragging = false;
+            
 	}
 
 	/**
@@ -194,6 +196,8 @@ public class CameraMovementListener implements ViewEventHandler {
 
 	public void click1(ViewPanel pnl, int mod, int jpx, int jpy,
 			int clickNumber, MouseEvent me) {
+            //System.out.println("Ran this");
+            //throw new RuntimeException();
 		if (enabled) {
 			// If a node was clicked on...
 			if (highlightedNode != null) {
@@ -287,6 +291,7 @@ public class CameraMovementListener implements ViewEventHandler {
 					}
 				}
 			}
+                        doRepaint();
 		}
 	}
 
@@ -352,6 +357,7 @@ public class CameraMovementListener implements ViewEventHandler {
 				break;
 
 			}
+                        doRepaint();
 		}
 	}
 
@@ -400,7 +406,8 @@ public class CameraMovementListener implements ViewEventHandler {
 	}
 
 	public void mouseMoved(ViewPanel pnl, int i, int i1, MouseEvent me) {
-	}
+            doRepaint();
+        }
 
 	public void mouseWheelMoved(ViewPanel pnl, short wheelDirection, int i,
 			int i1, MouseWheelEvent mwe) {
@@ -411,14 +418,17 @@ public class CameraMovementListener implements ViewEventHandler {
 					.abs(activeCamera.altitude)) / activeCamera.focal;
 			if (wheelDirection == WHEEL_DOWN) {
 				activeCamera.altitudeOffset((float) (-altitudeFactor * WSF));
-				VirtualSpaceManager.INSTANCE.repaintNow();
+                                System.out.println("Repainted down");
+                                //pnl.requestFocus();
 			} else {
 				activeCamera.altitudeOffset((float) (altitudeFactor * WSF));
 				if (activeCamera.altitude > AppCanvas.ZOOM_OVERVIEW_MAX)
 					activeCamera.altitude = AppCanvas.ZOOM_OVERVIEW_MAX;
-				VirtualSpaceManager.INSTANCE.repaintNow();
+                                System.out.println("Repainted up");
+                                //pnl.requestFocus();
 			}
 			canvas.updateZoomLevel(activeCamera.altitude);
+                        doRepaint();
 		}
 	}
 
@@ -458,4 +468,9 @@ public class CameraMovementListener implements ViewEventHandler {
 			}
 		}
     }
+        
+        private void doRepaint() {
+            StdViewPanel panel = (StdViewPanel) VirtualSpaceManager.INSTANCE.getActiveView().getPanel();
+            panel.repaintOnTick();
+        }
 }

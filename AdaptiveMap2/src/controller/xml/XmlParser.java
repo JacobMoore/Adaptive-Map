@@ -444,8 +444,7 @@ public class XmlParser {
 				try {
 					DocumentBuilder db;
 					db = dbf.newDocumentBuilder();
-					Document xmlFile = db.parse(Configuration
-							.getXMLFilePath(Configuration.USE_LOCAL_PATH));
+					Document xmlFile = db.parse(Configuration.getXMLFilePath());
 					return xmlFile.getDocumentElement();
 				} catch (Exception e) {
 					e.printStackTrace();

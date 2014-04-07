@@ -39,14 +39,8 @@ public class Configuration {
      * @return
      * 			The path to the file.
      */
-	public static final String getXMLFilePath(final boolean useLocal) {
-		 if ( useLocal )
-		 {
-			 return Configuration.getDataFilePath(runLocally) + "/nodes.xml";
-		 }
-		 else {
-			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/nodes.xml";
-		 }
+	public static final String getXMLFilePath() {
+            return getDataFilePath() + "/nodes.xml";
 	}
 	
 	public static final String getServerFolder()
@@ -61,13 +55,8 @@ public class Configuration {
      * @return
      * 			The path to the file.
 	 */
-	public static final String getDataFilePath(final boolean useLocal) {
-		 if ( useLocal )
-		 {
-			 return getApplicationDirectory() + "content/";
-		 }
-		 else
-			 return "http://adaptivemap.me.vt.edu/AdaptiveMap/content/graphvizData";
+	public static final String getDataFilePath() {
+            return getApplicationDirectory() + "content/";
 	}
         
         public static final String getApplicationDirectory() {
@@ -75,6 +64,6 @@ public class Configuration {
         }
 
         public static final String getGraphViz() {
-            return getDataFilePath(runLocally) + "graphVizData";
+            return getDataFilePath() + "graphVizData";
         }
 }

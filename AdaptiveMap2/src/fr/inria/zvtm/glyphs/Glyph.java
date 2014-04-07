@@ -134,7 +134,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	vx+=x;
 	vy+=y;
 	propagateMove(x,y);  //take care of sticked glyphs
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Translate the glyph to (x,y) - absolute translation.
@@ -144,7 +144,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	propagateMove(x-vx,y-vy);  //take care of sticked glyphs
 	vx=x;
 	vy=y;
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Get the coordinates of the glyph's geometrical center.
@@ -212,7 +212,7 @@ public abstract class Glyph implements Cloneable, Translucent {
     public void setVisible(boolean b){
 	if (b!=visible){
 	    visible=b;
-	    VirtualSpaceManager.INSTANCE.repaintNow();
+	    //VirtualSpaceManager.INSTANCE.repaintNow();
 	}
     }
 
@@ -279,7 +279,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	color = c;
 	fColor = color;
 	HSV = Color.RGBtoHSB(c.getRed(),c.getGreen(),c.getBlue(),(new float[3]));
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Set the glyph's border color (use setColor for text, paths, segments, etc.).
@@ -303,7 +303,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	if (HSV[2]>1) {HSV[2]=1.0f;} else {if (HSV[2]<0) {HSV[2]=0;}}
 	color = Color.getHSBColor(HSV[0],HSV[1],HSV[2]);
 	fColor = color;
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Set the glyph's main color (absolute value, HSV color space).
@@ -321,7 +321,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	if (HSV[2]>1) {HSV[2]=1.0f;} else {if (HSV[2]<0) {HSV[2]=0;}}
 	this.color=Color.getHSBColor(HSV[0],HSV[1],HSV[2]);
 	fColor = color;
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Set the glyph's border color (absolute value, HSV color space).
@@ -402,7 +402,7 @@ public abstract class Glyph implements Cloneable, Translucent {
         else {
             alphaC = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);            
         }
-        VirtualSpaceManager.INSTANCE.repaintNow();
+        //VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Get alpha channel value (translucency).
@@ -459,7 +459,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	else {
 	    stroke=new BasicStroke(strokeWidth,cap,join,miterlimit);
 	}
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Set the width of the stroke used to paint ther glyph's border.
@@ -479,7 +479,7 @@ public abstract class Glyph implements Cloneable, Translucent {
 	else {
 	    stroke=new BasicStroke(strokeWidth,cap,join,miterlimit);
 	}
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Set a custom stroke to paint glyph's border.
@@ -488,7 +488,7 @@ public abstract class Glyph implements Cloneable, Translucent {
     public void setStroke(BasicStroke b){
 	if (b!=null){stroke=b;strokeWidth=stroke.getLineWidth();}
 	else {stroke=null;strokeWidth=1.0f;}
-	VirtualSpaceManager.INSTANCE.repaintNow();
+	//VirtualSpaceManager.INSTANCE.repaintNow();
     }
 
     /** Get the stroke used to paint glyph's border.

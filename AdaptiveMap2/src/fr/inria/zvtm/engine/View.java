@@ -700,8 +700,8 @@ public abstract class View {
 										   SlowInSlowOutInterpolator.getInstance(),
 										   null);
 		    
-		    VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(trans, false);
-		    VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(alt, false);
+		    //VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(trans, false);
+		    //VirtualSpaceManager.INSTANCE.getAnimationManager().startAnimation(alt, false);
 		}
 		return l;
 	}

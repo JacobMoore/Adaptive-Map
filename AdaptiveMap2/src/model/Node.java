@@ -52,6 +52,10 @@ public class Node {
 			realignNodeText();
 		}
 
+                @Override
+                public String toString() {
+                    return getText();
+                }
 	}
 
 	/**
@@ -304,7 +308,7 @@ public class Node {
 	// Node information variables
 	private NodeText nodeTitle;
 	private ViewType nodeView;
-
+        private Color nodeChapterColor;
 	/**
 	 * The virtual space that all drawing is done in.
 	 */
@@ -329,12 +333,13 @@ public class Node {
 	public Node(String nodeTitle, String nodeDescription, String nodeChapter,
 			String nodeKeywords, Color color, int fontSize) {
 		// Important to create this before assigning title/description
-		nodeRectangle = new VRoundRect(0, 0, 1, 200, 11, color, Color.BLACK,
+		nodeRectangle = new VRoundRect(0, 0, 1, 200, 11, Color.white, Color.BLACK,
 				1f, 15, 15);
-		nodeRectangle.setStroke(new BasicStroke(1.0f));
+               
+		//nodeRectangle.setStroke(new BasicStroke(1.0f));
 		nodeRectangle.setOwner(Node.class);
 		nodeRectangle.setType("Node");
-
+                nodeChapterColor = color;
 		setNodeTitle(nodeTitle);
 		this.nodeTitle.setSpecialFont(new Font("Arial", Font.BOLD, fontSize));
 		setNodeDescription(nodeDescription);
@@ -374,7 +379,7 @@ public class Node {
 			int descriptionFontSize, float gradientAdjust) {
 		this(nodeTitle, nodeDescription, nodeChapter, nodeKeywords, color,
 				titleFontSize);
-		nodeRectangle = new VRoundRect(0, 0, 1, 700, 200, color, Color.BLACK,
+		nodeRectangle = new VRoundRect(0, 0, 1, 700, 200, Color.white, Color.BLACK,
 				1f, 15, 15, gradientAdjust);
 		nodeRectangle.setOwner(Node.class);
 		nodeRectangle.setType("Node");
@@ -448,7 +453,7 @@ public class Node {
 	 * @return The color of this node's chapter.
 	 */
 	public Color getNodeChapterColor() {
-		return nodeRectangle.getColor();
+		return nodeChapterColor;
 	}
 
 	/**

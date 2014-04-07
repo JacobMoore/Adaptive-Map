@@ -1,6 +1,5 @@
 package view;
 
-import java.applet.AppletContext;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -50,6 +49,7 @@ import controller.Configuration;
 import controller.xml.XmlParser;
 import fr.inria.zvtm.engine.Camera;
 import fr.inria.zvtm.engine.Location;
+import fr.inria.zvtm.engine.StdViewPanel;
 import fr.inria.zvtm.engine.View;
 import fr.inria.zvtm.engine.VirtualSpace;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
@@ -58,14 +58,11 @@ import fr.inria.zvtm.widgets.TranslucentButton;
 import fr.inria.zvtm.widgets.TranslucentRadioButton;
 import fr.inria.zvtm.widgets.TranslucentTextField;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Desktop;
-import java.awt.Graphics;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SpringLayout;
 
 /**
  * 
@@ -92,7 +89,8 @@ public class AppCanvas extends JPanel {
 	private ArrayList<Node> chapterList;
 	private NodeMap nodeMap;
 	private Map<String, Point> chapterMap;
-
+        private ChapterList chapterJList;
+        
 	// List of all chapter names
 	private ArrayList<String> chapters;
 	// Numbers for gradient fill for chapters
@@ -139,9 +137,10 @@ public class AppCanvas extends JPanel {
 	private JDialog optionsDialog;
 	private boolean canDrag;
 
+        private WebViewPanel webview;
 	// Search Variables
 	private boolean initial;
-
+        
 	/**
 	 * Default constructor.
 	 * 
@@ -149,11 +148,8 @@ public class AppCanvas extends JPanel {
 	 *            The virtual space to use.
 	 * @param appFrame
 	 *            The frame to use.
-	 * @param context
-	 *            The applet's context.
 	 */
-	public AppCanvas(VirtualSpaceManager vSpaceManager, JFrame appFrame,
-			AppletContext context) {
+	public AppCanvas(VirtualSpaceManager vSpaceManager, JFrame appFrame) {
 		this.appFrame = appFrame;
 		this.vSpaceManager = vSpaceManager;
 		nodeList = new ArrayList<Node>();
@@ -161,7 +157,7 @@ public class AppCanvas extends JPanel {
 		chapterList = new ArrayList<Node>();
 		chapters = new ArrayList<String>();
 		numPerChapter = new ArrayList<Integer>();
-
+                
 		zoomOverviewHeight = 400;
 		nodeFontSize = 18;
 		chapterTitleFontSize = 100;
@@ -173,6 +169,7 @@ public class AppCanvas extends JPanel {
 		addTools();
 		initializeOptionsDialog();
 		createStartScreen();
+                //vSpaceManager.getActiveView().getPanel().
 	}
 
 	/**
@@ -221,14 +218,12 @@ public class AppCanvas extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
                                 appFrame.getLayeredPane().remove(startButton);
-				showToolButtons();
+				//showToolButtons();
 				createView();
-                                appFrame.getLayeredPane().add(toolsPane, JLayeredPane.PALETTE_LAYER);
-                                //appFrame.getLayeredPane().add(activeView.getPanel(), JLayeredPane.FRAME_CONTENT_LAYER);
-                                appFrame.getLayeredPane().setLayout(new BorderLayout());
-                                appFrame.getLayeredPane().add(activeView.getPanel(), BorderLayout.CENTER, JLayeredPane.FRAME_CONTENT_LAYER);
-                                toolsPane.setOpaque(false);
+                                chapterJList = new ChapterList(chapterList.toArray(new Node[chapterList.size()]), AppCanvas.this);
+                                createApplicationView();
                                 appFrame.revalidate();
+                               
 			}
 		});
                 //appFrame.getLayeredPane().setLayout(new BorderLayout());
@@ -270,6 +265,73 @@ public class AppCanvas extends JPanel {
 		populateCanvas();
 	}
 
+        private void createApplicationView() {
+            /*
+            appFrame.getLayeredPane().add(toolsPane, JLayeredPane.PALETTE_LAYER);
+            //appFrame.getLayeredPane().add(activeView.getPanel(), JLayeredPane.FRAME_CONTENT_LAYER);
+            appFrame.getLayeredPane().setLayout(new BorderLayout());
+            appFrame.getLayeredPane().add(activeView.getPanel(), BorderLayout.CENTER, JLayeredPane.FRAME_CONTENT_LAYER);
+            appFrame.getLayeredPane().add(chapterJList, BorderLayout.WEST, JLayeredPane.FRAME_CONTENT_LAYER + 1);
+            */
+            
+            toolsPane.setOpaque(false);
+            appFrame.getLayeredPane().setLayout(null);
+            appFrame.getLayeredPane().add(activeView.getPanel(), JLayeredPane.FRAME_CONTENT_LAYER);
+            appFrame.getLayeredPane().add(toolsPane, JLayeredPane.PALETTE_LAYER);
+            
+            /*
+            JPanel chapterListContainer = new JPanel(new BorderLayout());
+            chapterListContainer.setOpaque(false);
+            chapterListContainer.add(chapterJList, BorderLayout.CENTER);
+            chapterListContainer.add(chapterJList.getCollapseBar(), BorderLayout.EAST);
+            */
+            /*
+            JPanel chapterListContainer = new JPanel();
+            chapterListContainer.setLayout(new BoxLayout(chapterListContainer, BoxLayout.X_AXIS));
+            chapterListContainer.setOpaque(true);
+            chapterListContainer.add(chapterJList);
+            chapterListContainer.add(Box.createHorizontalStrut(30));
+            chapterListContainer.add(chapterJList.getCollapseBar());
+            */
+            /*
+            JPanel chapterListContainer = new JPanel();
+            chapterListContainer.setOpaque(false);
+            chapterListContainer.add(chapterJList);
+            chapterListContainer.add(chapterJList.getCollapseBar());
+            */
+            JPanel chapterListContainer = new JPanel();
+            SpringLayout layout = new SpringLayout();
+            chapterListContainer.setLayout(layout);
+            chapterListContainer.add(chapterJList);
+            chapterListContainer.add(chapterJList.getCollapseBar());
+            //spring list
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, chapterJList, 0, SpringLayout.VERTICAL_CENTER, chapterListContainer);
+            layout.putConstraint(SpringLayout.WEST, chapterJList, 0, SpringLayout.WEST, chapterListContainer);
+            //spring bar
+            layout.putConstraint(SpringLayout.VERTICAL_CENTER, chapterJList.getCollapseBar(), 0, SpringLayout.VERTICAL_CENTER, chapterListContainer);
+            layout.putConstraint(SpringLayout.WEST, chapterJList.getCollapseBar(), 0, SpringLayout.EAST, chapterJList);
+            //layout.putConstraint(SpringLayout.NORTH, chapterJList.getCollapseBar(), 0, SpringLayout.NORTH, chapterListContainer);
+            layout.putConstraint(SpringLayout.EAST, chapterJList.getCollapseBar(), 0, SpringLayout.EAST, chapterListContainer);
+            chapterListContainer.setOpaque(false);
+            //layout.putConstraint(SpringLayout.WEST, chapterJList.getCollapseBar(), 100, SpringLayout.EAST, chapterJList.getCollapseBar());
+            // spring container
+            //layout.putConstraint(SpringLayout.SOUTH, chapterListContainer, 0, SpringLayout.SOUTH, chapterJList);
+            //SpringLayout.Constraints listCons = layout.getConstraints(chapterJList);
+            //SpringLayout.Constraints barCons = layout.getConstraints(chapterJList.getCollapseBar());
+            //listCons.set
+            
+            //chapterListContainer.setOpaque(false);
+            System.out.println(chapterJList.getParent().getClass().getName());
+            appFrame.getLayeredPane().add(chapterListContainer, JLayeredPane.MODAL_LAYER);
+            appFrame.getLayeredPane().moveToFront(activeView.getPanel());
+            setComponentPositions();
+            activeView.getPanel().setFocusable(true);
+            //appFrame.getRootPane().setFocusable(false);
+            
+            
+        }
+        
+        
 	/**
 	 * Populates the canvas by calling parsing functions in the XML parser. The
 	 * parser parses all of the nodes in the xml file, and adds each one to the
@@ -363,14 +425,16 @@ public class AppCanvas extends JPanel {
 		// Set the default selected node
 		selectedNode = defaultChapter;
 		// selectedNode.highlightLinks(false);
+                
 		selectedNode.highlight(Color.yellow, 3);
 
 		activeView.getActiveCamera().setLocation(
 				new Location(selectedNode.getGlyph().getLocation().x,
 						selectedNode.getGlyph().getLocation().y,
 						zoomOverviewHeight));
+                
 	}
-
+        
 	/**
 	 * Goes through all nodes and sets up the links between chapters.
 	 */
@@ -440,38 +504,10 @@ public class AppCanvas extends JPanel {
 	/**
 	 * Navigates a browser window to the given url.
 	 * 
-	 * @param url
+	 * @param urlPath
 	 *            the url to navigate to
 	 */
         /*
-	public void navigateTo(String url) {
-		try {
-			// Absolute URL
-			if (url.startsWith("http")) {
-				URL absoluteURL = new URL(url);
-				appletContext.showDocument(absoluteURL, "_blank");
-			}
-			// Relative URL
-			else if (appletContext != null) {
-				// Application started in an applet
-				URL relativeURL = null;
-				try {
-					relativeURL = new URL(appletContext.getApplet(
-							"Adaptive Map").getCodeBase(), url);
-				} catch (MalformedURLException e1) {
-					e1.printStackTrace();
-				}
-				appletContext.showDocument(relativeURL, "_blank");
-			} else {
-				// Stand-alone application
-				java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
-			}
-		} catch (Exception e) {
-			System.out.println("Error navigating to url " + url + ".");
-			e.printStackTrace();
-		}
-	}*/
-        
         public void navigateTo(String urlPath) {
             try {
                 if(!urlPath.startsWith("http://"))
@@ -482,6 +518,51 @@ public class AppCanvas extends JPanel {
             } catch (URISyntaxException ex) {
                 Logger.getLogger(AppCanvas.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }*/
+        public void navigateTo(String urlPath) {
+            System.out.println(urlPath);
+                if(!urlPath.startsWith("http://"))
+                    urlPath = Configuration.getServerFolder() + urlPath;
+                System.out.println(urlPath);
+                if(webview == null) {
+                    System.out.println("Starting to make webview");
+                    webview = new WebViewPanel();
+                    System.out.println("created webview");
+                    JPanel container = new JPanel();
+                    JButton back = new JButton("Back");
+                    back.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                webview.getParent().setVisible(false);
+                        }
+                    });
+                    container.setLayout(new BorderLayout());
+                    container.add(back, BorderLayout.NORTH);
+                    container.add(webview, BorderLayout.CENTER);
+                    appFrame.getLayeredPane().add(container, JLayeredPane.POPUP_LAYER);
+                    //appFrame.getLayeredPane().moveToFront(container);
+                }
+                
+                try {      
+                    webview.navigateTo(new URL(urlPath));
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(AppCanvas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                webview.getParent().setVisible(true);
+                setWebviewSize();
+                /*
+                JFrame frame = new JFrame();
+                frame.setContentPane(container);
+                System.out.println("made frame");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(400,400);
+                System.out.println("set close");
+                frame.setVisible(true);
+                System.out.println("frame visible");*/
+                
+            
+            
         }
 
 	/**
@@ -499,7 +580,6 @@ public class AppCanvas extends JPanel {
 		searchBar.setBackground(Color.DARK_GRAY);
 		searchBar.setToolTipText("Enter your search terms, and press ENTER to search.");
 		searchBar.addKeyListener(new SearchBarListener());
-		searchBar.setVisible(false);
 		toolsPane.add(searchBar);
 
 		pageButton = new TranslucentButton("Topic Page");
@@ -509,7 +589,6 @@ public class AppCanvas extends JPanel {
 				navigateTo(selectedNode.getNodeContentUrl());
 			}
 		});
-		pageButton.setVisible(false);
 		toolsPane.add(pageButton);
 
 		medViewRadioButton = new TranslucentRadioButton("Cluster View", false);
@@ -518,7 +597,6 @@ public class AppCanvas extends JPanel {
 				viewRadioItemStateChanged(e, 1);
 			}
 		});
-		medViewRadioButton.setVisible(false);
 		toolsPane.add(medViewRadioButton);
 
 		highViewRadioButton = new TranslucentRadioButton("Overview", true);
@@ -528,7 +606,6 @@ public class AppCanvas extends JPanel {
 				viewRadioItemStateChanged(e, 2);
 			}
 		});
-		highViewRadioButton.setVisible(false);
 		toolsPane.add(highViewRadioButton);
 
 		zoomInButton = new TranslucentButton("+");
@@ -538,7 +615,6 @@ public class AppCanvas extends JPanel {
 				updateZoomLevel(activeView.getActiveCamera().altitude);
 			}
 		});
-		zoomInButton.setVisible(false);
 		toolsPane.add(zoomInButton);
 
 		zoomOutButton = new TranslucentButton("-");
@@ -550,7 +626,6 @@ public class AppCanvas extends JPanel {
 				updateZoomLevel(activeView.getActiveCamera().altitude);
 			}
 		});
-		zoomOutButton.setVisible(false);
 		toolsPane.add(zoomOutButton);
 
 		optionsButton = new TranslucentButton("Options");
@@ -560,7 +635,6 @@ public class AppCanvas extends JPanel {
 				optionsDialog.setVisible(true);
 			}
 		});
-		optionsButton.setVisible(false);
 		toolsPane.add(optionsButton);
 
 		backButtonList = new LinkedList<History>();
@@ -599,7 +673,6 @@ public class AppCanvas extends JPanel {
 						undo.node.getGlyph().vy);
 			}
 		});
-		backButton.setVisible(false);
 		toolsPane.add(backButton);
 	}
 
@@ -742,21 +815,7 @@ public class AppCanvas extends JPanel {
 		optionsDialog.add(dialogPanel);
 		optionsDialog.pack();
 	}
-
-	/**
-	 * Makes visible all tool buttons
-	 */
-	private void showToolButtons() {
-		medViewRadioButton.setVisible(true);
-		highViewRadioButton.setVisible(true);
-		pageButton.setVisible(true);
-		zoomInButton.setVisible(true);
-		zoomOutButton.setVisible(true);
-		optionsButton.setVisible(true);
-		backButton.setVisible(true);
-		searchBar.setVisible(true);
-	}
-
+        
 	/**
 	 * Adds a node to the undo list, removing the oldest node if 10 nodes are
 	 * already stored.
@@ -838,12 +897,33 @@ public class AppCanvas extends JPanel {
     public void setActiveViewSize() {
         if(activeView != null) {
             activeView.getPanel().setBounds(0,0,appFrame.getWidth(), appFrame.getHeight());
+            ((StdViewPanel)activeView.getPanel()).repaintOnTick();
         }
         
     }
 
     public void setStartButtonSize() {
         startButton.setBounds(appFrame.getWidth() / 2 - 100, appFrame.getHeight() / 2 - 40, 200, 80);
+    }
+
+    public void setChapterJListSize() {
+        if(chapterJList != null) {
+            chapterJList.setAppropriateBounds();
+        }
+    }
+    
+    public void setWebviewSize() {
+        if(webview!=null) {
+            webview.getParent().setBounds(0, 0, appFrame.getWidth(), appFrame.getHeight());
+        }
+    }
+    
+    public void setComponentPositions() {
+        setToolSizes();
+        setChapterJListSize();
+        setStartButtonSize();    
+        setActiveViewSize();
+        setWebviewSize();
     }
 
 	/**
@@ -1095,6 +1175,7 @@ public class AppCanvas extends JPanel {
 	}
 
 	private void switchToHighLevelView() {
+            
 		selectedNode.unhighlight();
 		selectedNode.unhighlightLinks(selectedNode);
 		cameraListener.deselectNodes();
@@ -1121,7 +1202,12 @@ public class AppCanvas extends JPanel {
 		activeView.setBackgroundColor(Configuration.APPLICATION_BG_COLOR);
 	}
 
-	private void switchToMidLevelView() {
+	public void switchToMidLevelView() {
+            
+		activeView.getActiveCamera().setLocation(
+				new Location(selectedNode.getGlyph().getLocation().x,
+						selectedNode.getGlyph().getLocation().y,
+						zoomOverviewHeight));
 		selectedNode.unhighlight();
 		selectedNode.unhighlightLinks(selectedNode);
 		cameraListener.deselectNodes();
@@ -1142,8 +1228,7 @@ public class AppCanvas extends JPanel {
 		} else
 			selectedNode = prevSelectedNode;
 
-		selectedNode
-				.moveAbsolute(getChapterNode(selectedNode.getNodeChapter())
+		selectedNode.moveAbsolute(getChapterNode(selectedNode.getNodeChapter())
 						.getCenterPoint().x,
 						getChapterNode(selectedNode.getNodeChapter())
 								.getCenterPoint().y);
@@ -1163,7 +1248,7 @@ public class AppCanvas extends JPanel {
 		CameraMovementListener.enabled = true;
 	}
 
-	private void selectMedButton() {
+	public void selectMedButton() {
 		pageButton.setEnabled(true);
 		medViewRadioButton.setSelected(true);
 		medViewRadioButton.setEnabled(false);
@@ -1260,6 +1345,10 @@ public class AppCanvas extends JPanel {
 		return false;
 	}
 
+        public View getActiveView() {
+            return activeView;
+        }
+        
 	/**
 	 * Shows only the nodes of the selected chapter, and nodes that are linked
 	 * to the currently selected node.
@@ -1390,4 +1479,5 @@ public class AppCanvas extends JPanel {
 			cameraHeight = h;
 		}
 	}
+       
 }

@@ -16,11 +16,6 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.Vector;
 
-import fr.inria.zvtm.engine.Camera;
-import fr.inria.zvtm.engine.LongPoint;
-import fr.inria.zvtm.engine.View;
-import fr.inria.zvtm.engine.VirtualSpace;
-import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.glyphs.Glyph;
 
 import fr.inria.zvtm.animation.Animation;

@@ -4,20 +4,19 @@
  */
 package controller;
 
-import fr.inria.zvtm.engine.VirtualSpaceManager;
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import network.DataRetriever;
-import view.AppCanvas;
 
 /**
  *
@@ -32,80 +31,64 @@ public class VirtualTextbookJFrame extends JFrame {
         DataRetriever retriever = new DataRetriever(HOST, PORT);
         try {
             retriever.connect();
-        } catch (IOException ex) {
-            Logger.getLogger(VirtualTextbookJFrame.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(1);
-        }
-        try {
             retriever.downloadData();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(VirtualTextbookJFrame.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(2);
+            handleConnectException();
         }
         
         System.out.println("downloaded files succesfully");
-        
-        VirtualTextbookJFrame frame = new VirtualTextbookJFrame();
-        
-        frame.setVisible(true);
+                VirtualTextbookJFrame frame = new VirtualTextbookJFrame();
+                System.out.println("Created frame");
+                frame.setVisible(true);
+     
     }
-    
-    private AppCanvas canvas;
-    private BufferedImage startImage;
-    private boolean showStart;
     
     public VirtualTextbookJFrame() {
         super();
-        Configuration.runLocally = true;
         init();
-       
     }
     
     
-    private void init() {/*
-        this.setLayout(new BorderLayout());
-        VirtualSpaceManager vspace =  VirtualSpaceManager.INSTANCE;
-        vspace.getAnimationManager().start();
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        
-        canvas = new AppCanvas(vspace, panel, null);
-        SizeChangedListener listener = new SizeChangedListener();
-        addComponentListener(listener);
-					
-        System.out.println("HI");
-        try {
-                URL url = new URL(Configuration.getServerFolder() + "startImage.jpg");
-                System.out.println("Made url");
-                //startImage = ImageIO.read(url);	
-                System.out.println("HI");
-        } catch (Exception e) {
-                System.out.println("UH OH");
-                e.printStackTrace();
-                System.out.println("UH OH");
-        }
-        canvas.validate();	
-        this.add(panel, BorderLayout.CENTER);
-        System.out.println("HI");*/
+    private void init() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        Rectangle bounds = getPrefferedBounds();
+        this.setBounds(bounds);
+        
         VirtualTextbookApplet applet = new VirtualTextbookApplet();
         this.add(applet, BorderLayout.CENTER);
-        applet.start();
         applet.init();
-        this.setSize(700, 700);
     }
-    /*
-    public void hideStartImage()
-	{
-		showStart = false;
-	}
     
-    public void paint(Graphics g)
-	{
-		super.paint(g);
-		if (showStart)
-			g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
-	}
-*/
+    private static void handleConnectException() {
+        int n = JOptionPane.showConfirmDialog(null, 
+                "Problem connecting to server\n"
+                + "Run in offline mode?", 
+                "Connect Exception",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        
+        if(n == JOptionPane.NO_OPTION || n == JOptionPane.CLOSED_OPTION)
+            System.exit(2);
+    }
+    
+    private Rectangle getPrefferedBounds() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+        
+        int xBuffer = screenWidth / 8;
+        int yBuffer = screenHeight / 8;
+        
+        int x = xBuffer;
+        int y = yBuffer;
+        int width = screenWidth - (2 * xBuffer);
+        int height = screenHeight - (2 * yBuffer);
+        
+        Rectangle bounds = new Rectangle(x, y, width, height);
+        return bounds;
+    }
+
+    
 }

@@ -23,7 +23,6 @@
 
 package fr.inria.zvtm.engine;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -36,11 +35,13 @@ import java.awt.event.HierarchyListener;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
-import javax.swing.Timer;
 
 import fr.inria.zvtm.glyphs.VText;
-import fr.inria.zvtm.engine.Java2DPainter;
-import fr.inria.zvtm.engine.ViewEventHandler;
+import java.awt.Container;
+import java.awt.Window;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import view.ChapterList;
 
 
 /**
@@ -57,12 +58,21 @@ public class StdViewPanel extends ViewPanel {
 	Dimension oldSize;
 	Graphics2D lensG2D = null;
 
+        private int repaintInt;
 	private Timer edtTimer;
-
-	StdViewPanel(Vector cameras,View v, boolean arfome) {
+        
+	public StdViewPanel(Vector cameras,View v, boolean arfome) {
+            super();
 		ActionListener taskPerformer = new ActionListener(){
 			public void actionPerformed(ActionEvent evt){
-				drawOffscreen();
+                            if(VirtualSpaceManager.INSTANCE.getAnimationManager().hasAnimations()) {
+                                repaintInt = 5;
+                            } 
+                            
+                            if(repaintInt >= 0) {
+                                drawOffscreen();
+                                repaintInt--;
+                            }
 			}
 		};
 		edtTimer = new Timer(frameTime, taskPerformer);
@@ -72,6 +82,8 @@ public class StdViewPanel extends ViewPanel {
 					public void hierarchyChanged(HierarchyEvent e) {
 						if (isShowing()) {
 							start();
+                                                        //VirtualSpaceManager.INSTANCE.getActiveView();//.getPanel();//.addComponentListener(new ViewComponentAdapter());
+                                                        //VirtualSpaceManager.INSTANCE.getActiveView();//.getPanel();//.addMouseListener(new ViewMouseAdapter());
 						} else {
 							stop();
 						}
@@ -85,17 +97,13 @@ public class StdViewPanel extends ViewPanel {
 		for (int nbcam=0;nbcam<cameras.size();nbcam++){
 			cams[nbcam]=(Camera)(cameras.get(nbcam));
 		}
-		//init other stuff
+		//initother stuff
 		setBackground(backColor);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		this.addMouseWheelListener(this);
-		this.addComponentListener(this);
-		this.setDoubleBuffered(false);
 		setAutoRequestFocusOnMouseEnter(arfome);
 		setAWTCursor(Cursor.CUSTOM_CURSOR);  //custom cursor means VTM cursor
 		this.size = this.getSize();
 		if (VirtualSpaceManager.debugModeON()){System.out.println("View refresh time set to "+frameTime+"ms");}
+                start();
 	}
 
 	private void start(){
@@ -341,7 +349,7 @@ public class StdViewPanel extends ViewPanel {
 						}
 						//end drawing here
 						if (stableRefToBackBufferGraphics == backBufferGraphics) {
-							paintImmediately(0,0,size.width,size.height);
+                                                    paintImmediately(0,0,size.width,size.height);
 						}
 					}
 					catch (NullPointerException ex0){
@@ -383,7 +391,8 @@ public class StdViewPanel extends ViewPanel {
 			stableRefToBackBufferGraphics.setColor(blankColor);
 			stableRefToBackBufferGraphics.fillRect(0,0,getWidth(),getHeight());
 			portalsHook();				
-			paintImmediately(0,0,size.width,size.height);
+			//paintImmediately(0,0,size.width,size.height);
+                        repaint();
 		}
 	}
 
@@ -398,5 +407,9 @@ public class StdViewPanel extends ViewPanel {
 	public BufferedImage getImage(){
 		return this.backBuffer;
 	}
-
+        
+        
+        public void repaintOnTick() {
+            repaintInt = 5;
+        }
 }

@@ -30,6 +30,8 @@ import org.jdesktop.animation.timing.TimingSource;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
 import fr.inria.zvtm.engine.Camera;
 import fr.inria.zvtm.engine.Location;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A class that manages Animation instances.
@@ -37,6 +39,7 @@ import fr.inria.zvtm.engine.Location;
  */
 public class AnimationManager {
 
+    public VirtualSpaceManager vsm;
     /**
      * Creates a new AnimationManager. Clients are expected to retrieve an existing AnimationManager
      * by calling the appropriate operation on their application's VirtualSpaceManager, and
@@ -52,12 +55,13 @@ public class AnimationManager {
 
 	//vsm is only useful for currentCamAnim
 	currentCamAnim = new InteractiveCameraAnimation(vsm);
-	Animation anim = createAnimation(Animator.INFINITE, 1d,
-					 Animation.RepeatBehavior.LOOP,
-					 currentCamAnim, //DUMMY subject: avoids conflicts
-					 Animation.Dimension.POSITION,
-					 currentCamAnim);
-	startAnimation(anim, true);
+        this.vsm = vsm;
+	//Animation anim = createAnimation(Animator.INFINITE, 1d,
+	//				 Animation.RepeatBehavior.LOOP,
+	//				 currentCamAnim, //DUMMY subject: avoids conflicts
+	//				 Animation.Dimension.POSITION,
+	//				 currentCamAnim);
+	//startAnimation(anim, true);
     }
 
     Animation createAnimation(int duration, 
@@ -289,6 +293,10 @@ public class AnimationManager {
 	}
     }
 
+    public boolean hasAnimations() {
+        return !pendingAnims.isEmpty() || !runningAnims.isEmpty();
+    }
+    
     private void startEligibleAnimations(){
 	listsLock.lock();
 	try{  
@@ -549,5 +557,6 @@ class TickThread {
     public void requestStop(){
 		edtTimer.stop();
     }
+    
 }
 

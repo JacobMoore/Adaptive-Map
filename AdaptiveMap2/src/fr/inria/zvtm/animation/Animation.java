@@ -7,6 +7,10 @@
  */ 
 package fr.inria.zvtm.animation;
 
+import fr.inria.zvtm.engine.StdViewPanel;
+import fr.inria.zvtm.engine.VirtualSpaceManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.jcip.annotations.*;
 
 import org.jdesktop.animation.timing.interpolation.Interpolator;
@@ -119,24 +123,62 @@ public class Animation {
 	animator.setTimer(timingSource);
     }
 
+    private Thread thread;
+    private boolean running = false;
+    
     void start(){
 	animator.start();
+        //running = true;
+        //thread = new RunThread(parent.vsm);
+        //thread.start();
     }
 
+    private class RunThread extends Thread {
+        private VirtualSpaceManager panel;
+        
+        public RunThread(VirtualSpaceManager panel){
+            this.panel = panel;
+        }
+        
+        public void run() {
+            while(running) {
+                //System.out.println("RUNNING REFRESH");
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Animation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    StdViewPanel std = (StdViewPanel) panel.activeView.getPanel();
+                    std.drawOffscreen();
+                } catch(Exception ex) {
+                    System.err.println(ex);
+                }
+            }
+        }
+    }
+    
+    
     void stop(){
 	animator.stop();
+        //running = false;
     }
 
     void cancel(){
 	animator.cancel();
+        //running = false;
     }
 
     void pause(){
 	animator.pause();
+        //running = false;
     }
 
     void resume(){
 	animator.resume();
+        //running = true;
+        //thread = new RunThread(parent.vsm);
+        //thread.start();
     }
 
     boolean isRunning(){

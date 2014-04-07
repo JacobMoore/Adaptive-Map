@@ -1,71 +1,66 @@
 package controller;
 
-import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
-import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 
 import model.Node;
 import view.AppCanvas;
 import fr.inria.zvtm.engine.VirtualSpaceManager;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
  * @author John Nein
  * @version Nov 15, 2011
  */
-public class VirtualTextbookApplet extends JApplet {
+public class VirtualTextbookApplet extends JPanel {
 
-    
-    
 	private static final long serialVersionUID = 4637779516193337728L;
 	private VirtualSpaceManager vSpaceManager;
 	private AppCanvas canvas;
-	
-	private boolean showStart;
-	SizeChangedListener listener;
-    BufferedImage startImage;
-
-	@Override
+        private SizeChangedListener listener;
+        
+      //  public VirtualTextbookApplet() {
+        //    init();
+        //}
+        
+	//@Override
 	public void init() {
-		try {
+		try {/*
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
+                                    try {*/
 					// Line below is for ZVTM support for applets
-					getRootPane().putClientProperty(
-							"defeatSystemEventQueueCheck", Boolean.TRUE);
-					showStart = true;
-					startImage = null;
+					//getRootPane().putClientProperty(
+					//		"defeatSystemEventQueueCheck", Boolean.TRUE);
 					vSpaceManager = VirtualSpaceManager.INSTANCE;
 					vSpaceManager.getAnimationManager().start();
-					canvas = new AppCanvas(vSpaceManager, (JFrame) SwingUtilities.getWindowAncestor(VirtualTextbookApplet.this),
-						    null);
+					canvas = new AppCanvas(vSpaceManager, (JFrame) SwingUtilities.getWindowAncestor(VirtualTextbookApplet.this));
 					listener = new SizeChangedListener();
                                         addComponentListener(listener);
-			        try {
 						//startImage = 
 						//		ImageIO.read(new URL(Configuration.getServerFolder() + "startImage.jpg"));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					canvas.validate();
+                                        /*
 				}
 			});
 		} catch (Exception e) {
 			System.err.println("createGUI didn't complete successfully");
 			e.printStackTrace();
 		}
-                
+                */
                 System.out.println("Stuff" + canvas.getChapterList().toString());
 	}
 	
-	@Override
+	//@Override
 	public void stop() {
 		Node.destroyAllLinks();
 		vSpaceManager.getActiveView().destroyView();
@@ -74,39 +69,15 @@ public class VirtualTextbookApplet extends JApplet {
 		removeComponentListener(listener);
 	}
 	
-	@Override
-	public void destroy() {
-	}
-	
-	public void paint(Graphics g)
-	{
-		super.paint(g);
-		//if (showStart)
-		//	g.drawImage(startImage, getWidth()/2-startImage.getWidth()/2, 25, null);
-	}
-	
-	/**
-	 * Hides the starting image.
-	 */
-	public void hideStartImage()
-	{
-		showStart = false;
-	}
-	
-	private class SizeChangedListener implements ComponentListener {
-        @Override public void componentHidden( ComponentEvent e ) {}
-        @Override public void componentMoved( ComponentEvent e ) {}
-        @Override
-        public void componentResized( ComponentEvent e ) {
-            canvas.setToolSizes();
-            canvas.setActiveViewSize();
-            canvas.setStartButtonSize();
+	private class SizeChangedListener extends ComponentAdapter {
+            @Override
+            public void componentResized( ComponentEvent e ) {
+                canvas.setComponentPositions();
+            }
+            @Override
+            public void componentShown( ComponentEvent e ) {
+                canvas.setComponentPositions();
+            } 
         }
-        @Override
-        public void componentShown( ComponentEvent e ) {
-            canvas.setToolSizes();
-            canvas.setActiveViewSize();
-            canvas.setStartButtonSize();
-        } 
-    }
+       
 }

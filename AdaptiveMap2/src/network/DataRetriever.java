@@ -48,7 +48,7 @@ public class DataRetriever {
         
         System.out.println("Key bad, retrieving files");
         
-        File dir = new File(Configuration.getDataFilePath(Configuration.runLocally));
+        File dir = new File(Configuration.getDataFilePath());
         delete(dir);
         downloadFiles();
     }
@@ -87,7 +87,7 @@ public class DataRetriever {
             System.out.println(readLine);
             os.println("OKAY");
             os.flush();
-            File file = new File(Configuration.getDataFilePath(true) + readLine);
+            File file = new File(Configuration.getDataFilePath() + readLine);
             File dir = file.getParentFile();
             dir.mkdirs();
             file.createNewFile();
